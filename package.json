@@ -1,0 +1,24 @@
+{
+  "name": "flot-plugins",
+  "version": "1.0.0",
+  "description": "A collection of plug-ins for flot charts",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "example": "examples",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flot/flot-plugins.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/flot/flot-plugins/issues"
+  },
+  "homepage": "https://github.com/flot/flot-plugins#readme"
+}
