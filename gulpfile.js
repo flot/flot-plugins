@@ -1,18 +1,20 @@
 var gulp = require('gulp');
-var concat = require('gulp-concat');
-var uglify = require('gulp-uglify');
-var babel = require('gulp-babel');
-var maps = require('gulp-sourcemaps');
 var gulpSequence = require('gulp-sequence');
+var filesExist = require('files-exist');
 
-gulp.task('build', gulpSequence('build_flot_plugins'));
-gulp.task('build_flot_plugins', function() {
-    gulp.src('source/JUMFlot/**')
+gulp.task('build_flot_plugins', function () {
+    'use strict';
+    var src1 = ['source/JUMFlot/**'];
+    var src2 = ['examples/JUMFlot/**'];
+    var src3 = ['images/JUMFlot/**'];
+    var src4 = ['docs/JUMFlot/**'];
+    gulp.src(filesExist(src1, { exceptionMessage: 'Missing file'}))
         .pipe(gulp.dest('dist/source/JUMFlot'));
-    gulp.src('examples/JUMFlot/**')
-        .pipe(gulp.dest('dist/examples'));
-    gulp.src('images/JUMFLot/**')
-        .pipe(gulp.dest('dist/images'));
-    gulp.src('docs/JUMFLot/**')
-        .pipe(gulp.dest('dist/docs'));
+    gulp.src(filesExist(src2, { exceptionMessage: 'Missing file'}))
+        .pipe(gulp.dest('dist/examples/JUMFlot'));
+    gulp.src(filesExist(src3, { exceptionMessage: 'Missing file'}))
+        .pipe(gulp.dest('dist/images/JUMFlot'));
+    return gulp.src(filesExist(src4, { exceptionMessage: 'Missing file'}))
+        .pipe(gulp.dest('dist/docs/JUMFlot'));
 });
+gulp.task('build', gulp.series('build_flot_plugins'));
