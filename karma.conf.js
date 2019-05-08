@@ -17,14 +17,8 @@ module.exports = function (config) {
         currentOSType = isWin ? 'win' : (isLinux ? 'linux' : 'mac'),
         currentOSBrowsers = browsersMatrix[currentOSType];
 
-    var coverage_sources = [
-        'source/jquery.flot.scattergraph.js'
-    ];
-
     var sources = [
-        'source/jquery.js',
-        'node_modules/flot/dist/es5/jquery.flot.js'
-    ].concat(coverage_sources);
+    ];
 
     var settings = {
 
@@ -37,8 +31,6 @@ module.exports = function (config) {
 
         // list of files / patterns to load in the browser
         files: sources.concat([
-            'node_modules/webcharts-development-settings/testsUtils/*.js',
-            'tests/utils/*.js',
             'tests/*.Test.js'
         ]),
 
@@ -86,19 +78,6 @@ module.exports = function (config) {
         // how many browser should be started simultaneous
         concurrency: Infinity
     };
-
-    if (config.coverage) {
-        coverage_sources.forEach(function (pattern) {
-            if (!settings.preprocessors[pattern]) {
-                settings.preprocessors[pattern] = ['coverage'];
-            } else {
-                settings.preprocessors[pattern].push('coverage');
-            }
-        });
-
-        settings.reporters.push('coverage');
-        settings.reporters.push('coveralls');
-    }
 
     config.set(settings);
 };
