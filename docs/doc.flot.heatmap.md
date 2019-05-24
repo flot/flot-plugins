@@ -1,1 +1,2 @@
-* <strong>heatmap</strong>: 
+# heatmap
+
