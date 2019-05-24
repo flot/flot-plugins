@@ -1,4 +1,6 @@
 # JUMFlot plugins
+Owner: Juergen Marsch
+
  - [Animate](doc.flot.animate.md)
  - [Background](doc.flot.background.md)
  - [Bandwidth](doc.flot.bandwidth.md)
@@ -15,3 +17,5 @@
  - [Spider](doc.flot.spider.md)
  - [Spiral](doc.flot.spiral.md)
  - [Video](doc.flot.video.md)
+
+See [JUMFlot web site](http://jumflot.jumware.com/IndexJUMFlot.html) for demos
