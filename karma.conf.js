@@ -9,8 +9,7 @@ module.exports = function (config) {
     var browsersMatrix = {
             'win': ['Firefox', 'Chrome', 'Edge'],
             'linux': ['Firefox', 'Chrome'],
-            // 'mac': ['Safari', 'Firefox', 'Chrome']
-            'mac': ['Chrome']
+            'mac': ['Firefox', 'Chrome']
         },
         isWin = /^win/.test(process.platform),
         isLinux = /^linux/.test(process.platform),
@@ -27,7 +26,7 @@ module.exports = function (config) {
         },
         'node_modules/jquery/dist/jquery.min.js',
         'node_modules/flot/dist/es5/jquery.flot.js',
-        'source/jquery.flot.JUMLib.js',
+        'source/jquery.flot.JUMlib.js',
         'source/jquery.flot.animate.js',
         'source/jquery.flot.background.js',
         'source/jquery.flot.bandwidth.js',
