@@ -9,20 +9,8 @@ describe('JUMFlot tests', () => {
         plotOffset = { top: 0, left: 0 };
         options = {
             grid: {show: true},
-            // xaxis: {show: false},
-            // yaxis: {show: false},
         };
         series = {
-        //     xaxis: {
-        //         min: minx,
-        //         max: maxx,
-        //         p2c: function(p) { return p; }
-        //     },
-        //     yaxis: {
-        //         min: miny,
-        //         max: maxy,
-        //         p2c: function(p) { return p; }
-        //     }
         };
     });
 
