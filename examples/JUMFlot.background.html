@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <script type='text/javascript' src='../node_modules/jquery/dist/jquery.min.js'></script>
+        <script type='text/javascript' src='../node_modules/flot/dist/es5/jquery.flot.js'></script>
+        <script type='text/javascript' src='../source/jquery.flot.JUMLib.js'></script>
+        <script type='text/javascript' src='../source/jquery.flot.background.js'></script>
+<script type='text/javascript'>
+$(document).ready(() => {
+    var imgs,p,data,options,bpo = []; //bpo for sample background options
+    var data = [
+        {path:"../styles/images/"
+            ,name:"backImageHeatmap",type:"png"},
+        {path:"../styles/images/"
+            ,name:"Universal",type:"png"}
+    ];
+    $("#draw").on("click",function(){ setMode(); });
+    $.plot.JUMlib.data.loadImages(data,5000 ,showPlots); // preload images
+    function showPlots(imgLoaded){ //callback of preloading
+        imgs = imgLoaded; // next create sample options
+        bpo.push({mode:"image",image:imgs.backImageHeatmap,active:true});
+        bpo.push({mode:"color",color:"blue",active:true});
+        bpo.push({mode:"color",color:{colors:["white","yellow","orange"] }});
+        bpo.push({mode:"color",color: {image:imgs.Universal,repeat:"repeat"}});
+        bpo.push({mode:"userdefined",fncDraw:drawTime,active:true});
+        setMode();
+    }
+    data = [{label:"line",data:[[1,4],[2,3],[3,2],[4,4],[5,3]],color:"red"
+           ,lines:{show:true,lineWidth:5},points:{show:true}}];
+    function setMode(){
+        var mode = parseInt($("#mode").val(),0); console.log(mode);
+        options = {grid: {hoverable: true}}; // for jquery.ui, add setZIndex:true
+        options.grid.background = bpo[mode];
+        options.grid.background.active = true;
+        p = $.plot($("#placeholderuser"), data, options);        
+    } 
+    function drawTime(plot,ctx,w,h){ //example to refresh background
+        setInterval(function(){ 
+            var d = new Date();
+            d = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+            ctx.clearRect(0,0,w,h); ctx.font = "80px Arial";
+            ctx.strokeText(d,w / 2 - ctx.measureText(d).width / 2, h / 2 + 40);
+        },1000);
+    } 
+});
+</script>
+</head>
+<body>
+    <form>
+        <select id="mode">
+            <option value="0">Image</option>
+            <option value="1">Color</option>
+            <option value="2" selected>Gradient</option>
+            <option value="3">Pattern</option>
+            <option value="4">User defined</option>
+        </select>
+        <input type="button" id="draw" value="redraw">
+    </form>
+    <div id="placeholderuser" style="width:500px;height:250px;"></div>
+</body>
+</html>

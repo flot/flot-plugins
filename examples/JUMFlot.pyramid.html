@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <script type='text/javascript' src='../node_modules/jquery/dist/jquery.min.js'></script>
+        <script type='text/javascript' src='../node_modules/flot/dist/es5/jquery.flot.js'></script>
+        <script type='text/javascript' src='../source/JUMFlot.min.js'></script>
+<script type='text/javascript'>
+$(document).ready(() => {
+    var d1 = [
+        {value:50,label:"Bears"},{value:20,label:"Pandas"},
+        {value:3,label:"male"},{value:1,label:"Albino"}
+    ];
+    var options = {
+        series: {pyramids:{active:true,show:true,mode:"slice"}},
+        grid: {hoverable:true,clickable:true}
+    };
+    var p = $.plot($("#placeholder"),[d1],options);
+    $("#placeholder").bind("plotclick",function (event, pos, item) {
+        if(item){ 
+            var data = item.series.data[item.dataIndex];
+            alert(data.label + " clicked");
+        }
+    });
+    $("#placeholder").bind("plothover",function(event,pos,item){
+        $.plot.JUMlib.library.showHover(event,pos,item,false,
+            function(data){return data.label;});
+    });
+});
+</script>
+</head>
+<body>
+    <div id="placeholder" style="width:500px;height:300px;"></div>
+</body>
+</html>

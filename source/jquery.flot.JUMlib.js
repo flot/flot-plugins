@@ -369,7 +369,7 @@ THE SOFTWARE.
             var dfd = $.Deferred(),t,url;
             url = img.path + img.name + "." + img.type;
             t = setInterval(function(){clearInterval(t);dfd.reject();},maxWait);
-            $('<img />').attr('src',url).load(loaded).error(errorFound);
+            $('<img />').attr('src',url).load([],loaded);
             return dfd.promise();
             function loaded(){ loadedImg[img.name] = this;dfd.resolve();}
             function errorFound(e,f,g){console.log(url,e); loadedImg[img.name] = null;dfd.reject();}    

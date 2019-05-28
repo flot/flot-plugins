@@ -9,7 +9,8 @@ module.exports = function (config) {
     var browsersMatrix = {
             'win': ['Firefox', 'Chrome', 'Edge'],
             'linux': ['Firefox', 'Chrome'],
-            'mac': ['Safari', 'Firefox', 'Chrome']
+            // 'mac': ['Safari', 'Firefox', 'Chrome']
+            'mac': ['Chrome']
         },
         isWin = /^win/.test(process.platform),
         isLinux = /^linux/.test(process.platform),
@@ -18,6 +19,24 @@ module.exports = function (config) {
         currentOSBrowsers = browsersMatrix[currentOSType];
 
     var sources = [
+        'jquery.flot.animate.js',
+        'jquery.flot.background.js',
+        'jquery.flot.bandwidth.js',
+        'jquery.flot.bubbles.js',
+        'jquery.flot.candlestick.js',
+        'jquery.flot.contout.js',
+        'jquery.flot.gantt.js',
+        'jquery.flot.grow.js',
+        'jquery.flot.heatmap.js',
+        'jquery.flot.mouse.js',
+        'jquery.flot.pyramid.js',
+        'jquery.flot.radar.js',
+        'jquery.flot.rectangle.js',
+        'jquery.flot.rose.js',
+        'jquery.flot.spider.js',
+        'jquery.flot.spiral.js',
+        'jquery.flot.video.js',
+        'tests/*Tests.js'
     ];
 
     var settings = {

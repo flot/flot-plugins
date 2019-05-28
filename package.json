@@ -30,5 +30,9 @@
     "files-exist": "^1.1.0",
     "gulp": "^4.0.0",
     "gulp-sequence": "^0.4.6"
+  },
+  "dependencies": {
+    "flot": "^3.0.2",
+    "jquery": "^3.1.0"
   }
 }
