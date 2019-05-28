@@ -61,7 +61,7 @@ THE SOFTWARE.
         var opt = null, offset = "7", acanvas = null, actx = null, series = null;
         plot.hooks.processOptions.push(processOptions);
         function processOptions(plot,options){
-            if(options.series.heatmap.active){
+            if(options.series.heatmap && options.series.heatmap.active){
                 $.plot.JUMlib.data.extendEmpty(options,defaultOptions);               
                 opt = options;
                 plot.hooks.processRawData.push(processRawData);

@@ -62,7 +62,7 @@ THE SOFTWARE.
         var offset = null, opt = null, series = null;
         plot.hooks.processOptions.push(processOptions);
         function processOptions(plot,options){
-            if(options.series.bandwidth.active){
+            if(options.series.bandwidth && options.series.bandwidth.active){
                 $.extend(true,options,replaceOptions);
                 $.plot.JUMlib.data.extendEmpty(options,defaultOptions);
                 opt = options;
@@ -107,7 +107,7 @@ THE SOFTWARE.
             }
             else{ 
                 if(opt.grid.editable){ item = findNearbyItemForEdit(mouseX,mouseY,i,serie);}
-                else{item = findNearbyItem(mouseX,mouseY,i,serie);}			  
+                else{item = findNearbyItem(mouseX,mouseY,i,serie);}
             }
             return item;
             function findNearbyItemEdit(mouseX,mouseY,i,serie){

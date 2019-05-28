@@ -58,7 +58,7 @@ THE SOFTWARE.
         plot.hooks.processOptions.push(processOptions);
         plot.hooks.processRawData.push(processRawData);
         function processOptions(plot,options){
-            if(options.series.rose.active===true){
+            if(options.series.rose && options.series.rose.active===true){
                 $.extend(true,options,replaceOptions);
                 $.plot.JUMlib.data.extendEmpty(options,defaultOptions);
                 opt = options;

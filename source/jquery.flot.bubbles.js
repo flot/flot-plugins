@@ -73,7 +73,7 @@ THE SOFTWARE.
         var offset = null,opt = null,series = null;
         plot.hooks.processOptions.push(processOptions);
         function processOptions(plot,options){
-            if(options.series.bubbles.active){
+            if(options.series.bubbles && options.series.bubbles.active){
                 $.plot.JUMlib.data.extendEmpty(options,defaultOptions);                
                 opt = options;
                 plot.hooks.processRawData.push(processRawData);
@@ -98,7 +98,7 @@ THE SOFTWARE.
             x = offset.left + serie.xaxis.p2c(data[0]);
             y = offset.top + serie.yaxis.p2c(data[1]);
             v = data[2];
-            r = parseInt(serie.yaxis.scale * data[2] / 2,0);
+            r = parseInt(Math.abs(serie.yaxis.scale) * data[2] / 2,0);
             serie.bubbles.drawbubble(ctx,serie,x,y,v,r,c,overlay);
         }
         function findNearbyItemBubbles(mouseX, mouseY,i,serie){

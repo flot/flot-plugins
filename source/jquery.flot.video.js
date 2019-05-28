@@ -91,7 +91,7 @@ THE SOFTWARE.
         var done = false, actualStep = 0, maxSteps = 0, defs = [];
         plot.hooks.processOptions.push(processOptions);
         function processOptions(plot,options){
-            if(options.series.video.active){
+            if(options.series.video && options.series.video.active){
                 opt = options;
                 $.extend(true,options,replaceOptions);
                 $.plot.JUMlib.data.extendEmpty(options,defaultOptions);

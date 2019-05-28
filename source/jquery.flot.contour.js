@@ -53,7 +53,7 @@ THE SOFTWARE.
         var offset = null, opt = null, series = null;
         plot.hooks.processOptions.push(processOptions);
         function processOptions(plot,options){
-            if(options.series.contour.active){
+            if(options.series.contour && options.series.contour.active){
                 $.extend(true,options,replaceOptions);
                 $.plot.JUMlib.data.extendEmpty(options,defaultOptions);
                 opt = options;

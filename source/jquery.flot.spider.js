@@ -72,7 +72,7 @@ THE SOFTWARE.
         var maxRadius = null, centerLeft = null, opt = null, centerTop = null, series = null,data; 
         plot.hooks.processOptions.push(processOptions);
         function processOptions(plot,options){
-            if(options.series.spider.active){
+            if(options.series.spider && options.series.spider.active){
                 $.extend(true,options,replaceOptions);
                 $.plot.JUMlib.data.extendEmpty(options,defaultOptions);
                 opt = options;

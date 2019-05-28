@@ -85,7 +85,7 @@ THE SOFTWARE.
         var offset = null,opt = null,series = null,colors,sumRect;
         plot.hooks.processOptions.push(processOptions);
         function processOptions(plot,options){
-            if(options.series.rectangle.active){
+            if(options.series.rectangle && options.series.rectangle.active){
                 $.extend(true,options,replaceOptions);
                 $.plot.JUMlib.data.extendEmpty(options,defaultOptions);
                 opt = options;

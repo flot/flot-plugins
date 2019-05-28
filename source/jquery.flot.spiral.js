@@ -56,7 +56,7 @@ THE SOFTWARE.
         var stepNo,rotationNo,pies = [],rfunc,angleStart;
         plot.hooks.processOptions.push(processOptions);
         function processOptions(plot,options){
-            if(options.series.spiral.active===true){
+            if(options.series.spiral && options.series.spiral.active===true){
                 $.extend(true,options,replaceOptions);
                 $.plot.JUMlib.data.extendEmpty(options,defaultOptions);
                 opt = options;

@@ -31,7 +31,7 @@ THE SOFTWARE.
                 active: false,
                 show: false,
                 connectSteps: { show: false, lineWidth:2, color:"rgb(0,0,0)" },
-                barHeight: 0.6,
+                barheight: 0.6,
                 highlight: { opacity: 0.5 },
                 drawstep: drawStepDefault
             }
@@ -70,7 +70,7 @@ THE SOFTWARE.
         var offset = null, opt = null, series = null,canvas,target,axes,data;
         plot.hooks.processOptions.push(processOptions);
         function processOptions(plot,options){
-            if (options.series.gantt.active){
+            if (options.series.gantt && options.series.gantt.active){
                 $.extend(true,options,replaceOptions);
                 $.plot.JUMlib.data.extendEmpty(options,defaultOptions);
                 opt = options;

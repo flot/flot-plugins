@@ -57,7 +57,7 @@ THE SOFTWARE.
         var  opt = null,offset = null,series = null,dataHeight = null, dataMax,centerX,canvasHeight,canvasWidth;
         plot.hooks.processOptions.push(processOptions);
         function processOptions(plot,options){
-            if (options.series.pyramid.active===true){	
+            if (options.series.pyramid && options.series.pyramid.active===true){	
                 $.extend(true,options,replaceOptions);
                 $.plot.JUMlib.data.extendEmpty(options,defaultOptions);
                 opt = options;
