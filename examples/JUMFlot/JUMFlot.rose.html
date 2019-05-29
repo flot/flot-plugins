@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <script type='text/javascript' src='../../node_modules/jquery/dist/jquery.min.js'></script>
+        <script type='text/javascript' src='../../node_modules/flot/dist/es5/jquery.flot.js'></script>
+        <script type='text/javascript' src='../../source/JUMFlot/JUMFlot.min.js'></script>
+<script type='text/javascript'>
+$(document).ready(() => {
+    var d1 = [ 10,30,40,5,60 ];
+    var d2 = [ 20,60,50,80,70 ];
+    var d3 = [ 50,70,90,90,80 ];
+    data = [
+        { label: "high", color:"blue", data: d3, rose: {show: true } },
+        { label: "middle", color:{colors:["yellow","orange","red"] }, data: d2, rose: {show: true } },
+        { label: "low", color:"green", data: d1, rose: {show: true} }
+    ];
+    options = {
+        series:{rose:{active:true,roseSize:0.8,leafSize:0.7}},
+        grid:{ hoverable: true,clickable: true,
+              tickLabel:["Apple","Blueberry","Lemon","Nuts","Orange"]
+        }
+    };
+    p = $.plot($("#placeholder"), data , options);
+    $("#setopt").click(function () {setOptions() });
+    function setOptions(){
+        options.series.rose.leafSize = parseFloat($("#leafSize").val());
+        options.grid.font = $("#font").val();
+        p = $.plot($("#placeholder"),data,options);
+    }
+});
+</script>
+</head>
+<body>
+    <form>
+        <table width="100%">
+            <tr>
+                <th>LeafeSize</th>
+                <th>Font</th>
+                <th rowspan="2">
+                    <Input type="Button" id="setopt" value="redraw">
+                </th>
+            </tr>
+            <tr>
+                    <th>
+                        <select id="leafSize">
+                            <option value="0.1">0.1</option>
+                            <option value="0.3">0.3</option>
+                            <option value="0.5">0.5</option>
+                            <option value="0.7" selected>0.7</option>
+                            <option value="0.9">0.9</option>
+                            <option value="1">1</option>
+                        </select>
+                </th>
+                <th>
+                        <select id="font">
+                            <option value="18px Times New Roman" selected>18px Times</option>
+                            <option value="12px Times New Roman">10px Times</option>
+                            <option value="14px Comic Sans MS">14px Comic</option>
+                            <option value="16px Trebuchet MS">16px Trebuchet</option>
+                            <option value="18px Impact">16px Impact</option>
+                        </select>
+                </th>
+            </tr>
+        </table>
+    </form>
+    <div id="placeholder" style="width:500px;height:400px;float: left;border: 1px dashed gainsboro;"></div>
+</html>

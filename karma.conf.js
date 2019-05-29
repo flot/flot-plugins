@@ -9,7 +9,7 @@ module.exports = function (config) {
     var browsersMatrix = {
             'win': ['Firefox', 'Chrome', 'Edge'],
             'linux': ['Firefox', 'Chrome'],
-            'mac': ['Safari', 'Firefox', 'Chrome']
+            'mac': ['Firefox', 'Chrome']
         },
         isWin = /^win/.test(process.platform),
         isLinux = /^linux/.test(process.platform),
@@ -17,30 +17,47 @@ module.exports = function (config) {
         currentOSType = isWin ? 'win' : (isLinux ? 'linux' : 'mac'),
         currentOSBrowsers = browsersMatrix[currentOSType];
 
-    var coverage_sources = [
-        'source/jquery.flot.scattergraph.js'
+    var files = [
+        {
+            pattern: 'styles/images/*.*',
+            watched: false,
+            served: true,
+            included: true
+        },
+        'node_modules/jquery/dist/jquery.min.js',
+        'node_modules/flot/dist/es5/jquery.flot.js',
+        'source/JUMFlot/jquery.flot.JUMlib.js',
+        'source/JUMFlot/jquery.flot.animate.js',
+        'source/JUMFlot/jquery.flot.background.js',
+        'source/JUMFlot/jquery.flot.bandwidth.js',
+        'source/JUMFlot/jquery.flot.bubbles.js',
+        'source/JUMFlot/jquery.flot.candlestick.js',
+        'source/JUMFlot/jquery.flot.contour.js',
+        'source/JUMFlot/jquery.flot.gantt.js',
+        'source/JUMFlot/jquery.flot.grow.js',
+        'source/JUMFlot/jquery.flot.heatmap.js',
+        'source/JUMFlot/jquery.flot.mouse.js',
+        'source/JUMFlot/jquery.flot.pyramid.js',
+        'source/JUMFlot/jquery.flot.radar.js',
+        'source/JUMFlot/jquery.flot.rectangle.js',
+        'source/JUMFlot/jquery.flot.rose.js',
+        'source/JUMFlot/jquery.flot.spider.js',
+        'source/JUMFlot/jquery.flot.spiral.js',
+        'source/JUMFlot/jquery.flot.video.js',
+        'tests/*Tests.js'
     ];
-
-    var sources = [
-        'source/jquery.js',
-        'node_modules/flot/dist/es5/jquery.flot.js'
-    ].concat(coverage_sources);
 
     var settings = {
 
         // base path that will be used to resolve all patterns (eg. files, exclude)
-        basePath: '',
+        basePath: './',
 
         // frameworks to use
         // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
         frameworks: ['jasmine-jquery', 'jasmine'],
 
         // list of files / patterns to load in the browser
-        files: sources.concat([
-            'node_modules/webcharts-development-settings/testsUtils/*.js',
-            'tests/utils/*.js',
-            'tests/*.Test.js'
-        ]),
+        files: files,
 
         // list of files to exclude
         exclude: [
@@ -74,6 +91,12 @@ module.exports = function (config) {
         // enable / disable watching file and executing tests whenever any file changes
         autoWatch: true,
 
+        proxies: {
+            '/styles/images/': '/base/styles/images/',
+            '/styles/css/': '/base/styles/css/',
+            '/tests/': '/base/tests/'
+        },
+
         // start these browsers
         // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
         browsers: currentOSBrowsers,
@@ -86,19 +109,6 @@ module.exports = function (config) {
         // how many browser should be started simultaneous
         concurrency: Infinity
     };
-
-    if (config.coverage) {
-        coverage_sources.forEach(function (pattern) {
-            if (!settings.preprocessors[pattern]) {
-                settings.preprocessors[pattern] = ['coverage'];
-            } else {
-                settings.preprocessors[pattern].push('coverage');
-            }
-        });
-
-        settings.reporters.push('coverage');
-        settings.reporters.push('coveralls');
-    }
 
     config.set(settings);
 };

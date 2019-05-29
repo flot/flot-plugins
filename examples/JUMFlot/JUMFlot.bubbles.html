@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <script type='text/javascript' src='../../node_modules/jquery/dist/jquery.min.js'></script>
+        <script type='text/javascript' src='../../node_modules/flot/dist/es5/jquery.flot.js'></script>
+        <script type='text/javascript' src='../../source/JUMFlot/JUMFlot.min.js'></script>
+<script type='text/javascript'>
+$(document).ready(() => {
+    var d1 = [[20,20,10], [40,50,20], [70,10,5], [80,80,7]];
+    var d2 = [[60,25,15], [70,40,6], [30,80,4]];
+    var options = { 
+        series:{bubbles:{active:true,show:true,linewidth:2},editMode:'xy'},
+        grid:{hoverable:true,clickable:true,editable:true }
+    };
+    var p4 = $.plot($("#placeholder"),[d1,{data:d2,editable:true}],options);
+    $("#placeholder").bind("datadrop", function(event,pos,item) {
+        var txt = "Datapoint(" + item.seriesIndex + "," + item.dataIndex + ") dragged";
+        txt+= "\nfrom " + item.datapoint[0].toFixed(2) + " , " + item.datapoint[1].toFixed(2);
+        txt+= "\nto " + pos.x1.toFixed(2) + " , " + pos.y1.toFixed(2);
+        alert(txt);
+    });
+});
+</script>
+</head>
+<body>
+    <div id="placeholder" style="width:600px;height:300px;"></div>
+</body>
+</html>

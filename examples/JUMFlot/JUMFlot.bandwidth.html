@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <script type='text/javascript' src='../../node_modules/jquery/dist/jquery.min.js'></script>
+        <script type='text/javascript' src='../../node_modules/flot/dist/es5/jquery.flot.js'></script>
+        <script type='text/javascript' src='../../source/JUMFlot.min.js'></script>
+<script type='text/javascript'>
+$(document).ready(() => {
+    var d1 = [
+        [Date.UTC(2010,0, 1),160,100],  [Date.UTC(2010,0, 2),133, 87], [Date.UTC(2010,0, 3),138, 94],
+        [Date.UTC(2010,0, 4),136, 84],  [Date.UTC(2010,0, 5),125, 78], [Date.UTC(2010,0, 6),131, 84],
+        [Date.UTC(2010,0, 7),136, 84],  [Date.UTC(2010,0, 8),160, 99], [Date.UTC(2010,0, 9),123, 80],
+        [Date.UTC(2010,0,10),138, 85],  [Date.UTC(2010,0,11),139, 85], [Date.UTC(2010,0,12),125, 79],
+        [Date.UTC(2010,0,13),130, 79],  [Date.UTC(2010,0,14),176, 92], [Date.UTC(2010,0,15),137, 79],
+        [Date.UTC(2010,0,16),124, 81],  [Date.UTC(2010,0,17),122, 74], [Date.UTC(2010,0,18),130, 82],
+        [Date.UTC(2010,0,19),132, 76],  [Date.UTC(2010,0,20),134, 83], [Date.UTC(2010,0,21),126, 77],
+        [Date.UTC(2010,0,22),126, 74],  [Date.UTC(2010,0,23),121, 79], [Date.UTC(2010,0,24),137, 72],
+        [Date.UTC(2010,0,25),138, 74],  [Date.UTC(2010,0,26),120, 79]
+    ];
+    var data = [
+        { label: "Pressure", data: d1, bandwidth: {show: true, lineWidth: "8px"} }];
+    var optionsEdit = {
+        series: {editMode:'v',editable:true,bandwidth:{active:true, lineWidth:6} },
+        xaxes:[{mode:"time", timeBase: 'milliseconds'}],yaxes:[{min:60,max:200,autoScale: 'none'}],
+        legend:{noColumns:3},
+        grid:{hoverable:true,clickable:true,editable:true}
+    };
+    var lw = Date.UTC(0,0,0,12) - Date.UTC(0,0,0);
+    var p = $.plot($("#placeholder"),[
+        {label:"Pressure",data:d1,bandwidth:{show:true,lineWidth:lw}}],optionsEdit);
+    $("#placeholder").bind("datadrop", function(event,pos,item) {
+        var r = "dragged to: " + pos.y.toFixed(2);
+        r+= "\nPage(" + pos.pageX + " , " + pos.pageY + ")";
+        alert(r);
+    });
+});
+</script>
+</head>
+<body>
+    <div id="placeholder" style="width:500px;height:300px;"></div>
+</body>
+</html>

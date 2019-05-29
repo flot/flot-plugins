@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <script type='text/javascript' src='../../node_modules/jquery/dist/jquery.min.js'></script>
+        <script type='text/javascript' src='../../node_modules/flot/dist/es5/jquery.flot.js'></script>
+        <script type='text/javascript' src='../../source/JUMFlot/JUMFlot.min.js'></script>
+<script type='text/javascript'>
+$(document).ready(() => {
+    var d1 = [ [0,10], [1,20], [2,80], [3,70], [4,60] ];
+    var d2 = [ [0,30], [1,25], [2,50], [3,60], [4,95] ];
+    var d3 = [ [0,50], [1,40], [2,60], [3,95], [4,30] ];
+    var data = [
+            { label: "Pies", color:"green",data: d1,
+             spider: {show: true, lineWidth: 12} },
+        { label: "Apples",color:"orange",data: d2,
+         spider: {show: true} },
+        { label: "Cherries",color:"red",data: d3,
+         spider: {show: true} }		
+    ];
+    var options = {
+        series:{ 
+            editMode: 'v',editable:true,
+            spider:{
+                active: true,highlight: {mode: "area"},
+                legs: { 
+                        data: [{label: "OEE"},{label: "MOE"},{label: "OER"},{label: "OEC"},{label: "Quality"}],
+                    legScaleMax: 1,legScaleMin:0.8
+                },
+                spiderSize: 0.9        
+            }
+        },
+        grid:{ 
+            hoverable: true,clickable: true, editable:true,
+            tickColor: "rgba(0,0,0,0.2)",mode: "radar"
+        }
+    };
+    var p = $.plot($("#placeholder"),data,options);
+    $("#placeholder").bind("datadrop", function(event,pos,item) {
+        var r = "dragged from " + item.datapoint[1]
+        r+= " to: " + pos.value.toFixed(2);
+        r+= "\nPage(" + pos.pageX + " , " + pos.pageY + ")";
+        alert(r);
+    });
+    $("#sethovermode").click(function () {setHoverMode() });
+    function setHoverMode(){
+        var mode;
+        options.series.spider.highlight.mode = $("#hovermode").val();
+        options.grid.mode = $("#spidermode").val();
+        mode = $("#scalemode").val();
+        options.series.spider.scaleMode = mode;
+        if(mode == 'static'){
+            options.series.spider.legMin = parseFloat($("#legMin").val());
+            options.series.spider.legMax = parseFloat($("#legMax").val());
+        }
+        else{
+            options.series.spider.legMin = null;
+            options.series.spider.legMax = null;
+        }
+        options.series.spider.legs.legStartAngle = $("#legStartAngle").val();
+        p = $.plot($("#placeholder"), data, options);
+    }
+});
+</script>
+</head>
+<body>
+    <form>
+        <Select name="spidermode" id="spidermode">
+            <Option value = "radar" selected>Radar</Option>
+            <Option value = "spider">Spider</Option>
+        </Select>
+        <Select name="hovermode" id="hovermode">
+            <Option value = "area" selected>Area</Option>
+            <Option value = "line">Lines</Option>
+            <Option value = "point">Points</Option>
+        </Select>
+        <Select name="scalemode" id="scalemode">
+            <Option value = "leg" selected>scale by leg</Option>
+            <Option value = "all">scale by all values</Option>
+            <Option value = "static">taken from textfields</Option>
+        </Select>
+        <Input type="Text" name="legMin" id="legMin" value="20">
+        <Input type="Text" name="legMax" id="legMax" value="200">
+        <Select name="legStartAngle" id="legStartAngle">
+            <Option value="0" selected>0</Option>
+            <Option value="90">90</Option>
+            <Option value="180">180</Option>
+            <Option value="270">270</Option>
+        </Select>
+        <Input type="Button" id="sethovermode" value="Set mode">
+    </form>
+    <div id="placeholder" style="width:500px;height:300px;"></div>
+</html>

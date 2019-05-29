@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <script type='text/javascript' src='../../node_modules/jquery/dist/jquery.min.js'></script>
+        <script type='text/javascript' src='../../node_modules/flot/dist/es5/jquery.flot.js'></script>
+        <script type='text/javascript' src='../../source/JUMFlot/JUMFlot.min.js'></script>
+<script type='text/javascript'>
+$(document).ready(() => {
+    var dt1 = [
+        {label:"Nuts",data:200,color:{colors:["white","yellow","orange","blue"] } },
+        {label:"strawberry",data:100,color:"red"},
+        {label:"apple",data:60,color:"green"},
+        {label:"banana",data:20,color:"yellow"},
+        {label:"coconut",data:5,color:"darkorange"},
+        {label:"blueberry",data:2}
+    ];
+    var d1 = [{data:dt1,rectangle:{show:true}}];
+    var options1 = { 
+        series: {rectangle: {active: true,show: true } },
+        grid:   { hoverable: true, clickable: true}
+    };
+    var p = $.plot($("#placeholder"),d1,options1);
+    $("#SetMode").on("click",function(){setMode();});
+    function setMode(event,pos,item){
+        var directions = $("#directions").val();
+        var dt = [];
+        for(var i = 0; i < dt1.length; i++){dt.push(dt1[i]);}
+        if($("#sortorder").val() == "a"){ 
+            dt.sort(function(a,b){return a.data-b.data;});
+        }
+        else { dt.sort(function(a,b){return b.data-a.data; } ); }
+        var d = [{data:dt,rectangle:{show:true} }];
+        var options = {
+            series: {
+                rectangle: {
+                    active: true,show: true,directions:directions
+                }
+            },
+            grid:{ hoverable: true, clickable: true}
+        }
+        p = $.plot($("#placeholder"),d,options);
+    }
+});
+</script>
+</head>
+<body>
+    <Select name="directions" id="directions">
+        <Option value = "tl" selected>Top, left</Option>
+        <Option value = "tlbr">Top, left, bottom, right</Option>
+        <Option value = "bltr">Bottom, left, top, right</Option>
+        <Option value = "ltr">Left, top, right</Option>
+    </Select>
+    <Select name="sortorder" id="sortorder">
+        <option value="a">Ascending</option>
+        <option value="d" selected>Descending</option>
+    </Select>
+    <input type="button" id="SetMode"
+        value="Set Mode"></input>
+    <div id="placeholder" style="width:500px;height:300px;"></div></body>
+</html>

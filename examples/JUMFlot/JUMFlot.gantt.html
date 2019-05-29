@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <script type='text/javascript' src='../../node_modules/jquery/dist/jquery.min.js'></script>
+        <script type='text/javascript' src='../../node_modules/flot/dist/es5/jquery.flot.js'></script>
+        <script type='text/javascript' src='../../source/JUMFlot/JUMFlot.min.js'></script>
+<script type='text/javascript'>
+$(document).ready(() => {
+    var d2 = [
+        [Date.UTC(2010,0, 1,12, 5),5,Date.UTC(2010,0, 1,12, 8),"Put Water into Pot"],
+        [Date.UTC(2010,0, 1,12, 8),4,Date.UTC(2010,0, 1,12,10),"Put Pot on Cooker"],
+        [Date.UTC(2010,0, 1,12,10),4,Date.UTC(2010,0, 1,12,23),"Cook Water"]
+    ];
+    var data = [{label:"Coffee",data:d2,gantt:{connectSteps:{show:true,color:"rgb(0,255,0)" } } }];
+    var options = {
+        series:{editMode: 'v',editable:true,
+                gantt: {active:true,show:true,barHeight:.5 }
+                },
+        xaxes:[{
+            min:Date.UTC(2010,0, 1,11,15),max:Date.UTC(2010,0,1,13,15),mode:"time", timeBase: 'milliseconds', autoScale: 'none'
+        }],
+        yaxes: [{min:0.5,max:5.5,ticks:[[1,"Bowl"],[2,"Cup"],[3,"Can"],[4,"Cooker"],[5,"Desk"]], autoScale: 'none'}],
+        grid:   { hoverable: true, clickable: true, editable: true}
+    };
+    var p = $.plot($("#placeholder"), data, options);
+    $("#placeholder").bind("datadrop", function(event,pos,item){
+        var dI,data,fromLabel;
+        if(item.dataIndex.length) dI = item.dataIndex[0]; else dI = item.dataIndex;
+        data = item.series.data[dI];
+        fromLabel = item.series.label;
+        if(item.dataIndex.length){
+            if(item.dataIndex[1] == 1){
+                var dateFrom = new Date(data[0]),dateTo = new Date(parseInt(pos.x1));
+                alert("start of " + fromLabel + "(" + data[3] + ") moved\n from " + dateFrom + "\n to " + dateTo);
+            }
+            else{
+                var dateFrom = new Date(data[2]),dateTo = new Date(parseInt(pos.x1));
+                alert("end of " + fromLabel + "(" + data[3] + ") moved\n from " + dateFrom + "\n to " + dateTo);
+            }
+        }
+        else{ 
+            var targetLabel = item.series.yaxis.ticks[Math.floor(pos.y1 - 0.5)].label;
+            alert(data[3] + " moved\n from " + fromLabel + "\n to " + targetLabel);
+        }
+    });
+});
+</script>
+</head>
+<body>
+    <div id="placeholder" style="width:500px;height:300px;"></div>
+</body>
+</html>
