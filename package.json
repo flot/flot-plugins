@@ -39,8 +39,7 @@
     "gulp-notify": "^0.0.8",
     "gulp-sequence": "^0.4.6",
     "gulp-sourcemaps": "^2.4.1",
-    "gulp-uglify": "^2.1.0",
-    "gulp-uglify-es": "^1.0.1",
+    "gulp-uglify": "^3.0.0",
     "jasmine-core": "^2.5.2",
     "jquery-simulate": "^1.0.2",
     "karma": "^4.1.0",
@@ -57,7 +56,10 @@
     "karma-spec-reporter": "0.0.31",
     "ljs": "^0.3.2",
     "travis-github-lint-status": "^1.0.1",
-    "webcharts-development-settings": "^1.0.9"
+    "webcharts-development-settings": "^1.0.9",
+    "uglify-es": "^3.3.9",
+    "flot-thumb-plugin": "^1.0.0",
+    "flot-charting-plugin": "^3.0.2"
   },
   "dependencies": {
     "flot": "^3.0.2",

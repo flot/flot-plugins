@@ -1,4 +1,4 @@
-/* global $, describe, it, beforeEach, afterEach, expect, jasmine, spyOn */
+/* global $, describe, it, xit, after, beforeEach, afterEach, expect, jasmine, spyOn */
 /* jshint browser: true*/
 
 describe('Flot cursors', function () {
@@ -26,7 +26,7 @@ describe('Flot cursors', function () {
 
     it('should be possible to specify a cursor when creating the plot', function () {
         plot = $.plot("#placeholder", [sampledata], {
-            rangecursors: [
+            cursors: [
                 {
                     name: 'Blue cursor',
                     color: 'blue'
@@ -34,22 +34,22 @@ describe('Flot cursors', function () {
             ]
         });
 
-        var firstCursor = plot.getRangeCursors()[0];
-        expect(plot.getRangeCursors().length).toBe(1);
+        var firstCursor = plot.getCursors()[0];
+        expect(plot.getCursors().length).toBe(1);
         expect(firstCursor.name).toBe('Blue cursor');
     });
 
     it('should be possible to specify zero cursors when creating the plot', function () {
         plot = $.plot("#placeholder", [sampledata], {
-            rangecursors: []
+            cursors: []
         });
 
-        expect(plot.getRangeCursors().length).toBe(0);
+        expect(plot.getCursors().length).toBe(0);
     });
 
     it('should be possible to specify multiple cursors when creating the plot', function () {
         plot = $.plot("#placeholder", [sampledata], {
-            rangecursors: [
+            cursors: [
                 {
                     name: 'Blue cursor',
                     color: 'blue'
@@ -61,16 +61,16 @@ describe('Flot cursors', function () {
             ]
         });
 
-        var firstCursor = plot.getRangeCursors()[0];
-        var secondCursor = plot.getRangeCursors()[1];
-        expect(plot.getRangeCursors().length).toBe(2);
+        var firstCursor = plot.getCursors()[0];
+        var secondCursor = plot.getCursors()[1];
+        expect(plot.getCursors().length).toBe(2);
         expect(firstCursor.name).toBe('Blue cursor');
         expect(secondCursor.name).toBe('Red cursor');
     });
 
-    it('should have orientation vertical by default', function () {
+    it('should have xy mode by default', function () {
         plot = $.plot("#placeholder", [sampledata], {
-            rangecursors: [
+            cursors: [
                 {
                     name: 'Blue cursor',
                     color: 'blue'
@@ -78,13 +78,13 @@ describe('Flot cursors', function () {
             ]
         });
 
-        var firstCursor = plot.getRangeCursors()[0];
-        expect(firstCursor.orientation).toBe('vertical');
+        var firstCursor = plot.getCursors()[0];
+        expect(firstCursor.mode).toBe('xy');
     });
 
     it('should be visible by default', function () {
         plot = $.plot("#placeholder", [sampledata], {
-            rangecursors: [
+            cursors: [
                 {
                     name: 'Blue cursor',
                     color: 'blue'
@@ -92,13 +92,13 @@ describe('Flot cursors', function () {
             ]
         });
 
-        var firstCursor = plot.getRangeCursors()[0];
+        var firstCursor = plot.getCursors()[0];
         expect(firstCursor.show).toBe(true);
     });
 
     it('should have a lineWidth of 1 by default', function () {
         plot = $.plot("#placeholder", [sampledata], {
-            rangecursors: [
+            cursors: [
                 {
                     name: 'Blue cursor',
                     color: 'blue'
@@ -106,56 +106,67 @@ describe('Flot cursors', function () {
             ]
         });
 
-        var firstCursor = plot.getRangeCursors()[0];
+        var firstCursor = plot.getCursors()[0];
         expect(firstCursor.lineWidth).toBe(1);
     });
 
     it('should be possible to create a cursor at runtime', function () {
         plot = $.plot("#placeholder", [sampledata], {
-            rangecursors: []
+            cursors: []
         });
 
-        expect(plot.getRangeCursors().length).toBe(0);
+        expect(plot.getCursors().length).toBe(0);
 
-        plot.addRangeCursor({
+        plot.addCursor({
             name: 'Blue cursor',
             mode: 'xy',
             color: 'blue',
             position: {
-                relativeStart: 0.7,
-                relativeEnd: 0.71
+                relativeX: 7,
+                relativeY: 7
             }
         });
 
-        var firstCursor = plot.getRangeCursors()[0];
+        var firstCursor = plot.getCursors()[0];
 
-        expect(plot.getRangeCursors().length).toBe(1);
+        expect(plot.getCursors().length).toBe(1);
         expect(firstCursor.name).toBe('Blue cursor');
     });
 
     it('should be possible to remove a cursor at runtime', function () {
         plot = $.plot("#placeholder", [sampledata], {
-            rangecursors: [
+            cursors: [
                 {
                     name: 'Blue cursor',
                     color: 'blue',
-                    start: 3,
-                    end: 1.5
+                    x: 3,
+                    y: 1.5,
+                    showThumbs: 'tl'
                 }
             ]
         });
 
-        var firstCursor = plot.getRangeCursors()[0];
-        expect(plot.getRangeCursors().length).toBe(1);
+        const firstCursor = plot.getCursors()[0];
+        expect(plot.getCursors().length).toBe(1);
 
-        plot.removeRangeCursor(firstCursor);
+        jasmine.clock().tick(20);
 
-        expect(plot.getRangeCursors().length).toBe(0);
+        const thumbLayer = placeholder.find('.flot-thumbs')[0].firstChild;
+        let thumbs = thumbLayer.getElementsByClassName('thumb');
+        expect(thumbs.length).toBe(2);
+
+        plot.removeCursor(firstCursor);
+        expect(plot.getCursors().length).toBe(0);
+
+        jasmine.clock().tick(20);
+
+        thumbs = thumbLayer.getElementsByClassName('thumb');
+        expect(thumbs.length).toBe(0);
     });
 
     it('should be possible to change a cursor name at runtime', function () {
         plot = $.plot("#placeholder", [sampledata], {
-            rangecursors: [
+            cursors: [
                 {
                     name: 'Blue cursor',
                     color: 'blue'
@@ -163,21 +174,21 @@ describe('Flot cursors', function () {
             ]
         });
 
-        var firstCursor = plot.getRangeCursors()[0];
-        expect(plot.getRangeCursors().length).toBe(1);
+        var firstCursor = plot.getCursors()[0];
+        expect(plot.getCursors().length).toBe(1);
         expect(firstCursor.name).toBe('Blue cursor');
 
-        plot.setRangeCursor(firstCursor, {
+        plot.setCursor(firstCursor, {
             name: 'Red Cursor'
         });
 
-        expect(plot.getRangeCursors().length).toBe(1);
+        expect(plot.getCursors().length).toBe(1);
         expect(firstCursor.name).toBe('Red Cursor');
     });
 
     it('should be possible to change a cursor label visibility at runtime', function () {
         plot = $.plot("#placeholder", [sampledata], {
-            rangecursors: [
+            cursors: [
                 {
                     name: 'Blue cursor',
                     color: 'blue'
@@ -185,21 +196,21 @@ describe('Flot cursors', function () {
             ]
         });
 
-        var firstCursor = plot.getRangeCursors()[0];
-        expect(plot.getRangeCursors().length).toBe(1);
+        var firstCursor = plot.getCursors()[0];
+        expect(plot.getCursors().length).toBe(1);
         expect(firstCursor.showLabel).toBe(false);
 
-        plot.setRangeCursor(firstCursor, {
+        plot.setCursor(firstCursor, {
             showLabel: true
         });
 
-        expect(plot.getRangeCursors().length).toBe(1);
+        expect(plot.getCursors().length).toBe(1);
         expect(firstCursor.showLabel).toBe(true);
     });
 
-    it('should be possible to change a cursor orientation at runtime', function () {
+    it('should be possible to change a cursor mode at runtime', function () {
         plot = $.plot("#placeholder", [sampledata], {
-            rangecursors: [
+            cursors: [
                 {
                     name: 'Blue cursor',
                     color: 'blue'
@@ -207,21 +218,142 @@ describe('Flot cursors', function () {
             ]
         });
 
-        var firstCursor = plot.getRangeCursors()[0];
-        expect(plot.getRangeCursors().length).toBe(1);
-        expect(firstCursor.orientation).toBe('vertical');
+        var firstCursor = plot.getCursors()[0];
+        expect(plot.getCursors().length).toBe(1);
+        expect(firstCursor.mode).toBe('xy');
 
-        plot.setRangeCursor(firstCursor, {
-            orientation: 'horizontal'
+        plot.setCursor(firstCursor, {
+            mode: 'x'
         });
 
-        expect(plot.getRangeCursors().length).toBe(1);
-        expect(firstCursor.orientation).toBe('horizontal');
+        expect(plot.getCursors().length).toBe(1);
+        expect(firstCursor.mode).toBe('x');
+    });
+
+    [
+        { initial: { mode: 'x', showThumbs: 't' }, optionsArray: [ { showThumbs: 'l' }, { showThumbs: 'r' }, { mode: 'y' } ] },
+        { initial: { mode: 'y', showThumbs: 'l' }, optionsArray: [ { showThumbs: 't' }, { showThumbs: 'b' }, { mode: 'x' } ] },
+        { initial: { mode: 'xy', showThumbs: 'lt' }, optionsArray: [{ showThumbs: 'lr' }, { showThumbs: 'bt' }, { showThumbs: 'rl' }, { showThumbs: 'tb' }] }
+    ].forEach((data) => {
+        it('new option is ignored when it do not match the existing properties', () => {
+            plot = $.plot("#placeholder", [sampledata], {
+                cursors: [
+                    data.initial
+                ]
+            });
+
+            const cursor = plot.getCursors()[0];
+
+            data.optionsArray.forEach((options) => {
+                plot.setCursor(cursor, options);
+                expect(cursor.mode).toBe(data.initial.mode);
+                expect(cursor.showThumbs).toBe(data.initial.showThumbs);
+            });
+        });
+    });
+
+    [
+        { options: { mode: 'x', showThumbs: 'l' }, coercedValue: 't' },
+        { options: { mode: 'x', showThumbs: 'r' }, coercedValue: 't' },
+        { options: { mode: 'y', showThumbs: 't' }, coercedValue: 'r' },
+        { options: { mode: 'y', showThumbs: 'b' }, coercedValue: 'r' },
+        { options: { mode: 'xy', showThumbs: 'lr' }, coercedValue: 'tr' },
+        { options: { mode: 'xy', showThumbs: 'tb' }, coercedValue: 'tr' }
+    ].forEach((data) => {
+        it('showThumbs is coerced when setting mode and showThumbs together but they are not matched', () => {
+            plot = $.plot("#placeholder", [sampledata], {
+                cursors: [ {} ]
+            });
+
+            const cursor = plot.getCursors()[0];
+            plot.setCursor(cursor, data.options);
+            expect(cursor.mode).toBe(data.options.mode);
+            expect(cursor.showThumbs).toBe(data.coercedValue);
+        });
+    });
+
+    var symbols = ['cross', 'triangle', 'square', 'diamond'];
+    symbols.forEach(function (symbol, i, arr) {
+        it('should be possible to make the cursor shape a ' + symbol, function () {
+            plot = $.plot("#placeholder", [sampledata], {
+                cursors: [
+                    {
+                        name: 'Blue cursor',
+                        color: 'blue',
+                        symbol: symbol
+                    }
+                ]
+            });
+
+            arr.forEach(function (symbol) {
+                spyOn(plot.drawSymbol, symbol);
+            });
+
+            jasmine.clock().tick(20);
+
+            arr.forEach(function (s) {
+                if (s === symbol) {
+                    expect(plot.drawSymbol[s]).toHaveBeenCalled();
+                } else {
+                    expect(plot.drawSymbol[s]).not.toHaveBeenCalled();
+                }
+            });
+        });
+    });
+
+    it('should be possible to make the cursor shape "none"', function () {
+        plot = $.plot("#placeholder", [sampledata], {
+            cursors: [
+                {
+                    name: 'Blue cursor',
+                    color: 'blue',
+                    symbol: 'none'
+                }
+            ]
+        });
+
+        symbols.forEach(function (symbol) {
+            spyOn(plot.drawSymbol, symbol);
+        });
+
+        jasmine.clock().tick(20);
+
+        symbols.forEach(function (s) {
+            expect(plot.drawSymbol[s]).not.toHaveBeenCalled();
+        });
+    });
+
+    it('should be possible to change the cursor shape at runtime', function () {
+        plot = $.plot("#placeholder", [sampledata], {
+            cursors: [
+                {
+                    name: 'Blue cursor',
+                    color: 'blue',
+                    symbol: 'diamond'
+                }
+            ]
+        });
+
+        ['square', 'diamond'].forEach(function (symbol) {
+            spyOn(plot.drawSymbol, symbol);
+        });
+
+        jasmine.clock().tick(20);
+
+        var firstCursor = plot.getCursors()[0];
+
+        plot.setCursor(firstCursor, {
+            symbol: 'square'
+        });
+
+        jasmine.clock().tick(20);
+
+        expect(plot.drawSymbol.square).toHaveBeenCalled();
     });
 
     it('should be possible to change the cursor color at runtime', function () {
         plot = $.plot("#placeholder", [sampledata], {
-            rangecursors: [
+            cursors: [
                 {
                     name: 'Blue cursor',
                     color: 'blue'
@@ -229,9 +361,9 @@ describe('Flot cursors', function () {
             ]
         });
 
-        var firstCursor = plot.getRangeCursors()[0];
+        var firstCursor = plot.getCursors()[0];
         var initialColor = firstCursor.color;
-        plot.setRangeCursor(firstCursor, {
+        plot.setCursor(firstCursor, {
             color: 'red'
         });
 
@@ -241,7 +373,7 @@ describe('Flot cursors', function () {
 
     it('should be possible to change the cursor lineWidth at runtime', function () {
         plot = $.plot("#placeholder", [sampledata], {
-            rangecursors: [
+            cursors: [
                 {
                     name: 'Blue cursor',
                     color: 'blue',
@@ -250,10 +382,10 @@ describe('Flot cursors', function () {
             ]
         });
 
-        var firstCursor = plot.getRangeCursors()[0];
+        var firstCursor = plot.getCursors()[0];
         var initialLineWidth = firstCursor.lineWidth;
 
-        plot.setRangeCursor(firstCursor, {
+        plot.setCursor(firstCursor, {
             lineWidth: 3
         });
 
@@ -263,61 +395,78 @@ describe('Flot cursors', function () {
 
     it('should be possible to change the cursor visibility at runtime', function () {
         plot = $.plot("#placeholder", [sampledata], {
-            rangecursors: [{
+            cursors: [{
                 name: 'Blue cursor',
                 color: 'blue',
-                show: true
+                show: true,
+                showThumbs: 'lt'
             }]
         });
 
-        var firstCursor = plot.getRangeCursors()[0];
-        var initialVisibility = firstCursor.show;
+        const firstCursor = plot.getCursors()[0];
+        const initialVisibility = firstCursor.show;
 
-        plot.setRangeCursor(firstCursor, {
+        jasmine.clock().tick(20);
+
+        firstCursor.thumbs.forEach((thumb) => {
+            const computedStyle = window.getComputedStyle(thumb);
+            expect(computedStyle.display).toBe('inline');
+        });
+
+        plot.setCursor(firstCursor, {
             show: false
         });
 
+        jasmine.clock().tick(20);
+
         expect(initialVisibility).toBe(true);
         expect(firstCursor.show).toBe(false);
+        firstCursor.thumbs.forEach((thumb) => {
+            expect(thumb.style.display).toBe('none');
+        });
     });
 
-    // we expect more lines to be drawn when we have more dashes
     it('should be possible to make a dashed line', function() {
-        function spyOnLineTo() {
-            var overlay = $('.flot-overlay')[0];
-            var octx = overlay.getContext("2d");
-            return spyOn(octx, 'setLineDash').and.callThrough();
-        }
-
         plot = $.plot("#placeholder", [sampledata], {
-            rangecursors: [
+            cursors: [
                 {
                     name: 'Blue cursor',
                     color: 'blue',
-                    dashes: [1, 1]
+                    mode: 'xy',
+                    dashes: []
                 }
             ]
         });
 
-        var spy = spyOnLineTo();
+        var octx = $('.flot-overlay')[0].getContext("2d");
+        var spyOnSetLineDash = spyOn(octx, 'setLineDash').and.callThrough();
+        var spyOnLineTo = spyOn(octx, 'lineTo').and.callThrough();
+
         jasmine.clock().tick(20);
 
-        spy.calls.reset();
+        expect(spyOnLineTo.calls.count()).toBe(4);
+        expect(spyOnSetLineDash.calls.allArgs()[0][0]).toEqual([]);
+        expect(spyOnSetLineDash.calls.allArgs()[1][0]).toEqual([]);
 
         plot = $.plot("#placeholder", [sampledata], {
-            rangecursors: [
+            cursors: [
                 {
                     name: 'Blue cursor',
                     color: 'blue',
-                    dashes: [5, 5]
+                    mode: 'x',
+                    dashes: [4, 4]
                 }
             ]
         });
 
+        spyOnLineTo.calls.reset();
+        spyOnSetLineDash.calls.reset();
+
         jasmine.clock().tick(20);
 
-        var dashCallCount = spy.calls.count();
-        expect(1).toEqual(dashCallCount);
+        expect(spyOnLineTo.calls.count()).toBe(2);
+        expect(spyOnSetLineDash.calls.allArgs()[0][0]).toEqual([4, 4]);
+        expect(spyOnSetLineDash.calls.allArgs()[1][0]).toEqual([]);
     });
 
     describe('Labels', function () {
@@ -329,13 +478,13 @@ describe('Flot cursors', function () {
 
         it('should display the cursor label when told so', function () {
             plot = $.plot("#placeholder", [sampledata], {
-                rangecursors: [
+                cursors: [
                     {
                         name: 'Blue cursor',
                         color: 'blue',
                         position: {
-                            start: 1,
-                            end: 1.15
+                            x: 1,
+                            y: 1.15
                         },
                         showLabel: true
                     } ]
@@ -349,13 +498,13 @@ describe('Flot cursors', function () {
 
         it('should not display the cursor label when told not to', function () {
             plot = $.plot("#placeholder", [sampledata], {
-                rangecursors: [
+                cursors: [
                     {
                         name: 'Blue cursor',
                         color: 'blue',
                         position: {
-                            start: 1,
-                            end: 1.15
+                            x: 1,
+                            y: 1.15
                         },
                         showLabel: false
                     } ]
@@ -369,15 +518,15 @@ describe('Flot cursors', function () {
 
         it('should display the cursor values relative to a plot when told so', function () {
             plot = $.plot("#placeholder", [sampledata], {
-                rangecursors: [
+                cursors: [
                     {
                         name: 'Blue cursor',
                         color: 'blue',
-                        showLabel: true,
                         position: {
-                            start: 1.0,
-                            end: 1.15
-                        }
+                            x: 1.0,
+                            y: 1.15
+                        },
+                        snapToPlot: 0
                     }
                 ]
             });
@@ -385,19 +534,18 @@ describe('Flot cursors', function () {
             var spy = spyOnFillText();
             jasmine.clock().tick(20);
 
-            expect(spy).toHaveBeenCalledWith('Blue cursor', jasmine.any(Number), jasmine.any(Number));
+            expect(spy).toHaveBeenCalledWith('1.000, 1.1000', jasmine.any(Number), jasmine.any(Number));
         });
 
         it('should not display the cursor values relative to a plot when told not to', function () {
             plot = $.plot("#placeholder", [sampledata], {
-                rangecursors: [
+                cursors: [
                     {
                         name: 'Blue cursor',
                         color: 'blue',
-                        showLabel: true,
                         position: {
-                            start: 1,
-                            end: 1.15
+                            x: 1,
+                            y: 1.15
                         }
                     }
                 ]
@@ -409,9 +557,9 @@ describe('Flot cursors', function () {
             expect(spy).toHaveBeenCalled();
         });
 
-        it('should display both the cursor label and value when told so', function () {
+        it('should display both the cursor label and values when told so', function () {
             plot = $.plot("#placeholder", [sampledata], {
-                rangecursors: [{
+                cursors: [{
                     name: 'Blue cursor',
                     color: 'blue',
                     position: {
@@ -419,7 +567,7 @@ describe('Flot cursors', function () {
                         y: 1.15
                     },
                     showLabel: true,
-                    showValue: true
+                    showValues: true
                 }],
                 xaxes: [{
                     min: 0,
@@ -439,17 +587,18 @@ describe('Flot cursors', function () {
             jasmine.clock().tick(20);
 
             expect(spy).toHaveBeenCalledWith('Blue cursor', jasmine.any(Number), jasmine.any(Number));
-            expect(spy).toHaveBeenCalledWith('Blue cursor', jasmine.any(Number), jasmine.any(Number));
+            expect(spy).toHaveBeenCalledWith('1.00, 1.1500', jasmine.any(Number), jasmine.any(Number));
         });
 
         it('should display the cursor label in the same format as axis', function () {
             plot = $.plot("#placeholder", [sampledata], {
-                rangecursors: [{
+                cursors: [{
                     name: 'Blue cursor',
                     color: 'blue',
-                    position: { relativeStart: 0.5, relativeEnd: 0.6 },
+                    position: { relativeX: 0.5, relativeY: 0.5 },
                     showLabel: true,
-                    showValue: true,
+                    showValues: true,
+                    snapToPlot: undefined,
                     defaultxaxis: 1,
                     defaultyaxis: 2
                 }],
@@ -465,21 +614,58 @@ describe('Flot cursors', function () {
             var spy = spyOnFillText();
             jasmine.clock().tick(20);
 
-            expect(spy).toHaveBeenCalledWith('Blue cursor', jasmine.any(Number), jasmine.any(Number));
+            expect(spy).toHaveBeenCalledWith('<5>, {105}', jasmine.any(Number), jasmine.any(Number));
+        });
+
+        [['top right', 1.5, 1.2], ['top left', 0.5, 1.2], ['bottom right', 1.5, 1.0], ['top left', 0.5, 1.0]].forEach(function (pos) {
+            describe('When cursor placed in the ' + pos[0] + ' of the plot', function () {
+                it('should display the cursor label above the values', function () {
+                    plot = $.plot("#placeholder", [sampledata], {
+                        cursors: [
+                            {
+                                name: 'Blue cursor',
+                                color: 'blue',
+                                position: {
+                                    x: pos[1],
+                                    y: pos[2]
+                                },
+                                showLabel: true,
+                                showValues: true
+                            }
+                        ]
+                    });
+
+                    var spy = spyOnFillText();
+                    jasmine.clock().tick(20);
+
+                    var args = spy.calls.allArgs();
+                    expect(args.length).toBe(2);
+
+                    var cursorArgs = args.filter(function (args) {
+                        return args[0] === 'Blue cursor';
+                    })[0];
+
+                    var valueArgs = args.filter(function (args) {
+                        return args[0] !== 'Blue cursor';
+                    })[0];
+
+                    expect(cursorArgs[2]).toBeLessThan(valueArgs[2]);
+                });
+            });
         });
     });
 
     describe('Names', function () {
         it('should give the cursors default names if not specified', function () {
             plot = $.plot("#placeholder", [sampledata], {
-                rangecursors: [
+                cursors: [
                     {
                         color: 'blue'
                     }
                 ]
             });
 
-            var firstCursor = plot.getRangeCursors()[0];
+            var firstCursor = plot.getCursors()[0];
 
             expect(firstCursor.name).toEqual(jasmine.any(String));
             expect(firstCursor.name.length).toBeGreaterThan(0);
@@ -502,15 +688,15 @@ describe('Flot cursors', function () {
             placeholder = $('<div id="placeholder" style="width: 100%;height: 100%">');
             placeholder.appendTo(fixture);
             plot = $.plot("#placeholder", [sampledata], {
-                rangecursors: [
+                cursors: [
                     {
                         name: 'Blue cursor',
                         color: 'blue',
                         position: {
-                            start: 1,
-                            end: 1.15
+                            x: 1,
+                            y: 1.15
                         },
-                        showValue: true
+                        showValues: true
                     }
                 ]
             });
@@ -518,7 +704,7 @@ describe('Flot cursors', function () {
             var spy = spyOnFillText();
             jasmine.clock().tick(20);
 
-            expect(spy).toHaveBeenCalledWith('0.150', jasmine.any(Number), jasmine.any(Number));
+            expect(spy).toHaveBeenCalledWith('1.000, 1.1500', jasmine.any(Number), jasmine.any(Number));
         });
 
         it('should give the cursors a smaller precision in a litle graph', function () {
@@ -527,15 +713,15 @@ describe('Flot cursors', function () {
             placeholder = $('<div id="placeholder" style="width: 100%;height: 100%">');
             placeholder.appendTo(fixture);
             plot = $.plot("#placeholder", [sampledata], {
-                rangecursors: [
+                cursors: [
                     {
                         name: 'Blue cursor',
                         color: 'blue',
                         position: {
-                            start: 1,
-                            end: 1.15
+                            x: 1,
+                            y: 1.15
                         },
-                        showValue: true
+                        showValues: true
                     }
                 ]
             });
@@ -543,7 +729,82 @@ describe('Flot cursors', function () {
             var spy = spyOnFillText();
             jasmine.clock().tick(20);
 
-            expect(spy).toHaveBeenCalledWith('0.15', jasmine.any(Number), jasmine.any(Number));
+            expect(spy).toHaveBeenCalledWith('1.00, 1.150', jasmine.any(Number), jasmine.any(Number));
+        });
+    });
+
+    describe('cursorupdates', function() {
+        it("should be called when a cursor is added", function() {
+            plot = $.plot(placeholder, [sampledata], {});
+
+            var spy = jasmine.createSpy('spy');
+            placeholder.on('cursorupdates', spy);
+
+            plot.addCursor({
+                name: 'Blue cursor',
+                mode: 'xy',
+                color: 'blue',
+                position: {
+                    relativeX: 0.5,
+                    relativeY: 0.5
+                }
+            });
+            jasmine.clock().tick(20);
+
+            expect(spy).toHaveBeenCalled();
+        });
+
+        it("should be called with the cursors name", function() {
+            var spy = jasmine.createSpy('spy');
+            placeholder.on('cursorupdates', spy);
+
+            var cursor,
+                oncursorupdates = function (event, cursordata) {
+                    cursor = cursordata[0];
+                };
+            placeholder.bind("cursorupdates", oncursorupdates);
+
+            plot = $.plot(placeholder, [sampledata], {
+                cursors: [
+                    {
+                        name: 'Blue cursor',
+                        color: 'blue',
+                        position: { relativeX: 0.5, relativeY: 0.5 }
+                    }
+                ]
+            });
+            jasmine.clock().tick(20);
+
+            expect(spy).toHaveBeenCalled();
+            expect(cursor.cursor).toEqual('Blue cursor');
+        });
+
+        it("should return the cursors intersection", function() {
+            var spy = jasmine.createSpy('spy');
+            placeholder.on('cursorupdates', spy);
+            var cursorX, cursorY;
+
+            placeholder.bind("cursorupdates", function (event, cursordata) {
+                cursorX = cursordata[0].x;
+                cursorY = cursordata[0].y;
+            });
+
+            plot = $.plot("#placeholder", [sampledata], {
+                cursors: [
+                    {
+                        name: 'Blue cursor',
+                        color: 'blue',
+                        position: { relativeX: 0.5, relativeY: 0.5 },
+                        snapToPlot: -1
+                    }
+                ]
+            });
+
+            jasmine.clock().tick(20);
+
+            expect(spy).toHaveBeenCalled();
+            expect(cursorX).toBeCloseTo(1, 8);
+            expect(cursorY).toBeCloseTo(1.1, 8);
         });
     });
 });

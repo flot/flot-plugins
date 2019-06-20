@@ -9,7 +9,8 @@ module.exports = function (config) {
     var browsersMatrix = {
             'win': ['Firefox', 'Chrome', 'Edge'],
             'linux': ['Firefox', 'Chrome'],
-            'mac': ['Firefox', 'Chrome', 'Safari']
+            // 'mac': ['Firefox', 'Chrome', 'Safari']
+            'mac': ['Chrome']
         },
         isWin = /^win/.test(process.platform),
         isLinux = /^linux/.test(process.platform),
@@ -30,6 +31,8 @@ module.exports = function (config) {
         'node_modules/flot/dist/es5/jquery.flot.js',
         'node_modules/jquery-simulate/jquery.simulate.js',
         'node_modules/webcharts-development-settings/testsUtils/*.js',
+        'node_modules/flot-thumb-plugin/dist/es5/jquery.thumb.js',
+        'node_modules/flot-charting-plugin/dist/es5/jquery.flot.charting.js',
         'source/JUMFlot/jquery.flot.JUMlib.js',
         'source/JUMFlot/jquery.flot.animate.js',
         'source/JUMFlot/jquery.flot.background.js',
@@ -48,6 +51,7 @@ module.exports = function (config) {
         'source/JUMFlot/jquery.flot.spider.js',
         'source/JUMFlot/jquery.flot.spiral.js',
         'source/JUMFlot/jquery.flot.video.js',
+        'source/NationalInstruments/jquery.flot.cursors.js',
         'source/NationalInstruments/jquery.flot.range.cursors.js',
         'source/NationalInstruments/jquery.flot.scattergraph.js',
         'tests/cursors_dragUtilities.js',

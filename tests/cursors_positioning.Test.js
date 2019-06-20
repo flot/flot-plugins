@@ -25,39 +25,35 @@ describe('Cursors Position', function () {
         jasmine.clock().uninstall();
     });
 
-    it('should be possible to position the vertical cursor relative to the canvas', function () {
+    it('default should be in middle, relative to canvas.', function () {
         plot = $.plot("#placeholder", [sampledata2], {
-            rangecursors: [
+            cursors: [
                 {
                     name: 'Blue cursor',
-                    orientation: 'vertical',
-                    color: 'blue',
-                    position: {
-                        relativeStart: 0.5,
-                        relativeEnd: 0.75
-                    }
+                    mode: 'xy',
+                    color: 'blue'
                 }
             ]
         });
 
         jasmine.clock().tick(20);
 
-        var cursors = plot.getRangeCursors();
+        var cursors = plot.getCursors();
         expect(cursors.length).toBe(1);
-        expect(cursors[0].start).toBe(0.5 * plot.width());
-        expect(cursors[0].end).toBe(0.75 * plot.width());
+        expect(cursors[0].position.relativeX).toBe(0.5);
+        expect(cursors[0].position.relativeY).toBe(0.5);
     });
 
-    it('should be possible to position the horizontal cursor relative to the canvas', function () {
+    it('should be possible to position the cursor relative to the canvas', function () {
         plot = $.plot("#placeholder", [sampledata2], {
-            rangecursors: [
+            cursors: [
                 {
                     name: 'Blue cursor',
-                    orientation: 'horizontal',
+                    mode: 'xy',
                     color: 'blue',
                     position: {
-                        relativeStart: 0.5,
-                        relativeEnd: 0.75
+                        relativeX: 0.5,
+                        relativeY: 0.75
                     }
                 }
             ]
@@ -65,44 +61,29 @@ describe('Cursors Position', function () {
 
         jasmine.clock().tick(20);
 
-        var cursors = plot.getRangeCursors();
+        var cursors = plot.getCursors();
         expect(cursors.length).toBe(1);
-        expect(cursors[0].start).toBe(0.5 * plot.height());
-        expect(cursors[0].end).toBe(0.75 * plot.height());
-    });
+        expect(cursors[0].x).toBe(0.5 * plot.width());
+        expect(cursors[0].y).toBe(0.75 * plot.height());
 
-    it('Cursors positioned relative to the canvas should be constrained by the canvas size', function () {
-        plot = $.plot("#placeholder", [sampledata2], {
-            rangecursors: [
-                {
-                    name: 'Blue cursor',
-                    orientation: 'vertical',
-                    color: 'blue',
-                    position: {
-                        relativeStart: -30,
-                        relativeEnd: -40
-                    }
-                }
-            ]
+        var pos = plot.c2p({
+            left: 0.5 * plot.width(),
+            top: 0.75 * plot.height()
         });
-
-        jasmine.clock().tick(20);
-        var cursors = plot.getRangeCursors();
-        expect(cursors.length).toBe(1);
-        expect(cursors[0].start).toBe(0);
-        expect(cursors[0].end).toBe(plot.width());
+        expect(cursors[0].position.x).toBeCloseTo(pos.x);
+        expect(cursors[0].position.y).toBeCloseTo(pos.y);
     });
 
     it('should be possible to position the cursor relative to the axes', function () {
         plot = $.plot("#placeholder", [sampledata2], {
-            rangecursors: [
+            cursors: [
                 {
                     name: 'Blue cursor',
-                    orientation: 'vertical',
+                    mode: 'xy',
                     color: 'blue',
                     position: {
-                        start: 1,
-                        end: 2
+                        x: 1,
+                        y: 2
                     }
                 }
             ]
@@ -110,20 +91,18 @@ describe('Cursors Position', function () {
 
         jasmine.clock().tick(20);
 
-        var pos1 = plot.p2c({
+        var pos = plot.p2c({
             x: 1,
-            y: 0
+            y: 2
         });
-        var pos2 = plot.p2c({
-            x: 2,
-            y: 0
-        });
-        var expectedStart = pos1.left;
-        var expectedEnd = pos2.left;
-        var cursors = plot.getRangeCursors();
+        var expectedX = pos.left;
+        var expectedY = pos.top;
+        var cursors = plot.getCursors();
         expect(cursors.length).toBe(1);
-        expect(cursors[0].start).toBe(expectedStart);
-        expect(cursors[0].end).toBe(expectedEnd);
+        expect(cursors[0].x).toBe(expectedX);
+        expect(cursors[0].y).toBe(expectedY);
+        expect(cursors[0].position.relativeX).toBeCloseTo(expectedX / plot.width());
+        expect(cursors[0].position.relativeY).toBeCloseTo(expectedY / plot.height());
     });
 
     it('should be possible to position the cursor relative to any of the axes when having multiple ones', function () {
@@ -132,18 +111,18 @@ describe('Cursors Position', function () {
             { data: sampledata3, xaxis: 2, yaxis: 2 }
         ],
         {
-            rangecursors: [
+            cursors: [
                 {
                     name: 'Blue cursor',
-                    orientation: 'vertical',
+                    mode: 'xy',
                     color: 'blue',
-                    position: { start: 1, end: 1.1 }
+                    position: { x: 1, y: 1.1 }
                 },
                 {
                     name: 'Red cursor',
-                    orientation: 'horizontal',
+                    mode: 'xy',
                     color: 'red',
-                    position: { start: 18.5, end: 19.5 },
+                    position: { x: 11, y: 20 },
                     defaultxaxis: 2,
                     defaultyaxis: 2
                 }
@@ -160,61 +139,46 @@ describe('Cursors Position', function () {
 
         jasmine.clock().tick(20);
 
-        var pos1a = plot.p2c({
+        var pos1 = plot.p2c({
             x: 1,
-            y: 0
+            y: 1.1
         });
 
-        var pos1b = plot.p2c({
-            x: 1.1,
-            y: 0
+        var pos2 = plot.p2c({
+            x2: 11,
+            y2: 20
         });
 
-        var pos2a = plot.p2c({
-            x2: 0,
-            y2: 18.5
-        });
-
-        var pos2b = plot.p2c({
-            x2: 0,
-            y2: 19.5
-        });
-
-        var expectedStart1 = pos1a.left;
-        var expectedEnd1 = pos1b.left;
-        var expectedStart2 = pos2a.top;
-        var expectedEnd2 = pos2b.top;
-        var cursors = plot.getRangeCursors();
+        var expectedX1 = pos1.left;
+        var expectedY1 = pos1.top;
+        var expectedX2 = pos2.left;
+        var expectedY2 = pos2.top;
+        var cursors = plot.getCursors();
         expect(cursors.length).toBe(2);
-        expect(cursors[0].start).toBe(expectedStart1);
-        expect(cursors[0].end).toBe(expectedEnd1);
-        expect(cursors[1].start).toBe(expectedStart2);
-        expect(cursors[1].end).toBe(expectedEnd2);
+        expect(cursors[0].x).toBe(expectedX1);
+        expect(cursors[0].y).toBe(expectedY1);
+        expect(cursors[1].x).toBe(expectedX2);
+        expect(cursors[1].y).toBe(expectedY2);
     });
 
     it('should not change on plot zoom', function () {
         plot = $.plot("#placeholder", [sampledata2], {
-            rangecursors: [
+            cursors: [
                 {
                     name: 'Blue cursor',
-                    orientation: 'vertical',
+                    mode: 'xy',
                     color: 'blue',
                     position: {
-                        relativeStart: 0.5,
-                        relativeEnd: 0.75
+                        relativeX: 0.5,
+                        relativeY: 0.75
                     }
                 }
             ]
         });
 
-        var axesPosition1 = plot.c2p({
+        var axesPosition = plot.c2p({
             left: 0.5 * plot.width(),
-            top: 0
-        });
-
-        var axesPosition2 = plot.c2p({
-            left: 0.75 * plot.width(),
-            top: 0
+            top: 0.75 * plot.height()
         });
 
         jasmine.clock().tick(20);
@@ -223,45 +187,36 @@ describe('Cursors Position', function () {
 
         jasmine.clock().tick(20);
 
-        var pos1 = plot.p2c({
-            x: axesPosition1.x,
-            y: 0
+        var pos = plot.p2c({
+            x: axesPosition.x,
+            y: axesPosition.y
         });
-        var pos2 = plot.p2c({
-            x: axesPosition2.x,
-            y: 0
-        });
-        var expectedStart = pos1.left;
-        var expectedEnd = pos2.left;
-        var cursors = plot.getRangeCursors();
+        var expectedX = pos.left;
+        var expectedY = pos.top;
+        var cursors = plot.getCursors();
         expect(cursors.length).toBe(1);
-        expect(cursors[0].start).toBe(expectedStart);
-        expect(cursors[0].end).toBe(expectedEnd);
+        expect(cursors[0].x).toBe(expectedX);
+        expect(cursors[0].y).toBe(expectedY);
     });
 
     it('should not change on plot pan', function () {
         plot = $.plot("#placeholder", [sampledata2], {
-            rangecursors: [
+            cursors: [
                 {
                     name: 'Blue cursor',
-                    orientation: 'vertical',
+                    mode: 'xy',
                     color: 'blue',
                     position: {
-                        relativeStart: 0.5,
-                        relativeEnd: 0.75
+                        relativeX: 0.5,
+                        relativeY: 0.75
                     }
                 }
             ]
         });
 
-        var axesPosition1 = plot.c2p({
+        var axesPosition = plot.c2p({
             left: 0.5 * plot.width(),
-            top: 0
-        });
-
-        var axesPosition2 = plot.c2p({
-            top: 0,
-            left: 0.75 * plot.width()
+            top: 0.75 * plot.height()
         });
 
         jasmine.clock().tick(20);
@@ -270,19 +225,58 @@ describe('Cursors Position', function () {
 
         jasmine.clock().tick(20);
 
-        var pos1 = plot.p2c({
-            x: axesPosition1.x,
-            y: 0
+        var pos = plot.p2c({
+            x: axesPosition.x,
+            y: axesPosition.y
         });
-        var pos2 = plot.p2c({
-            x: axesPosition2.x,
-            y: 0
-        });
-        var expectedStart = pos1.left;
-        var expectedEnd = pos2.left;
-        var cursors = plot.getRangeCursors();
+        var expectedX = pos.left;
+        var expectedY = pos.top;
+        var cursors = plot.getCursors();
         expect(cursors.length).toBe(1);
-        expect(cursors[0].start).toBe(expectedStart);
-        expect(cursors[0].end).toBe(expectedEnd);
+        expect(cursors[0].x).toBe(expectedX);
+        expect(cursors[0].y).toBe(expectedY);
+        expect(cursors[0].position.relativeX).not.toBeCloseTo(0.5);
+        expect(cursors[0].position.relativeY).not.toBeCloseTo(0.75);
+        expect(cursors[0].position.relativeX).not.toBe(undefined);
+        expect(cursors[0].position.relativeY).not.toBe(undefined);
+    });
+
+    it('should switch position modes on chart update and pan', function () {
+        var hb = new HistoryBuffer(10, 1);
+
+        hb.appendArray([33, 34, 35, 36, 37]);
+
+        plot = $.plot("#placeholder", [{}], {
+            series: {
+                historyBuffer: hb
+            },
+            cursors: [
+                {
+                    name: 'Blue cursor',
+                    mode: 'xy',
+                    color: 'blue',
+                    position: {
+                        relativeX: 0.5,
+                        relativeY: 0.5
+                    }
+                }
+            ]
+        });
+
+        var cursors = plot.getCursors();
+        expect(cursors.length).toBe(1);
+        expect(cursors[0].position.relativeX).toBe(0.5);
+        expect(cursors[0].position.relativeY).toBe(0.5);
+
+        plot.smartPan({
+            x: 0,
+            y: 10
+        }, plot.navigationState());
+        jasmine.clock().tick(20);
+
+        expect(cursors[0].position.x).not.toBeUndefined();
+        expect(cursors[0].position.y).not.toBeUndefined();
+        expect(cursors[0].position.x).not.toBeNaN();
+        expect(cursors[0].position.y).not.toBeNaN();
     });
 });
