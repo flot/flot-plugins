@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Flot Scatter Graph Examples: Basic Usage</title>
+	<link href="../examples.css" rel="stylesheet" type="text/css">
+	<script language="javascript" type="text/javascript" src="../../../../source/jquery.js"></script>
+	<script language="javascript" type="text/javascript" src="../../../../node_modules/flot/dist/es5/jquery.flot.js"></script>
+	<script language="javascript" type="text/javascript" src="../../../../source/jquery.flot.scattergraph.js"></script>
+	<script type="text/javascript">
+    var filled = false, drawLines = false, lineWidth = 2, data;
+    function changeFilled () {
+        filled = $('#filled').is(":checked");
+        plot();
+    }
+
+    function changeDrawLines () {
+        drawLines = $('#drawLines').is(":checked");
+        plot();
+    }
+
+    function changeLineWidth () {
+        lineWidth = $('#lineWidth').val();
+        plot();
+    }
+
+    function generateData () {
+        var d1 = [], d2 = [], d3 = [], d4 = [];
+        var x = 10, y = 10;
+        for (var i = 0; i < 10; i++) {
+            d1.push({x: Math.random() * x, y: Math.random() * y, color: 0, shape: 0, size: 5});
+        }
+
+        for (var i = 0; i < 10; i++) {
+            d2.push({x: Math.random() * x, y: y + Math.random() * y, color: 1, shape: 1, size: 6});
+        }
+
+        for (var i = 0; i < 10; i++) {
+            d3.push({x: x + Math.random() * x, y: Math.random() * y, color: 2, shape: 2, size: 7});
+        }
+
+        for (var i = 0; i < 10; i++) {
+            d4.push({x: x + Math.random() * x, y: y + Math.random() * y, color: 3, shape: 8, size: 8});
+        }
+
+        return d1.concat(d2).concat(d3).concat(d4);
+    }
+
+    function plot () {
+        var minx = 0, maxx = 25, miny = 0, maxy = 25;
+        options = {
+            grid: {show: true},
+            xaxis: {
+                show: true,
+                min: minx,
+                max: maxx,
+                autoScale: 'none',
+                p2c: function(p) { return p; }
+            },
+            yaxis: {
+                show: true,
+                min: miny,
+                max: maxy,
+                autoScale: 'none',
+                p2c: function(p) { return p; }
+            },
+            series: {
+                scattergraph: {
+                    show: true,
+                    filled: filled,
+                    drawLines: drawLines,
+                    lineWidth: lineWidth
+                }
+            }
+        };
+
+        if (data === undefined) {
+            data = generateData();
+        }
+
+        $.plot("#placeholder", [[data]], options);
+    }
+
+    $(function() {
+        plot();
+        // Add the Flot version string to the footer
+
+        $("#footer").prepend("Flot " + $.plot.version + " &ndash; ");
+	});
+	</script>
+</head>
+<body>
+
+	<div id="header">
+		<h2>Basic Usage</h2>
+	</div>
+
+	<div id="content">
+
+		<div class="demo-container">
+			<div id="placeholder" class="demo-placeholder"></div>
+        </div>
+        <input type="checkbox" id="filled" onchange="changeFilled()"><span>Filled?</span>
+        <input type="checkbox" id="drawLines" onchange="changeDrawLines()"><span>Draw lines?</span>
+        <input type="number" id="lineWidth" oninput="changeLineWidth()" value="2"><span>Line width</span>
+	</div>
+
+	<div id="footer">
+		Copyright 2019- National Instruments
+	</div>
+
+</body>
+</html>

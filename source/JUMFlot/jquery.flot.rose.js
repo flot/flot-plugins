@@ -67,7 +67,7 @@ THE SOFTWARE.
             }
         }
         function processRawData(plot,series,data,datapoints){
-            if(series.rose.show === true){
+            if(series && series.rose && series.rose.show === true){
                 var canvas = plot.getCanvas();
                 maxRadius =  Math.min(canvas.width,canvas.height)/2 * opt.series.rose.roseSize;
                 centerTop = (canvas.height/2);

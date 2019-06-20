@@ -1,5 +1,5 @@
 var gulp = require('gulp');
-var gulpSequence = require('gulp-sequence');
+var gulpDebug = require('gulp-debug');
 var filesExist = require('files-exist');
 
 gulp.task('build_flot_plugins', function () {

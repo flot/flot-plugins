@@ -9,7 +9,7 @@ module.exports = function (config) {
     var browsersMatrix = {
             'win': ['Firefox', 'Chrome', 'Edge'],
             'linux': ['Firefox', 'Chrome'],
-            'mac': ['Firefox', 'Chrome']
+            'mac': ['Firefox', 'Chrome', 'Safari']
         },
         isWin = /^win/.test(process.platform),
         isLinux = /^linux/.test(process.platform),
@@ -25,7 +25,11 @@ module.exports = function (config) {
             included: true
         },
         'node_modules/jquery/dist/jquery.min.js',
+        'node_modules/flot/lib/jquery.event.drag.js',
+        'node_modules/flot/lib/jquery.mousewheel.js',
         'node_modules/flot/dist/es5/jquery.flot.js',
+        'node_modules/jquery-simulate/jquery.simulate.js',
+        'node_modules/webcharts-development-settings/testsUtils/*.js',
         'source/JUMFlot/jquery.flot.JUMlib.js',
         'source/JUMFlot/jquery.flot.animate.js',
         'source/JUMFlot/jquery.flot.background.js',
@@ -44,6 +48,10 @@ module.exports = function (config) {
         'source/JUMFlot/jquery.flot.spider.js',
         'source/JUMFlot/jquery.flot.spiral.js',
         'source/JUMFlot/jquery.flot.video.js',
+        'source/NationalInstruments/jquery.flot.range.cursors.js',
+        'source/NationalInstruments/jquery.flot.scattergraph.js',
+        'tests/cursors_dragUtilities.js',
+        'tests/*Test.js',
         'tests/*Tests.js'
     ];
 
