@@ -1,6 +1,5 @@
-/* * The MIT License
-Copyright (c) 2010, 2011, 2012, 2013 by Juergen Marsch
-Copyright (c) 2015 by Andrew Dove & Ciprian Ceteras
+/* The MIT License
+Copyright (c) 2019 by National Instruments
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the 'Software'), to deal
 in the Software without restriction, including without limitation the rights
