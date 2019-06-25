@@ -9,13 +9,13 @@ $(function () {
         cos = [];
 
     var cursorParams = {
-        orientation: 'vertical',
-        transaprentRange: 'outside',
+        transparentRange: 'outside',
         showLabel: true,
         showValue: true,
         showBorders: true,
         halign: 'top',
-        constrainToEdge: true
+        constrainToEdge: true,
+        orientation: 'box'
     };
 
     function updateData() {
@@ -46,14 +46,26 @@ $(function () {
         plot.setupGrid();
         plot.draw();
 
-        setTimeout(updateChart, 16);
+        setTimeout(updateChart, 30000);
     }
 
-    $('#checkbox_orientation').click(function() {
+    $('#checkbox_box').click(function() {
         if ($(this).is(':checked')) {
-            cursorParams.orientation = 'vertical';
+            cursorParams.orientation = 'box';
         } else {
-            cursorParams.orientation = 'horizontal';
+            cursorParams.orientation = 'vertical';
+        }
+
+        createPlot();
+    });
+
+    $('#checkbox_orientation').click(function() {
+        if (cursorParams.orientation !== 'box') {
+            if ($(this).is(':checked')) {
+                cursorParams.orientation = 'vertical';
+            } else {
+                cursorParams.orientation = 'horizontal';
+            }
         }
 
         createPlot();
@@ -142,10 +154,9 @@ $(function () {
                     show: true
                 }
             },
-            rangecursors: [
+            boxcursors: [
                 {
                     name: 'Red cursor',
-                    orientation: cursorParams.orientation,
                     color: 'red',
                     showIntersections: false,
                     transparentRange: cursorParams.transparentRange,
@@ -154,10 +165,13 @@ $(function () {
                     showBorders: cursorParams.showBorders,
                     halign: cursorParams.halign,
                     position: {
-                        relativeStart: 0.5,
-                        relativeEnd: 0.7
+                        relativeYStart: 0.5,
+                        relativeYEnd: 0.7,
+                        relativeXStart: 0.5,
+                        relativeXEnd: 0.7
                     },
-                    constrainToEdge: cursorParams.constrainToEdge
+                    constrainToEdge: cursorParams.constrainToEdge,
+                    orientation: cursorParams.orientation
                 }
             ],
             grid: {
