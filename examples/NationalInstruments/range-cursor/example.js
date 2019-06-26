@@ -154,7 +154,7 @@ $(function () {
                     show: true
                 }
             },
-            boxcursors: [
+            rangecursors: [
                 {
                     name: 'Red cursor',
                     color: 'red',
