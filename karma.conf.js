@@ -9,8 +9,8 @@ module.exports = function (config) {
     var browsersMatrix = {
             'win': ['Firefox', 'Chrome', 'Edge'],
             'linux': ['Firefox', 'Chrome'],
-            'mac': ['Firefox', 'Chrome', 'Safari']
-            // 'mac': ['Chrome',]
+            // 'mac': ['Firefox', 'Chrome', 'Safari']
+            'mac': ['Chrome',]
         },
         isWin = /^win/.test(process.platform),
         isLinux = /^linux/.test(process.platform),
@@ -57,6 +57,7 @@ module.exports = function (config) {
         'source/NationalInstruments/jquery.thumb.js',
         'source/NationalInstruments/jquery.flot.axishandle.js',
         'source/NationalInstruments/jquery.flot.parkinglot.js',
+        'source/NationalInstruments/jquery.flot.intensitygraph.js',
         'source/NationalInstruments/jquery.flot.charting.js',
         'source/NationalInstruments/jquery.flot.historybuffer.js',
         'source/NationalInstruments/jquery.flot.historybuffer.numeric.js',
@@ -65,6 +66,7 @@ module.exports = function (config) {
         'tests/cursors_dragUtilities.js',
         'tests/lib/jsverify.standalone.js',
         'tests/lib/jasmineHelpers2.js',
+        'tests/utils/colorMatchers.js',
         'tests/testHelpers.js',
         'tests/*Test.js',
         'tests/*Tests.js'
