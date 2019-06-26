@@ -57,9 +57,7 @@
     "ljs": "^0.3.2",
     "travis-github-lint-status": "^1.0.1",
     "webcharts-development-settings": "^1.0.9",
-    "uglify-es": "^3.3.9",
-    "flot-thumb-plugin": "^1.0.0",
-    "flot-charting-plugin": "^3.0.2"
+    "uglify-es": "^3.3.9"
   },
   "dependencies": {
     "flot": "^3.0.2",

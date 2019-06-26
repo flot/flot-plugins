@@ -9,8 +9,8 @@ module.exports = function (config) {
     var browsersMatrix = {
             'win': ['Firefox', 'Chrome', 'Edge'],
             'linux': ['Firefox', 'Chrome'],
-            // 'mac': ['Firefox', 'Chrome', 'Safari']
-            'mac': ['Chrome',]
+            'mac': ['Firefox', 'Chrome', 'Safari']
+            // 'mac': ['Chrome',]
         },
         isWin = /^win/.test(process.platform),
         isLinux = /^linux/.test(process.platform),
@@ -33,8 +33,6 @@ module.exports = function (config) {
         'node_modules/flot/dist/es5/jquery.flot.js',
         'node_modules/jquery-simulate/jquery.simulate.js',
         'node_modules/webcharts-development-settings/testsUtils/*.js',
-        'node_modules/flot-thumb-plugin/dist/es5/jquery.thumb.js',
-        'node_modules/flot-charting-plugin/dist/es5/jquery.flot.charting.js',
         'source/JUMFlot/jquery.flot.JUMlib.js',
         'source/JUMFlot/jquery.flot.animate.js',
         'source/JUMFlot/jquery.flot.background.js',
@@ -60,13 +58,13 @@ module.exports = function (config) {
         'source/NationalInstruments/jquery.flot.axishandle.js',
         'source/NationalInstruments/jquery.flot.parkinglot.js',
         'source/NationalInstruments/jquery.flot.charting.js',
-        'source/NationalInstruments/jquery.flot.historybuffer.analogWaveform.js',
         'source/NationalInstruments/jquery.flot.historybuffer.js',
         'source/NationalInstruments/jquery.flot.historybuffer.numeric.js',
+        'source/NationalInstruments/jquery.flot.historybuffer.analogWaveform.js',
         'source/NationalInstruments/jquery.flot.segment-tree.js',
         'tests/cursors_dragUtilities.js',
-        'lib/jsverify.standalone.js',
-        'lib/jasmineHelpers2.js',
+        'tests/lib/jsverify.standalone.js',
+        'tests/lib/jasmineHelpers2.js',
         'tests/testHelpers.js',
         'tests/*Test.js',
         'tests/*Tests.js'
