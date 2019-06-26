@@ -27,3 +27,4 @@ npm run karma
 
 ## Plugin documentation
  - [JUMFlot](docs/doc.flot.JUMFlot.md)
+ - [Misc](docs/misc/misc.md)
