@@ -69,7 +69,7 @@ THE SOFTWARE.
                 show: true,
                 selected: false,
                 highlighted: false,
-                orientation: 'box',  // horizontal, vertical or box
+                orientation: 'vertical',  // horizontal, vertical or box
                 halign: 'top',
                 dragLocation: '', /// start or end being moved
                 transparentRange: 'outside', // inside, outside
@@ -649,7 +649,7 @@ THE SOFTWARE.
     function setPosition(plot, cursor, pos) {
         var xaxis = findXAxis(plot, cursor),
             yaxis = findYAxis(plot, cursor);
-            var xstart = pos.xstart !== undefined
+        var xstart = pos.xstart !== undefined
             ? xaxis.p2c ? xaxis.p2c(pos.xstart) : undefined
             : pos.relativeXStart * plot.width();
         var xend = pos.xend !== undefined
@@ -676,10 +676,6 @@ THE SOFTWARE.
 
         if (xstart > xend && !xaxis.inverted) {
             xstart = xend - xdiff;
-        }
-
-        if (ystart > yend && !yaxis.inverted) {
-            ystart = yend - ydiff;
         }
 
         if (cursor.constrainToEdge) {
@@ -911,7 +907,13 @@ THE SOFTWARE.
         var yformattedValue = yaxis.tickFormatter(yaxis.c2p(cursor.yend) - yaxis.c2p(cursor.ystart), yaxis, yaxisPrecision);
         yformattedValue = yformattedValue.replace(htmlNewline, " ");
         yformattedValue = yformattedValue.replace(htmlSpace, " ");
-        return '[' + xformattedValue + ' ' + yformattedValue + ']';
+        if (cursor.orientation === 'box') {
+            return '[' + xformattedValue + ' ' + yformattedValue + ']';
+        } else if (cursor.orientation === 'vertical') {
+            return xformattedValue;
+        } else {
+            return yformattedValue;
+        }
     }
 
     function clampStartAndEnd(plot, cursor) {

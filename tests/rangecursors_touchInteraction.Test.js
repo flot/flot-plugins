@@ -21,8 +21,8 @@ describe("Touch cursors interaction", function () {
                     name: 'Blue cursor',
                     color: 'blue',
                     position: {
-                        relativeStart: 0.5,
-                        relativeEnd: 0.6
+                        relativeXStart: 0.5,
+                        relativeXEnd: 0.6
                     }
                 }
             ],
@@ -37,8 +37,8 @@ describe("Touch cursors interaction", function () {
                     color: 'blue',
                     orientation: 'horizontal',
                     position: {
-                        relativeStart: 0.5,
-                        relativeEnd: 0.6
+                        relativeYStart: 0.5,
+                        relativeYEnd: 0.6
                     }
                 }
             ],
@@ -60,8 +60,8 @@ describe("Touch cursors interaction", function () {
                     name: 'Blue cursor',
                     color: 'blue',
                     position: {
-                        relativeStart: 0.5,
-                        relativeEnd: 0.6
+                        relativeXStart: 0.5,
+                        relativeXEnd: 0.6
                     },
                     show: false
                 }
@@ -128,8 +128,8 @@ describe("Touch cursors interaction", function () {
                     name: 'Blue cursor',
                     color: 'blue',
                     position: {
-                        relativeStart: 0.5,
-                        relativeEnd: 0.6
+                        relativeXStart: 0.5,
+                        relativeXEnd: 0.6
                     },
                     movable: false
                 }
@@ -154,8 +154,8 @@ describe("Touch cursors interaction", function () {
         eventHolder[0].dispatchEvent(new CustomEvent('panend', { detail: e }));
 
         var cursor = plot.getRangeCursors()[0];
-        expect(cursor.start).toBeCloseTo(plot.width() * 0.5, 0);
-        expect(cursor.end).toBeCloseTo(plot.width() * 0.6, 0);
+        expect(cursor.xstart).toBeCloseTo(plot.width() * 0.5, 0);
+        expect(cursor.xend).toBeCloseTo(plot.width() * 0.6, 0);
     });
 
     it('should not be possible to touch drag a cursor that is not visible', function () {
@@ -165,8 +165,8 @@ describe("Touch cursors interaction", function () {
                     name: 'Blue cursor',
                     color: 'blue',
                     position: {
-                        relativeStart: 0.5,
-                        relativeEnd: 0.6
+                        relativeXStart: 0.5,
+                        relativeXEnd: 0.6
                     },
                     show: false
                 }
@@ -192,8 +192,8 @@ describe("Touch cursors interaction", function () {
         eventHolder[0].dispatchEvent(new CustomEvent('panend', { detail: e }));
 
         var cursor = plot.getRangeCursors()[0];
-        expect(cursor.start).toBeCloseTo(plot.width() * 0.5, 0);
-        expect(cursor.end).toBeCloseTo(plot.width() * 0.6, 0);
+        expect(cursor.xstart).toBeCloseTo(plot.width() * 0.5, 0);
+        expect(cursor.xend).toBeCloseTo(plot.width() * 0.6, 0);
     });
 
     it('should be constrained on the right side by the chart margin when touch dragging', function () {
@@ -203,8 +203,8 @@ describe("Touch cursors interaction", function () {
                     name: 'Blue cursor',
                     color: 'blue',
                     position: {
-                        relativeStart: 0.5,
-                        relativeEnd: 0.6
+                        relativeXStart: 0.5,
+                        relativeXEnd: 0.6
                     }
                 }
             ],
@@ -233,8 +233,8 @@ describe("Touch cursors interaction", function () {
         jasmine.clock().tick(20);
 
         var cursor = plot.getRangeCursors()[0];
-        expect(cursor.end).toBeCloseTo(plot.width());
-        expect(cursor.start).toBeCloseTo(plot.width() * 0.9);
+        expect(cursor.xend).toBeCloseTo(plot.width());
+        expect(cursor.xstart).toBeCloseTo(plot.width() * 0.9);
     });
 
     it('should be constrained on the top side by the chart margin when touch dragging', function () {
@@ -245,8 +245,8 @@ describe("Touch cursors interaction", function () {
                     color: 'blue',
                     orientation: 'horizontal',
                     position: {
-                        relativeStart: 0.5,
-                        relativeEnd: 0.6
+                        relativeYStart: 0.5,
+                        relativeYEnd: 0.6
                     }
                 }
             ],
@@ -275,8 +275,8 @@ describe("Touch cursors interaction", function () {
         jasmine.clock().tick(20);
 
         var cursor = plot.getRangeCursors()[0];
-        expect(cursor.start).toBe(0);
-        expect(cursor.end).toBeCloseTo(plot.height() * 0.1, 0.01);
+        expect(cursor.ystart).toBe(0);
+        expect(cursor.yend).toBeCloseTo(plot.height() * 0.1, 0.01);
     });
 
     it('should be constrained on the bottom side by the chart margin when touch dragging', function () {
@@ -301,8 +301,8 @@ describe("Touch cursors interaction", function () {
         jasmine.clock().tick(20);
 
         var cursor = plot.getRangeCursors()[0];
-        expect(cursor.start).toBeCloseTo(plot.height() * 0.9, 0.01);
-        expect(cursor.end).toBeCloseTo(plot.height(), 0.001);
+        expect(cursor.ystart).toBeCloseTo(plot.height() * 0.9, 0.01);
+        expect(cursor.yend).toBeCloseTo(plot.height(), 0.001);
     });
 
     it('should not pan the plot behind the cursors on cursor drag', function () {
@@ -312,8 +312,8 @@ describe("Touch cursors interaction", function () {
                     name: 'Blue cursor',
                     color: 'blue',
                     position: {
-                        relativeStart: 0.5,
-                        relativeEnd: 0.6
+                        relativeXStart: 0.5,
+                        relativeXEnd: 0.6
                     }
                 }
             ],
@@ -359,8 +359,8 @@ describe("Touch cursors interaction", function () {
                     name: 'Blue cursor',
                     color: 'blue',
                     position: {
-                        relativeStart: 0.5,
-                        relativeEnd: 0.6
+                        relativeXStart: 0.5,
+                        relativeXEnd: 0.6
                     }
                 }
             ],
@@ -412,8 +412,8 @@ describe("Touch cursors interaction", function () {
                     name: 'Green cursor',
                     color: 'green',
                     position: {
-                        relativeStart: 0.5,
-                        relativeEnd: 0.6
+                        relativeXStart: 0.5,
+                        relativeXEnd: 0.6
                     },
                     show: false
                 }
@@ -459,8 +459,8 @@ describe("Touch cursors interaction", function () {
                     name: 'Blue cursor',
                     color: 'blue',
                     position: {
-                        relativeStart: 0.5,
-                        relativeEnd: 0.6
+                        relativeXStart: 0.5,
+                        relativeXEnd: 0.6
                     },
                     show: false
                 }
@@ -517,8 +517,8 @@ describe("Touch cursors interaction", function () {
                     name: 'Blue cursor',
                     color: 'blue',
                     position: {
-                        relativeStart: 0.5,
-                        relativeEnd: 0.6
+                        relativeXStart: 0.5,
+                        relativeXEnd: 0.6
                     }
                 }
             ],
@@ -543,8 +543,8 @@ describe("Touch cursors interaction", function () {
         sendTouchEvent(cursorX, cursorY, eventHolder[0], 'touchend');
 
         var cursor = plot.getRangeCursors()[0];
-        expect(cursor.start).toBeCloseTo(plot.width() * 0.5 + 13);
-        expect(cursor.end).toBeCloseTo(plot.width() * 0.6 + 13);
+        expect(cursor.xstart).toBeCloseTo(plot.width() * 0.5 + 13);
+        expect(cursor.xend).toBeCloseTo(plot.width() * 0.6 + 13);
     });
 
     it('should not pan invisible cursors when receiving real touch events', function () {
@@ -554,8 +554,8 @@ describe("Touch cursors interaction", function () {
                     name: 'Blue cursor',
                     color: 'blue',
                     position: {
-                        relativeStart: 0.5,
-                        relativeEnd: 0.6
+                        relativeXStart: 0.5,
+                        relativeXEnd: 0.6
                     },
                     show: false
                 }
@@ -586,8 +586,8 @@ describe("Touch cursors interaction", function () {
         sendTouchEvent(cursorX, cursorY, eventHolder[0], 'touchend');
 
         var cursor = plot.getRangeCursors()[0];
-        expect(cursor.start).toBeCloseTo(plot.width() * 0.5, 0);
-        expect(cursor.end).toBeCloseTo(plot.width() * 0.6, 0);
+        expect(cursor.xstart).toBeCloseTo(plot.width() * 0.5, 0);
+        expect(cursor.xend).toBeCloseTo(plot.width() * 0.6, 0);
 
         expect(plot.getXAxes()[0].min).not.toBe(xmin);
         expect(plot.getXAxes()[0].max).not.toBe(xmax);
