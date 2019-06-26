@@ -26,12 +26,19 @@ gulp.task('build_flot_plugins', function () {
 });
 gulp.task('build_flot_ni', function () {
     'use strict';
-    var src = ['source/NationalInstruments/jquery.flot.scattergraph.js',
-    'source/NationalInstruments/jquery.flot.cursors.js',
-    'source/NationalInstruments/jquery.thumb.js',
-    'source/NationalInstruments/jquery.flot.parkinglot.js',
-    'source/NationalInstruments/jquery.flot.range.cursors.js',
-    'source/NationalInstruments/jquery.flot.axishandle.js'];
+    var src = [
+        'source/NationalInstruments/jquery.flot.scattergraph.js',
+        'source/NationalInstruments/jquery.flot.cursors.js',
+        'source/NationalInstruments/jquery.thumb.js',
+        'source/NationalInstruments/jquery.flot.parkinglot.js',
+        'source/NationalInstruments/jquery.flot.range.cursors.js',
+        'source/NationalInstruments/jquery.flot.axishandle.js',
+        'source/NationalInstruments/jquery.flot.charting.js',
+        'source/NationalInstruments/jquery.flot.historybuffer.analogWaveform.js',
+        'source/NationalInstruments/jquery.flot.historybuffer.js',
+        'source/NationalInstruments/jquery.flot.historybuffer.numeric.js',
+        'source/NationalInstruments/jquery.flot.segment-tree.js',
+    ];
     return gulp.src(filesExist(src, { exceptionMessage: 'Missing file'}))
         .pipe(maps.init())
         .pipe(babel({

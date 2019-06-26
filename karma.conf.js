@@ -9,7 +9,8 @@ module.exports = function (config) {
     var browsersMatrix = {
             'win': ['Firefox', 'Chrome', 'Edge'],
             'linux': ['Firefox', 'Chrome'],
-            'mac': ['Firefox', 'Chrome', 'Safari']
+            // 'mac': ['Firefox', 'Chrome', 'Safari']
+            'mac': ['Chrome',]
         },
         isWin = /^win/.test(process.platform),
         isLinux = /^linux/.test(process.platform),
@@ -24,6 +25,8 @@ module.exports = function (config) {
             served: true,
             included: true
         },
+        'lib/cbuffer.js',
+        'node_modules/ni-data-types/dist/es5-minified/ni-data-types.min.js',
         'node_modules/jquery/dist/jquery.min.js',
         'node_modules/flot/lib/jquery.event.drag.js',
         'node_modules/flot/lib/jquery.mousewheel.js',
@@ -56,7 +59,14 @@ module.exports = function (config) {
         'source/NationalInstruments/jquery.thumb.js',
         'source/NationalInstruments/jquery.flot.axishandle.js',
         'source/NationalInstruments/jquery.flot.parkinglot.js',
+        'source/NationalInstruments/jquery.flot.charting.js',
+        'source/NationalInstruments/jquery.flot.historybuffer.analogWaveform.js',
+        'source/NationalInstruments/jquery.flot.historybuffer.js',
+        'source/NationalInstruments/jquery.flot.historybuffer.numeric.js',
+        'source/NationalInstruments/jquery.flot.segment-tree.js',
         'tests/cursors_dragUtilities.js',
+        'lib/jsverify.standalone.js',
+        'lib/jasmineHelpers2.js',
         'tests/testHelpers.js',
         'tests/*Test.js',
         'tests/*Tests.js'
