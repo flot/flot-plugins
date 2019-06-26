@@ -28,6 +28,8 @@ gulp.task('build_flot_ni', function () {
     'use strict';
     var src = ['source/NationalInstruments/jquery.flot.scattergraph.js',
     'source/NationalInstruments/jquery.flot.cursors.js',
+    'source/NationalInstruments/jquery.thumb.js',
+    'source/NationalInstruments/jquery.flot.parkinglot.js',
     'source/NationalInstruments/jquery.flot.range.cursors.js',
     'source/NationalInstruments/jquery.flot.axishandle.js'];
     return gulp.src(filesExist(src, { exceptionMessage: 'Missing file'}))
