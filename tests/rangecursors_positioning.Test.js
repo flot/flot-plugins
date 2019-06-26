@@ -33,8 +33,8 @@ describe('Cursors Position', function () {
                     orientation: 'vertical',
                     color: 'blue',
                     position: {
-                        relativeStart: 0.5,
-                        relativeEnd: 0.75
+                        relativeXStart: 0.5,
+                        relativeXEnd: 0.75
                     }
                 }
             ]
@@ -44,8 +44,8 @@ describe('Cursors Position', function () {
 
         var cursors = plot.getRangeCursors();
         expect(cursors.length).toBe(1);
-        expect(cursors[0].start).toBe(0.5 * plot.width());
-        expect(cursors[0].end).toBe(0.75 * plot.width());
+        expect(cursors[0].xstart).toBe(0.5 * plot.width());
+        expect(cursors[0].xend).toBe(0.75 * plot.width());
     });
 
     it('should be possible to position the horizontal cursor relative to the canvas', function () {
@@ -56,8 +56,8 @@ describe('Cursors Position', function () {
                     orientation: 'horizontal',
                     color: 'blue',
                     position: {
-                        relativeStart: 0.5,
-                        relativeEnd: 0.75
+                        relativeYStart: 0.5,
+                        relativeYEnd: 0.75
                     }
                 }
             ]
@@ -67,8 +67,35 @@ describe('Cursors Position', function () {
 
         var cursors = plot.getRangeCursors();
         expect(cursors.length).toBe(1);
-        expect(cursors[0].start).toBe(0.5 * plot.height());
-        expect(cursors[0].end).toBe(0.75 * plot.height());
+        expect(cursors[0].ystart).toBe(0.5 * plot.height());
+        expect(cursors[0].yend).toBe(0.75 * plot.height());
+    });
+
+    it('should be possible to position the box cursor relative to the canvas', function () {
+        plot = $.plot("#placeholder", [sampledata2], {
+            rangecursors: [
+                {
+                    name: 'Blue cursor',
+                    orientation: 'box',
+                    color: 'blue',
+                    position: {
+                        relativeXStart: 0.5,
+                        relativeXEnd: 0.75,
+                        relativeYStart: 0.5,
+                        relativeYEnd: 0.75
+                    }
+                }
+            ]
+        });
+
+        jasmine.clock().tick(20);
+
+        var cursors = plot.getRangeCursors();
+        expect(cursors.length).toBe(1);
+        expect(cursors[0].xstart).toBe(0.5 * plot.width());
+        expect(cursors[0].xend).toBe(0.75 * plot.width());
+        expect(cursors[0].ystart).toBe(0.5 * plot.height());
+        expect(cursors[0].yend).toBe(0.75 * plot.height());
     });
 
     it('Cursors positioned relative to the canvas should be constrained by the canvas size', function () {
@@ -79,8 +106,8 @@ describe('Cursors Position', function () {
                     orientation: 'vertical',
                     color: 'blue',
                     position: {
-                        relativeStart: -30,
-                        relativeEnd: -40
+                        relativeXStart: -30,
+                        relativeXEnd: -40
                     }
                 }
             ]
@@ -89,8 +116,8 @@ describe('Cursors Position', function () {
         jasmine.clock().tick(20);
         var cursors = plot.getRangeCursors();
         expect(cursors.length).toBe(1);
-        expect(cursors[0].start).toBe(0);
-        expect(cursors[0].end).toBe(plot.width());
+        expect(cursors[0].xstart).toBe(0);
+        expect(cursors[0].xend).toBe(plot.width());
     });
 
     it('should be possible to position the cursor relative to the axes', function () {
@@ -101,8 +128,8 @@ describe('Cursors Position', function () {
                     orientation: 'vertical',
                     color: 'blue',
                     position: {
-                        start: 1,
-                        end: 2
+                        xstart: 1,
+                        xend: 2
                     }
                 }
             ]
@@ -122,8 +149,8 @@ describe('Cursors Position', function () {
         var expectedEnd = pos2.left;
         var cursors = plot.getRangeCursors();
         expect(cursors.length).toBe(1);
-        expect(cursors[0].start).toBe(expectedStart);
-        expect(cursors[0].end).toBe(expectedEnd);
+        expect(cursors[0].xstart).toBe(expectedStart);
+        expect(cursors[0].xend).toBe(expectedEnd);
     });
 
     it('should be possible to position the cursor relative to any of the axes when having multiple ones', function () {
@@ -137,13 +164,13 @@ describe('Cursors Position', function () {
                     name: 'Blue cursor',
                     orientation: 'vertical',
                     color: 'blue',
-                    position: { start: 1, end: 1.1 }
+                    position: { xstart: 1, xend: 1.1 }
                 },
                 {
                     name: 'Red cursor',
                     orientation: 'horizontal',
                     color: 'red',
-                    position: { start: 18.5, end: 19.5 },
+                    position: { ystart: 18.5, yend: 19.5 },
                     defaultxaxis: 2,
                     defaultyaxis: 2
                 }
@@ -186,10 +213,10 @@ describe('Cursors Position', function () {
         var expectedEnd2 = pos2b.top;
         var cursors = plot.getRangeCursors();
         expect(cursors.length).toBe(2);
-        expect(cursors[0].start).toBe(expectedStart1);
-        expect(cursors[0].end).toBe(expectedEnd1);
-        expect(cursors[1].start).toBe(expectedStart2);
-        expect(cursors[1].end).toBe(expectedEnd2);
+        expect(cursors[0].xstart).toBe(expectedStart1);
+        expect(cursors[0].xend).toBe(expectedEnd1);
+        expect(cursors[1].ystart).toBe(expectedStart2);
+        expect(cursors[1].yend).toBe(expectedEnd2);
     });
 
     it('should not change on plot zoom', function () {
@@ -200,8 +227,8 @@ describe('Cursors Position', function () {
                     orientation: 'vertical',
                     color: 'blue',
                     position: {
-                        relativeStart: 0.5,
-                        relativeEnd: 0.75
+                        relativeXStart: 0.5,
+                        relativeXEnd: 0.75
                     }
                 }
             ]
@@ -235,8 +262,8 @@ describe('Cursors Position', function () {
         var expectedEnd = pos2.left;
         var cursors = plot.getRangeCursors();
         expect(cursors.length).toBe(1);
-        expect(cursors[0].start).toBe(expectedStart);
-        expect(cursors[0].end).toBe(expectedEnd);
+        expect(cursors[0].xstart).toBe(expectedStart);
+        expect(cursors[0].xend).toBe(expectedEnd);
     });
 
     it('should not change on plot pan', function () {
@@ -247,8 +274,8 @@ describe('Cursors Position', function () {
                     orientation: 'vertical',
                     color: 'blue',
                     position: {
-                        relativeStart: 0.5,
-                        relativeEnd: 0.75
+                        relativeXStart: 0.5,
+                        relativeXEnd: 0.75
                     }
                 }
             ]
@@ -282,7 +309,7 @@ describe('Cursors Position', function () {
         var expectedEnd = pos2.left;
         var cursors = plot.getRangeCursors();
         expect(cursors.length).toBe(1);
-        expect(cursors[0].start).toBe(expectedStart);
-        expect(cursors[0].end).toBe(expectedEnd);
+        expect(cursors[0].xstart).toBe(expectedStart);
+        expect(cursors[0].xend).toBe(expectedEnd);
     });
 });

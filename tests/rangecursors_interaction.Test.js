@@ -54,7 +54,7 @@ describe("Cursors interaction", function () {
                 {
                     name: 'Blue cursor',
                     color: 'blue',
-                    position: { relativeStart: 0.5, relativeEnd: 0.6 }
+                    position: { relativeXStart: 0.5, relativeXEnd: 0.6 }
                 }
             ]
         });
@@ -78,7 +78,7 @@ describe("Cursors interaction", function () {
                 {
                     name: 'Blue cursor',
                     color: 'blue',
-                    position: { relativeStart: 0.5, relativeEnd: 0.6 },
+                    position: { relativeXStart: 0.5, relativeXEnd: 0.6 },
                     show: false
                 }
             ]
@@ -102,8 +102,8 @@ describe("Cursors interaction", function () {
                     name: 'Blue cursor',
                     color: 'blue',
                     position: {
-                        relativeStart: 0.5,
-                        relativeEnd: 0.6
+                        relativeXStart: 0.5,
+                        relativeXEnd: 0.6
                     }
                 }
             ]
@@ -130,7 +130,7 @@ describe("Cursors interaction", function () {
                     name: 'Blue cursor',
                     color: 'blue',
                     orientation: 'horizontal',
-                    position: { relativeStart: 0.5, relativeEnd: 0.6 }
+                    position: { relativeYStart: 0.5, relativeYEnd: 0.6 }
                 }
             ]
         });
@@ -154,7 +154,7 @@ describe("Cursors interaction", function () {
                 {
                     name: 'Blue cursor',
                     color: 'blue',
-                    position: { relativeStart: 0.5, relativeEnd: 0.6 },
+                    position: { relativeXStart: 0.5, relativeXEnd: 0.6 },
                     movable: false
                 }
             ]
@@ -170,8 +170,8 @@ describe("Cursors interaction", function () {
         $('.flot-overlay').simulate("flotdrag", options);
 
         var cursor = plot.getRangeCursors()[0];
-        expect(cursor.start).toBeCloseTo(plot.width() * 0.5, -1);
-        expect(cursor.end).toBeCloseTo(plot.width() * 0.6, -1);
+        expect(cursor.xstart).toBeCloseTo(plot.width() * 0.5, -1);
+        expect(cursor.xend).toBeCloseTo(plot.width() * 0.6, -1);
     });
 
     it('should not be possible to move a cursor that is not visible', function () {
@@ -181,8 +181,8 @@ describe("Cursors interaction", function () {
                     name: 'Blue cursor',
                     color: 'blue',
                     position: {
-                        relativeStart: 0.5,
-                        relativeEnd: 0.6
+                        relativeXStart: 0.5,
+                        relativeXEnd: 0.6
                     },
                     show: false
                 }
@@ -201,8 +201,8 @@ describe("Cursors interaction", function () {
         $('.flot-overlay').simulate("flotdrag", options);
 
         var cursor = plot.getRangeCursors()[0];
-        expect(cursor.start).toBeCloseTo(plot.width() * 0.5, 0);
-        expect(cursor.end).toBeCloseTo(plot.width() * 0.6, 0);
+        expect(cursor.xstart).toBeCloseTo(plot.width() * 0.5, 0);
+        expect(cursor.xend).toBeCloseTo(plot.width() * 0.6, 0);
     });
 
     it('should be constrained on the right side by the chart margin when dragging', function () {
@@ -211,7 +211,7 @@ describe("Cursors interaction", function () {
                 {
                     name: 'Blue cursor',
                     color: 'blue',
-                    position: { relativeStart: 0.5, relativeEnd: 0.6 }
+                    position: { relativeXStart: 0.5, relativeXEnd: 0.6 }
                 }
             ],
             yaxes: [ { position: 'right' } ]
@@ -232,8 +232,8 @@ describe("Cursors interaction", function () {
 
         jasmine.clock().tick(20);
         var cursor = plot.getRangeCursors()[0];
-        expect(cursor.start).toBeCloseTo(plot.width() * 0.9, 1);
-        expect(cursor.end).toBeCloseTo(plot.width(), -1);
+        expect(cursor.xstart).toBeCloseTo(plot.width() * 0.9, 1);
+        expect(cursor.xend).toBeCloseTo(plot.width(), -1);
     });
 
     it('should not be constrained on the right side by the chart margin when dragging if constrainToEdge is false', function () {
@@ -243,7 +243,7 @@ describe("Cursors interaction", function () {
                     name: 'Blue cursor',
                     color: 'blue',
                     constrainToEdge: false,
-                    position: { relativeStart: 0.5, relativeEnd: 0.6 }
+                    position: { relativeXStart: 0.5, relativeXEnd: 0.6 }
                 }
             ],
             yaxes: [ { position: 'right' } ]
@@ -264,8 +264,8 @@ describe("Cursors interaction", function () {
 
         jasmine.clock().tick(20);
         var cursor = plot.getRangeCursors()[0];
-        expect(cursor.start).not.toBeCloseTo(plot.width() * 0.9, 1);
-        expect(cursor.end).not.toBeCloseTo(plot.width(), -1);
+        expect(cursor.xstart).not.toBeCloseTo(plot.width() * 0.9, 1);
+        expect(cursor.xend).not.toBeCloseTo(plot.width(), -1);
     });
 
     it('should be constrained on the top side by the chart margin when dragging', function () {
@@ -275,7 +275,7 @@ describe("Cursors interaction", function () {
                     name: 'Blue cursor',
                     color: 'blue',
                     orientation: 'horizontal',
-                    position: { relativeStart: 0.5, relativeEnd: 0.6 }
+                    position: { relativeYStart: 0.5, relativeYEnd: 0.6 }
                 }
             ],
             xaxes: [ { position: 'top' } ]
@@ -295,8 +295,39 @@ describe("Cursors interaction", function () {
 
         jasmine.clock().tick(20);
         var cursor = plot.getRangeCursors()[0];
-        expect(cursor.start).toBe(0);
-        expect(cursor.end).toBeCloseTo(plot.height() * 0.1);
+        expect(cursor.ystart).toBe(0);
+        expect(cursor.yend).toBeCloseTo(plot.height() * 0.1);
+    });
+
+    it('should be constrained on the top side by the chart margin when dragging and orientation is box', function () {
+        plot = $.plot("#placeholder", [sampledata], {
+            rangecursors: [
+                {
+                    name: 'Blue cursor',
+                    color: 'blue',
+                    orientation: 'box',
+                    position: {  relativeXStart: 0.5, relativeXEnd: 0.6, relativeYStart: 0.5, relativeYEnd: 0.6 }
+                }
+            ],
+            xaxes: [ { position: 'top' } ]
+        });
+
+        jasmine.clock().tick(20);
+
+        var plotOffset = plot.getPlotOffset();
+        var cursorX = plotOffset.left + plot.width() * 0.5 + 20;
+        var cursorY = plotOffset.top + plot.height() * 0.5 + 20;
+
+        var dragY = -(plot.height() * 0.6 + 5);
+        var options = { mouseX: cursorX,
+            mouseY: cursorY,
+            dy: dragY };
+        $('.flot-overlay').simulate("flotdrag", options);
+
+        jasmine.clock().tick(20);
+        var cursor = plot.getRangeCursors()[0];
+        expect(cursor.ystart).toBe(0);
+        expect(cursor.yend).toBeCloseTo(plot.height() * 0.1);
     });
 
     it('should not be constrained on the top side by the chart margin when dragging when constrainToEdge is false', function () {
@@ -307,7 +338,7 @@ describe("Cursors interaction", function () {
                     color: 'blue',
                     constrainToEdge: false,
                     orientation: 'horizontal',
-                    position: { relativeStart: 0.5, relativeEnd: 0.6 }
+                    position: { relativeYStart: 0.5, relativeYEnd: 0.6 }
                 }
             ],
             xaxes: [ { position: 'top' } ]
@@ -327,8 +358,40 @@ describe("Cursors interaction", function () {
 
         jasmine.clock().tick(20);
         var cursor = plot.getRangeCursors()[0];
-        expect(cursor.start).not.toBe(0);
-        expect(cursor.end).not.toBeCloseTo(plot.height() * 0.1);
+        expect(cursor.ystart).not.toBe(0);
+        expect(cursor.yend).not.toBeCloseTo(plot.height() * 0.1);
+    });
+
+    it('should not be constrained on the top side by the chart margin when dragging when constrainToEdge is false and orientation is box', function () {
+        plot = $.plot("#placeholder", [sampledata], {
+            rangecursors: [
+                {
+                    name: 'Blue cursor',
+                    color: 'blue',
+                    constrainToEdge: false,
+                    orientation: 'box',
+                    position: {  relativeXStart: 0.5, relativeXEnd: 0.6, relativeYStart: 0.5, relativeYEnd: 0.6 }
+                }
+            ],
+            xaxes: [ { position: 'top' } ]
+        });
+
+        jasmine.clock().tick(20);
+
+        var plotOffset = plot.getPlotOffset();
+        var cursorX = plotOffset.left + plot.width() * 0.5 + 20;
+        var cursorY = plotOffset.top + plot.height() * 0.5 + 20;
+
+        var dragY = -(plot.height() * 0.6 + 5);
+        var options = { mouseX: cursorX,
+            mouseY: cursorY,
+            dy: dragY };
+        $('.flot-overlay').simulate("flotdrag", options);
+
+        jasmine.clock().tick(20);
+        var cursor = plot.getRangeCursors()[0];
+        expect(cursor.ystart).not.toBe(0);
+        expect(cursor.yend).not.toBeCloseTo(plot.height() * 0.1);
     });
 
     it('should be constrained on the bottom side by the chart margin when dragging', function () {
@@ -338,7 +401,7 @@ describe("Cursors interaction", function () {
                     name: 'Blue cursor',
                     color: 'blue',
                     orientation: 'horizontal',
-                    position: { relativeStart: 0.5, relativeEnd: 0.6 }
+                    position: { relativeYStart: 0.5, relativeYEnd: 0.6 }
                 }
             ]
         });
@@ -357,8 +420,38 @@ describe("Cursors interaction", function () {
 
         jasmine.clock().tick(20);
         var cursor = plot.getRangeCursors()[0];
-        expect(cursor.start).toBeCloseTo(plot.height() * 0.9);
-        expect(cursor.end).toBe(plot.height());
+        expect(cursor.ystart).toBeCloseTo(plot.height() * 0.9);
+        expect(cursor.yend).toBe(plot.height());
+    });
+
+    it('should be constrained on the bottom side by the chart margin when dragging and orientation is box', function () {
+        plot = $.plot("#placeholder", [sampledata], {
+            rangecursors: [
+                {
+                    name: 'Blue cursor',
+                    color: 'blue',
+                    orientation: 'box',
+                    position: { relativeXStart: 0.5, relativeXEnd: 0.6, relativeYStart: 0.5, relativeYEnd: 0.6 }
+                }
+            ]
+        });
+
+        jasmine.clock().tick(20);
+
+        var plotOffset = plot.getPlotOffset();
+        var cursorX = plotOffset.left + plot.width() * 0.5 + 20;
+        var cursorY = plotOffset.top + plot.height() * 0.5 + 20;
+
+        var dragY = plot.height() * 0.4 + 5;
+        var options = { mouseX: cursorX,
+            mouseY: cursorY,
+            dy: dragY };
+        $('.flot-overlay').simulate("flotdrag", options);
+
+        jasmine.clock().tick(20);
+        var cursor = plot.getRangeCursors()[0];
+        expect(cursor.ystart).toBeCloseTo(plot.height() * 0.9);
+        expect(cursor.yend).toBe(plot.height());
     });
 
     it('should not be constrained on the bottom side by the chart margin when dragging if constrainToEdge is false', function () {
@@ -369,7 +462,7 @@ describe("Cursors interaction", function () {
                     color: 'blue',
                     constrainToEdge: false,
                     orientation: 'horizontal',
-                    position: { relativeStart: 0.5, relativeEnd: 0.6 }
+                    position: { relativeYStart: 0.5, relativeYEnd: 0.6 }
                 }
             ]
         });
@@ -388,8 +481,38 @@ describe("Cursors interaction", function () {
 
         jasmine.clock().tick(20);
         var cursor = plot.getRangeCursors()[0];
-        expect(cursor.start).not.toBeCloseTo(plot.height() * 0.9);
-        expect(cursor.end).not.toBe(plot.height());
+        expect(cursor.ystart).not.toBeCloseTo(plot.height() * 0.9);
+        expect(cursor.yend).not.toBe(plot.height());
+    });
+    it('should not be constrained on the bottom side by the chart margin when dragging if constrainToEdge is false and orientation is box', function () {
+        plot = $.plot("#placeholder", [sampledata], {
+            rangecursors: [
+                {
+                    name: 'Blue cursor',
+                    color: 'blue',
+                    constrainToEdge: false,
+                    orientation: 'box',
+                    position: { relativeXStart: 0.5, relativeXEnd: 0.6, relativeYStart: 0.5, relativeYEnd: 0.6 }
+                }
+            ]
+        });
+
+        jasmine.clock().tick(20);
+
+        var plotOffset = plot.getPlotOffset();
+        var cursorX = plotOffset.left + plot.width() * 0.5;
+        var cursorY = plotOffset.top + plot.height() * 0.5 + 20;
+
+        var dragY = plot.height() * 0.4 + 5;
+        var options = { mouseX: cursorX,
+            mouseY: cursorY,
+            dy: dragY };
+        $('.flot-overlay').simulate("flotdrag", options);
+
+        jasmine.clock().tick(20);
+        var cursor = plot.getRangeCursors()[0];
+        expect(cursor.ystart).not.toBeCloseTo(plot.height() * 0.9);
+        expect(cursor.yend).not.toBe(plot.height());
     });
 
     it('should only move the start edge when the mouse is dragging the start edge', function () {
@@ -398,7 +521,7 @@ describe("Cursors interaction", function () {
                 {
                     name: 'Blue cursor',
                     color: 'blue',
-                    position: { relativeStart: 0.5, relativeEnd: 0.6 }
+                    position: { relativeXStart: 0.5, relativeXEnd: 0.6 }
                 }
             ]
         });
@@ -414,8 +537,8 @@ describe("Cursors interaction", function () {
 
         jasmine.clock().tick(20);
         var cursor = plot.getRangeCursors()[0];
-        expect(cursor.start).toBeCloseTo(plot.width() * 0.5 - 13);
-        expect(cursor.end).toBeCloseTo(plot.width() * 0.6);
+        expect(cursor.xstart).toBeCloseTo(plot.width() * 0.5 - 13);
+        expect(cursor.xend).toBeCloseTo(plot.width() * 0.6);
     });
 
     it('should only move the end edge when the mouse is dragging the end edge', function () {
@@ -424,7 +547,7 @@ describe("Cursors interaction", function () {
                 {
                     name: 'Blue cursor',
                     color: 'blue',
-                    position: { relativeStart: 0.5, relativeEnd: 0.6 }
+                    position: { relativeXStart: 0.5, relativeXEnd: 0.6 }
                 }
             ]
         });
@@ -440,8 +563,8 @@ describe("Cursors interaction", function () {
 
         jasmine.clock().tick(20);
         var cursor = plot.getRangeCursors()[0];
-        expect(cursor.start).toBeCloseTo(plot.width() * 0.5);
-        expect(cursor.end).toBeCloseTo(Math.floor(plot.width() * 0.6 + 13));
+        expect(cursor.xstart).toBeCloseTo(plot.width() * 0.5);
+        expect(cursor.xend).toBeCloseTo(Math.floor(plot.width() * 0.6 + 13));
     });
 
     it('should be possible to drag cursors with the mouse from the vertical line if the cursor is positioned relative to axes', function () {
@@ -450,7 +573,7 @@ describe("Cursors interaction", function () {
                 {
                     name: 'Blue cursor',
                     color: 'blue',
-                    position: { start: 0, end: 1 }
+                    position: { xstart: 0, xend: 1 }
                 }
             ]
         });
@@ -470,7 +593,7 @@ describe("Cursors interaction", function () {
         jasmine.clock().tick(20);
 
         var cursor = plot.getRangeCursors()[0];
-        expect(cursor.start).toBeCloseTo(dragX, 0);
+        expect(cursor.xstart).toBeCloseTo(dragX, 0);
     });
 
     it('should be possible to drag cursors with the mouse from the horizontal line if the cursor is positioned relative to axes', function () {
@@ -480,7 +603,7 @@ describe("Cursors interaction", function () {
                     name: 'Blue cursor',
                     color: 'blue',
                     orientation: 'horizontal',
-                    position: { start: 1.23, end: 1.13 }
+                    position: { ystart: 1.23, yend: 1.13 }
                 }
             ]
         });
@@ -500,7 +623,7 @@ describe("Cursors interaction", function () {
         jasmine.clock().tick(20);
 
         var cursor = plot.getRangeCursors()[0];
-        expect(cursor.start).toBeCloseTo(dragY, -1);
+        expect(cursor.ystart).toBeCloseTo(dragY, -1);
     });
 
     it('should prevent default action of the event when moving a cursor', function () {
@@ -509,7 +632,7 @@ describe("Cursors interaction", function () {
                 {
                     name: 'Blue cursor',
                     color: 'blue',
-                    position: { relativeStart: 0.5, relativeEnd: 0.6 }
+                    position: { relativeXStart: 0.5, relativeXEnd: 0.6 }
                 }
             ]
         });
@@ -543,7 +666,7 @@ describe("Cursors interaction", function () {
                 {
                     name: 'Blue cursor',
                     color: 'blue',
-                    position: { relativeStart: 0.5, relativeEnd: 0.6 }
+                    position: { relativeXStart: 0.5, relativeXEnd: 0.6 }
                 }
             ]
         });
@@ -565,8 +688,8 @@ describe("Cursors interaction", function () {
 
         var cursor = plot.getRangeCursors()[0];
         expect(cursor.selected).toBe(false);
-        expect(cursor.start).not.toBe(plot.height() * 0.5 + 13);
-        expect(cursor.end).not.toBe(plot.height() * 0.6 + 5);
+        expect(cursor.xstart).not.toBe(plot.height() * 0.5 + 13);
+        expect(cursor.xend).not.toBe(plot.height() * 0.6 + 5);
     });
 
     it('should not pan the graph when dragging the cursor outside the plot area', function () {
@@ -578,7 +701,7 @@ describe("Cursors interaction", function () {
                 {
                     name: 'Blue cursor',
                     color: 'blue',
-                    position: { relativeStart: 0.5, relativeEnd: 0.6 }
+                    position: { relativeXStart: 0.5, relativeXEnd: 0.6 }
                 }
             ]
         });
@@ -612,7 +735,7 @@ describe("Cursors interaction", function () {
                     {
                         name: 'Blue cursor',
                         color: 'blue',
-                        position: { relativeStart: 0.5, relativeEnd: 0.6 }
+                        position: { relativeXStart: 0.5, relativeXEnd: 0.6 }
                     }
                 ]
             });
@@ -626,7 +749,7 @@ describe("Cursors interaction", function () {
             var eventHolder = plot.getEventHolder();
             simulate.mouseMove(eventHolder, cursorX, cursorY);
 
-            expect($('#placeholder').css('cursor')).toBe('col-resize');
+            expect($('#placeholder').css('cursor')).toBe('ew-resize');
         });
 
         it('shouldn\'t change the mouse pointer when the mouse is at the same x but the cursor doesn\'t have a vertical line', function () {
@@ -636,7 +759,7 @@ describe("Cursors interaction", function () {
                         name: 'Blue cursor',
                         orientation: 'horizontal',
                         color: 'blue',
-                        position: { relativeStart: 0.5, relativeEnd: 0.6 }
+                        position: { relativeYStart: 0.5, relativeYEnd: 0.6 }
                     }
                 ]
             });
@@ -660,7 +783,7 @@ describe("Cursors interaction", function () {
                         name: 'Blue cursor',
                         color: 'blue',
                         orientation: 'horizontal',
-                        position: { relativeStart: 0.5, relativeEnd: 0.6 }
+                        position: { relativeYStart: 0.5, relativeYEnd: 0.6 }
                     }
                 ]
             });
@@ -674,7 +797,7 @@ describe("Cursors interaction", function () {
             var eventHolder = plot.getEventHolder();
             simulate.mouseMove(eventHolder, cursorX, cursorY);
 
-            expect($('#placeholder').css('cursor')).toBe('row-resize');
+            expect($('#placeholder').css('cursor')).toBe('ns-resize');
         });
 
         it('should set the mouse pointer of the holder div to default on chart shutdown', function () {
@@ -683,7 +806,7 @@ describe("Cursors interaction", function () {
                     {
                         name: 'Blue cursor',
                         color: 'blue',
-                        position: { relativeStart: 0.5, relativeEnd: 0.6 }
+                        position: { relativeXStart: 0.5, relativeXEnd: 0.6 }
                     }
                 ]
             });
@@ -697,7 +820,7 @@ describe("Cursors interaction", function () {
             var eventHolder = plot.getEventHolder();
             simulate.mouseMove(eventHolder, cursorX, cursorY);
 
-            expect($('#placeholder').css('cursor')).toBe('col-resize');
+            expect($('#placeholder').css('cursor')).toBe('ew-resize');
 
             plot.shutdown();
 

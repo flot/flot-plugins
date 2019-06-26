@@ -122,8 +122,8 @@ describe('Flot cursors', function () {
             mode: 'xy',
             color: 'blue',
             position: {
-                relativeStart: 0.7,
-                relativeEnd: 0.71
+                relativeXStart: 0.7,
+                relativeXEnd: 0.71
             }
         });
 
@@ -139,8 +139,8 @@ describe('Flot cursors', function () {
                 {
                     name: 'Blue cursor',
                     color: 'blue',
-                    start: 3,
-                    end: 1.5
+                    xstart: 3,
+                    xend: 1.5
                 }
             ]
         });
@@ -334,8 +334,8 @@ describe('Flot cursors', function () {
                         name: 'Blue cursor',
                         color: 'blue',
                         position: {
-                            start: 1,
-                            end: 1.15
+                            xstart: 1,
+                            xend: 1.15
                         },
                         showLabel: true
                     } ]
@@ -354,8 +354,8 @@ describe('Flot cursors', function () {
                         name: 'Blue cursor',
                         color: 'blue',
                         position: {
-                            start: 1,
-                            end: 1.15
+                            xstart: 1,
+                            xend: 1.15
                         },
                         showLabel: false
                     } ]
@@ -375,8 +375,8 @@ describe('Flot cursors', function () {
                         color: 'blue',
                         showLabel: true,
                         position: {
-                            start: 1.0,
-                            end: 1.15
+                            xstart: 1.0,
+                            xend: 1.15
                         }
                     }
                 ]
@@ -396,8 +396,8 @@ describe('Flot cursors', function () {
                         color: 'blue',
                         showLabel: true,
                         position: {
-                            start: 1,
-                            end: 1.15
+                            xstart: 1,
+                            xend: 1.15
                         }
                     }
                 ]
@@ -415,8 +415,8 @@ describe('Flot cursors', function () {
                     name: 'Blue cursor',
                     color: 'blue',
                     position: {
-                        x: 1,
-                        y: 1.15
+                        xstart: 1,
+                        xend: 1.15
                     },
                     showLabel: true,
                     showValue: true
@@ -447,7 +447,7 @@ describe('Flot cursors', function () {
                 rangecursors: [{
                     name: 'Blue cursor',
                     color: 'blue',
-                    position: { relativeStart: 0.5, relativeEnd: 0.6 },
+                    position: { relativeXStart: 0.5, relativeXEnd: 0.6 },
                     showLabel: true,
                     showValue: true,
                     defaultxaxis: 1,
@@ -507,8 +507,8 @@ describe('Flot cursors', function () {
                         name: 'Blue cursor',
                         color: 'blue',
                         position: {
-                            start: 1,
-                            end: 1.15
+                            xstart: 1,
+                            xend: 1.15
                         },
                         showValue: true
                     }
@@ -532,8 +532,8 @@ describe('Flot cursors', function () {
                         name: 'Blue cursor',
                         color: 'blue',
                         position: {
-                            start: 1,
-                            end: 1.15
+                            xstart: 1,
+                            xend: 1.15
                         },
                         showValue: true
                     }
