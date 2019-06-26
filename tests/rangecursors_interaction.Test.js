@@ -299,6 +299,37 @@ describe("Cursors interaction", function () {
         expect(cursor.yend).toBeCloseTo(plot.height() * 0.1);
     });
 
+    it('should be constrained on the top side by the chart margin when dragging and orientation is box', function () {
+        plot = $.plot("#placeholder", [sampledata], {
+            rangecursors: [
+                {
+                    name: 'Blue cursor',
+                    color: 'blue',
+                    orientation: 'box',
+                    position: {  relativeXStart: 0.5, relativeXEnd: 0.6, relativeYStart: 0.5, relativeYEnd: 0.6 }
+                }
+            ],
+            xaxes: [ { position: 'top' } ]
+        });
+
+        jasmine.clock().tick(20);
+
+        var plotOffset = plot.getPlotOffset();
+        var cursorX = plotOffset.left + plot.width() * 0.5 + 20;
+        var cursorY = plotOffset.top + plot.height() * 0.5 + 20;
+
+        var dragY = -(plot.height() * 0.6 + 5);
+        var options = { mouseX: cursorX,
+            mouseY: cursorY,
+            dy: dragY };
+        $('.flot-overlay').simulate("flotdrag", options);
+
+        jasmine.clock().tick(20);
+        var cursor = plot.getRangeCursors()[0];
+        expect(cursor.ystart).toBe(0);
+        expect(cursor.yend).toBeCloseTo(plot.height() * 0.1);
+    });
+
     it('should not be constrained on the top side by the chart margin when dragging when constrainToEdge is false', function () {
         plot = $.plot("#placeholder", [sampledata], {
             rangecursors: [
@@ -317,6 +348,38 @@ describe("Cursors interaction", function () {
 
         var plotOffset = plot.getPlotOffset();
         var cursorX = plotOffset.left + plot.width() * 0.5;
+        var cursorY = plotOffset.top + plot.height() * 0.5 + 20;
+
+        var dragY = -(plot.height() * 0.6 + 5);
+        var options = { mouseX: cursorX,
+            mouseY: cursorY,
+            dy: dragY };
+        $('.flot-overlay').simulate("flotdrag", options);
+
+        jasmine.clock().tick(20);
+        var cursor = plot.getRangeCursors()[0];
+        expect(cursor.ystart).not.toBe(0);
+        expect(cursor.yend).not.toBeCloseTo(plot.height() * 0.1);
+    });
+
+    it('should not be constrained on the top side by the chart margin when dragging when constrainToEdge is false and orientation is box', function () {
+        plot = $.plot("#placeholder", [sampledata], {
+            rangecursors: [
+                {
+                    name: 'Blue cursor',
+                    color: 'blue',
+                    constrainToEdge: false,
+                    orientation: 'box',
+                    position: {  relativeXStart: 0.5, relativeXEnd: 0.6, relativeYStart: 0.5, relativeYEnd: 0.6 }
+                }
+            ],
+            xaxes: [ { position: 'top' } ]
+        });
+
+        jasmine.clock().tick(20);
+
+        var plotOffset = plot.getPlotOffset();
+        var cursorX = plotOffset.left + plot.width() * 0.5 + 20;
         var cursorY = plotOffset.top + plot.height() * 0.5 + 20;
 
         var dragY = -(plot.height() * 0.6 + 5);
@@ -361,6 +424,36 @@ describe("Cursors interaction", function () {
         expect(cursor.yend).toBe(plot.height());
     });
 
+    it('should be constrained on the bottom side by the chart margin when dragging and orientation is box', function () {
+        plot = $.plot("#placeholder", [sampledata], {
+            rangecursors: [
+                {
+                    name: 'Blue cursor',
+                    color: 'blue',
+                    orientation: 'box',
+                    position: { relativeXStart: 0.5, relativeXEnd: 0.6, relativeYStart: 0.5, relativeYEnd: 0.6 }
+                }
+            ]
+        });
+
+        jasmine.clock().tick(20);
+
+        var plotOffset = plot.getPlotOffset();
+        var cursorX = plotOffset.left + plot.width() * 0.5 + 20;
+        var cursorY = plotOffset.top + plot.height() * 0.5 + 20;
+
+        var dragY = plot.height() * 0.4 + 5;
+        var options = { mouseX: cursorX,
+            mouseY: cursorY,
+            dy: dragY };
+        $('.flot-overlay').simulate("flotdrag", options);
+
+        jasmine.clock().tick(20);
+        var cursor = plot.getRangeCursors()[0];
+        expect(cursor.ystart).toBeCloseTo(plot.height() * 0.9);
+        expect(cursor.yend).toBe(plot.height());
+    });
+
     it('should not be constrained on the bottom side by the chart margin when dragging if constrainToEdge is false', function () {
         plot = $.plot("#placeholder", [sampledata], {
             rangecursors: [
@@ -370,6 +463,36 @@ describe("Cursors interaction", function () {
                     constrainToEdge: false,
                     orientation: 'horizontal',
                     position: { relativeYStart: 0.5, relativeYEnd: 0.6 }
+                }
+            ]
+        });
+
+        jasmine.clock().tick(20);
+
+        var plotOffset = plot.getPlotOffset();
+        var cursorX = plotOffset.left + plot.width() * 0.5;
+        var cursorY = plotOffset.top + plot.height() * 0.5 + 20;
+
+        var dragY = plot.height() * 0.4 + 5;
+        var options = { mouseX: cursorX,
+            mouseY: cursorY,
+            dy: dragY };
+        $('.flot-overlay').simulate("flotdrag", options);
+
+        jasmine.clock().tick(20);
+        var cursor = plot.getRangeCursors()[0];
+        expect(cursor.ystart).not.toBeCloseTo(plot.height() * 0.9);
+        expect(cursor.yend).not.toBe(plot.height());
+    });
+    it('should not be constrained on the bottom side by the chart margin when dragging if constrainToEdge is false and orientation is box', function () {
+        plot = $.plot("#placeholder", [sampledata], {
+            rangecursors: [
+                {
+                    name: 'Blue cursor',
+                    color: 'blue',
+                    constrainToEdge: false,
+                    orientation: 'box',
+                    position: { relativeXStart: 0.5, relativeXEnd: 0.6, relativeYStart: 0.5, relativeYEnd: 0.6 }
                 }
             ]
         });

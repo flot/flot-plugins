@@ -71,6 +71,33 @@ describe('Cursors Position', function () {
         expect(cursors[0].yend).toBe(0.75 * plot.height());
     });
 
+    it('should be possible to position the box cursor relative to the canvas', function () {
+        plot = $.plot("#placeholder", [sampledata2], {
+            rangecursors: [
+                {
+                    name: 'Blue cursor',
+                    orientation: 'box',
+                    color: 'blue',
+                    position: {
+                        relativeXStart: 0.5,
+                        relativeXEnd: 0.75,
+                        relativeYStart: 0.5,
+                        relativeYEnd: 0.75
+                    }
+                }
+            ]
+        });
+
+        jasmine.clock().tick(20);
+
+        var cursors = plot.getRangeCursors();
+        expect(cursors.length).toBe(1);
+        expect(cursors[0].xstart).toBe(0.5 * plot.width());
+        expect(cursors[0].xend).toBe(0.75 * plot.width());
+        expect(cursors[0].ystart).toBe(0.5 * plot.height());
+        expect(cursors[0].yend).toBe(0.75 * plot.height());
+    });
+
     it('Cursors positioned relative to the canvas should be constrained by the canvas size', function () {
         plot = $.plot("#placeholder", [sampledata2], {
             rangecursors: [

@@ -7,7 +7,7 @@ describe("Touch cursors interaction", function () {
     var sampledata = [[0, 1], [1, 1.1], [2, 1.2]];
     var plot;
     var placeholder;
-    var vertoptions, horzoptions;
+    var vertoptions, horzoptions, boxoptions;
 
     beforeEach(function () {
         var fixture = setFixtures('<div id="demo-container" style="width: 600px;height: 400px">').find('#demo-container').get(0);
@@ -37,6 +37,24 @@ describe("Touch cursors interaction", function () {
                     color: 'blue',
                     orientation: 'horizontal',
                     position: {
+                        relativeYStart: 0.5,
+                        relativeYEnd: 0.6
+                    }
+                }
+            ],
+            zoom: { active: true },
+            pan: { active: true }
+        };
+
+        boxoptions = {
+            rangecursors: [
+                {
+                    name: 'Blue cursor',
+                    color: 'blue',
+                    orientation: 'box',
+                    position: {
+                        relativeXStart: 0.5,
+                        relativeXEnd: 0.6,
                         relativeYStart: 0.5,
                         relativeYEnd: 0.6
                     }
@@ -105,6 +123,26 @@ describe("Touch cursors interaction", function () {
         plot = $.plot("#placeholder", [sampledata], horzoptions);
 
         var cursorX = plot.offset().left + plot.width() * 0.3;
+        var cursorY = plot.offset().top + plot.height() * 0.5 + 20;
+
+        jasmine.clock().tick(20);
+
+        var eventHolder = $('#placeholder').find('.flot-overlay');
+        var e = { touches: [{ pageX: cursorX, pageY: cursorY }] };
+        eventHolder[0].dispatchEvent(new CustomEvent('panstart', { detail: e }));
+
+        var cursor = plot.getRangeCursors()[0];
+        expect(cursor.selected).toBe(true);
+
+        eventHolder[0].dispatchEvent(new CustomEvent('panend', { detail: e }));
+
+        expect(cursor.selected).toBe(false);
+    });
+
+    it('should become selected on panstart on cursor horizontal line and unselected on panend when orientation is box', function () {
+        plot = $.plot("#placeholder", [sampledata], boxoptions);
+
+        var cursorX = plot.offset().left + plot.width() * 0.5 + 20;
         var cursorY = plot.offset().top + plot.height() * 0.5 + 20;
 
         jasmine.clock().tick(20);
@@ -278,7 +316,49 @@ describe("Touch cursors interaction", function () {
         expect(cursor.ystart).toBe(0);
         expect(cursor.yend).toBeCloseTo(plot.height() * 0.1, 0.01);
     });
+    it('should be constrained on the top side by the chart margin when touch dragging and orientation is box', function () {
+        plot = $.plot("#placeholder", [sampledata], {
+            rangecursors: [
+                {
+                    name: 'Blue cursor',
+                    color: 'blue',
+                    orientation: 'box',
+                    position: {
+                        relativeXStart: 0.5,
+                        relativeXEnd: 0.6,
+                        relativeYStart: 0.5,
+                        relativeYEnd: 0.6
+                    }
+                }
+            ],
+            xaxes: [
+                {
+                    position: 'top'
+                }]
+        });
 
+        var cursorX = plot.offset().left + plot.width() * 0.5 + 20;
+        var cursorY = plot.offset().top + plot.height() * 0.5 + 20;
+
+        jasmine.clock().tick(20);
+
+        var eventHolder = $('#placeholder').find('.flot-overlay');
+        var e = { touches: [{ pageX: cursorX, pageY: cursorY }] };
+        eventHolder[0].dispatchEvent(new CustomEvent('panstart', { detail: e }));
+
+        cursorY = plot.offset().top - 5;
+
+        e = { touches: [{ pageX: cursorX, pageY: cursorY }] };
+        eventHolder[0].dispatchEvent(new CustomEvent('pandrag', { detail: e }));
+
+        eventHolder[0].dispatchEvent(new CustomEvent('panend', { detail: e }));
+
+        jasmine.clock().tick(20);
+
+        var cursor = plot.getRangeCursors()[0];
+        expect(cursor.ystart).toBe(0);
+        expect(cursor.yend).toBeCloseTo(plot.height() * 0.1, 0.01);
+    });
     it('should be constrained on the bottom side by the chart margin when touch dragging', function () {
         plot = $.plot("#placeholder", [sampledata], horzoptions);
 
