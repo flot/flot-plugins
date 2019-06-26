@@ -807,6 +807,76 @@ THE SOFTWARE.
         }
     }
 
+    function drawRangeLine(plot, ctx, cursor) {
+        if (cursor.showBorders) {
+            var extent = clampStartAndEnd(plot, cursor);
+            if (!extent) {
+                return;
+            }
+
+            ctx.beginPath();
+            ctx.strokeStyle = cursor.color;
+            ctx.lineWidth = cursor.lineWidth;
+            if (cursor.orientation === 'vertical') {
+                var start = extent.xstart;
+                var end = extent.xend;
+                ctx.moveTo(start, plot.height() / 2);
+                ctx.lineTo(end, plot.height() / 2);
+                if (Math.abs(start - end) > Number.EPSILON) {
+                    drawArrowHead(ctx, cursor, 'left', cursor.xstart, plot.height() / 2);
+                }
+
+                if (Math.abs(end - start) > Number.EPSILON) {
+                    drawArrowHead(ctx, cursor, 'right', cursor.end, plot.height() / 2);
+                }
+            } else if (cursor.orientation === 'horizontal') {
+                var start = extent.ystart;
+                var end = extent.yend;
+                    ctx.moveTo(plot.width() / 2, start);
+                ctx.lineTo(plot.width() / 2, end);
+
+                if (Math.abs(start - end) > Number.EPSILON) {
+                    drawArrowHead(ctx, cursor, 'up', plot.width() / 2, cursor.ystart);
+                }
+
+                if (Math.abs(end - start) > Number.EPSILON) {
+                    drawArrowHead(ctx, cursor, 'down', plot.width() / 2, cursor.yend);
+                }
+            }
+
+            ctx.stroke();
+        }
+    }
+
+    function drawArrowHead (ctx, cursor, direction, x, y) {
+        switch (direction) {
+            case 'left':
+                ctx.moveTo(x, y);
+                ctx.lineTo(x + constants.arrowHeadLength, y - constants.arrowHeadLength / 2);
+                ctx.moveTo(x, y);
+                ctx.lineTo(x + constants.arrowHeadLength, y + constants.arrowHeadLength / 2);
+                break;
+            case 'right':
+                ctx.moveTo(x, y);
+                ctx.lineTo(x - constants.arrowHeadLength, y - constants.arrowHeadLength / 2);
+                ctx.moveTo(x, y);
+                ctx.lineTo(x - constants.arrowHeadLength, y + constants.arrowHeadLength / 2);
+                break;
+            case 'up':
+                ctx.moveTo(x, y);
+                ctx.lineTo(x - constants.arrowHeadLength / 2, y + constants.arrowHeadLength);
+                ctx.moveTo(x, y);
+                ctx.lineTo(x + constants.arrowHeadLength / 2, y + constants.arrowHeadLength);
+                break;
+            case 'down':
+                ctx.moveTo(x, y);
+                ctx.lineTo(x - constants.arrowHeadLength / 2, y - constants.arrowHeadLength);
+                ctx.moveTo(x, y);
+                ctx.lineTo(x + constants.arrowHeadLength / 2, y - constants.arrowHeadLength);
+                break;
+        }
+    }
+
     function computeCursorsPrecision(plot, axis, canvasPosition) {
         var canvas2 = axis.direction === "x" ? canvasPosition + 1 : canvasPosition - 1,
             point1 = axis.c2p(canvasPosition),
@@ -939,76 +1009,6 @@ THE SOFTWARE.
             ctx.fillRect(0, ystart, xstart, yend - ystart);
             ctx.fillRect(xend, ystart, plot.width() - xend, yend - ystart);
             ctx.fillRect(0, yend, plot.width(), plot.height() - yend);
-        }
-    }
-
-    function drawRangeLine(plot, ctx, cursor) {
-        if (cursor.showBorders) {
-            var extent = clampStartAndEnd(plot, cursor);
-            if (!extent) {
-                return;
-            }
-
-            ctx.beginPath();
-            ctx.strokeStyle = cursor.color;
-            ctx.lineWidth = cursor.lineWidth;
-            if (cursor.orientation === 'vertical') {
-                var start = extent.xstart;
-                var end = extent.xend;
-                ctx.moveTo(start, plot.height() / 2);
-                ctx.lineTo(end, plot.height() / 2);
-                if (Math.abs(start - end) > Number.EPSILON) {
-                    drawArrowHead(ctx, cursor, 'left', cursor.xstart, plot.height() / 2);
-                }
-
-                if (Math.abs(end - start) > Number.EPSILON) {
-                    drawArrowHead(ctx, cursor, 'right', cursor.end, plot.height() / 2);
-                }
-            } else if (cursor.orientation === 'horizontal') {
-                var start = extent.ystart;
-                var end = extent.yend;
-                    ctx.moveTo(plot.width() / 2, start);
-                ctx.lineTo(plot.width() / 2, end);
-
-                if (Math.abs(start - end) > Number.EPSILON) {
-                    drawArrowHead(ctx, cursor, 'up', plot.width() / 2, cursor.ystart);
-                }
-
-                if (Math.abs(end - start) > Number.EPSILON) {
-                    drawArrowHead(ctx, cursor, 'down', plot.width() / 2, cursor.yend);
-                }
-            }
-
-            ctx.stroke();
-        }
-    }
-
-    function drawArrowHead (ctx, cursor, direction, x, y) {
-        switch (direction) {
-            case 'left':
-                ctx.moveTo(x, y);
-                ctx.lineTo(x + constants.arrowHeadLength, y - constants.arrowHeadLength / 2);
-                ctx.moveTo(x, y);
-                ctx.lineTo(x + constants.arrowHeadLength, y + constants.arrowHeadLength / 2);
-                break;
-            case 'right':
-                ctx.moveTo(x, y);
-                ctx.lineTo(x - constants.arrowHeadLength, y - constants.arrowHeadLength / 2);
-                ctx.moveTo(x, y);
-                ctx.lineTo(x - constants.arrowHeadLength, y + constants.arrowHeadLength / 2);
-                break;
-            case 'up':
-                ctx.moveTo(x, y);
-                ctx.lineTo(x - constants.arrowHeadLength / 2, y + constants.arrowHeadLength);
-                ctx.moveTo(x, y);
-                ctx.lineTo(x + constants.arrowHeadLength / 2, y + constants.arrowHeadLength);
-                break;
-            case 'down':
-                ctx.moveTo(x, y);
-                ctx.lineTo(x - constants.arrowHeadLength / 2, y - constants.arrowHeadLength);
-                ctx.moveTo(x, y);
-                ctx.lineTo(x + constants.arrowHeadLength / 2, y - constants.arrowHeadLength);
-                break;
         }
     }
 
