@@ -46,7 +46,7 @@ $(function () {
         plot.setupGrid();
         plot.draw();
 
-        setTimeout(updateChart, 30000);
+        setTimeout(updateChart, 16);
     }
 
     $('#checkbox_box').click(function() {
