@@ -27,4 +27,4 @@ npm run karma
 
 ## Plugin documentation
  - [JUMFlot](docs/JUMFlot/doc.flot.JUMFlot.md)
- - [National Instruments] (docs/NationalInstruments/ni.flot.md)
+ - [National Instruments](docs/NationalInstruments/ni.flot.md)
