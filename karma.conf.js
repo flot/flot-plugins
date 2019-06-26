@@ -54,6 +54,7 @@ module.exports = function (config) {
         'source/NationalInstruments/jquery.flot.range.cursors.js',
         'source/NationalInstruments/jquery.flot.scattergraph.js',
         'source/NationalInstruments/jquery.flot.axishandle.js',
+        'source/NationalInstruments/jquery.flot.parkinglot.js',
         'tests/cursors_dragUtilities.js',
         'tests/testHelpers.js',
         'tests/*Test.js',

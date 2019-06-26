@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Flot Parking Lot</title>
+    <link href="example.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="../../../node_modules/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="../../../node_modules/flot/dist/es5/jquery.flot.js"></script>
+    <script type="text/javascript" src="../../../node_modules/flot/lib/jquery.event.drag.js"></script>
+    <script type="text/javascript" src="../../../node_modules/flot/lib/jquery.mousewheel.js"></script>
+    <script type="text/javascript" src="../../../node_modules/flot-thumb-plugin/dist/es5/jquery.thumb.js"></script>
+    <script type="text/javascript" src="../../../source/NationalInstruments/jquery.flot.cursors.js"></script>
+    <script type="text/javascript" src="../../../source/NationalInstruments/jquery.flot.axishandle.js"></script>
+    <script type="text/javascript" src="../../../source/NationalInstruments/jquery.flot.parkinglot.js"></script>
+</head>
+<body>
+<style>
+    .thumbLabel {
+        /*stroke: rgb(0, 26, 255);
+		stroke-width: 2px;*/
+        fill:rgb(0, 26, 255);
+        font-size: 18px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        cursor: move;
+        pointer-events: all;
+    }
+    .thumbIcon {
+        stroke: rgb(0, 26, 255);
+        stroke-width: 2px;
+        fill:rgb(0, 174, 255);
+        cursor: move;
+        pointer-events: all;
+    }
+    .parkingLot-dockerArrow {
+        fill: gray;
+        stroke: white;
+    }
+    .parkingLot-docker {
+        fill: none;
+        stroke: black;
+        stroke-width: 0.5;
+    }
+</style>
+<div id="header">
+    <h2>Flot Parking Lot</h2>
+</div>
+<div id="content">
+    <div class="demo-container">
+        <div id="placeholder" class="demo-placeholder"></div>
+    </div>
+</div>
+</body>
+<script src="example.js"></script>
+</html>
