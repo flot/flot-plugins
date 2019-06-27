@@ -1,6 +1,6 @@
 {
   "name": "flot-plugins",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "description": "A collection of plug-ins for flot charts",
   "main": "index.js",
   "directories": {
