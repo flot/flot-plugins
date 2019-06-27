@@ -26,4 +26,5 @@ npm run karma
 - Push the commit and tag using `git push --follow-tags`. With a passing CI this will automatically trigger a deployment to NPM.
 
 ## Plugin documentation
- - [JUMFlot](docs/doc.flot.JUMFlot.md)
+ - [JUMFlot](docs/JUMFlot/doc.flot.JUMFlot.md)
+ - [National Instruments](docs/NationalInstruments/ni.flot.md)

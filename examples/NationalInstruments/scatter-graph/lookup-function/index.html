@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Flot Scatter Graph Examples: Lookup function</title>
+	<link href="../examples.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="../../../../node_modules/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="../../../../node_modules/flot/dist/es5/jquery.flot.js"></script>
+	<script type="text/javascript" src="../../../../source/NationalInstruments/jquery.flot.scattergraph.js"></script>
+    <script type="text/javascript">
+    function lookupColor (value) {
+        switch (value) {
+            case 70:
+                return 'red';
+            case 71:
+                return 'green';
+            case 72:
+                return 'blue';
+            case 73:
+                return 'magenta';
+        }
+    }
+
+    function lookupShape (value) {
+        switch (value) {
+            case 80:
+                return 'cross_v';
+            case 81:
+                return 'cross_d';
+            case 82:
+                return 'triangle_s';
+            case 88:
+                return 'asterisk';
+        }
+    }
+
+    function lookupSize (value) {
+        switch (value) {
+            case 95:
+                return 10;
+            case 96:
+                return 15;
+            case 97:
+                return 20;
+            case 98:
+                return 25;
+        }
+    }
+
+    function generateData () {
+        var d1 = [], d2 = [], d3 = [], d4 = [];
+        var x = 10, y = 10;
+        for (var i = 0; i < 10; i++) {
+            d1.push({x: Math.random() * x, y: Math.random() * y, color: 70, shape: 80, size: 95});
+        }
+
+        for (var i = 0; i < 10; i++) {
+            d2.push({x: Math.random() * x, y: y + Math.random() * y, color: 71, shape: 81, size: 96});
+        }
+
+        for (var i = 0; i < 10; i++) {
+            d3.push({x: x + Math.random() * x, y: Math.random() * y, color: 72, shape: 82, size: 97});
+        }
+
+        for (var i = 0; i < 10; i++) {
+            d4.push({x: x + Math.random() * x, y: y + Math.random() * y, color: 73, shape: 88, size: 98});
+        }
+
+        return d1.concat(d2).concat(d3).concat(d4);
+    }
+
+    function plot () {
+        var minx = 0, maxx = 25, miny = 0, maxy = 25, data;
+        options = {
+            grid: {show: true},
+            xaxis: {
+                show: true,
+                min: minx,
+                max: maxx,
+                autoScale: 'none',
+                p2c: function(p) { return p; }
+            },
+            yaxis: {
+                show: true,
+                min: miny,
+                max: maxy,
+                autoScale: 'none',
+                p2c: function(p) { return p; }
+            },
+            series: {
+                scattergraph: {
+                    show: true,
+                    colors: lookupColor,
+                    shapes: lookupShape,
+                    sizes: lookupSize,
+                }
+            }
+        };
+
+        if (data === undefined) {
+            data = generateData();
+        }
+
+        $.plot("#placeholder", [[data]], options);
+    }
+
+    $(function() {
+        plot();
+        // Add the Flot version string to the footer
+
+        $("#footer").prepend("Flot " + $.plot.version + " &ndash; ");
+	});
+	</script>
+</head>
+<body>
+
+	<div id="header">
+		<h2>Basic Usage</h2>
+	</div>
+
+	<div id="content">
+
+		<div class="demo-container">
+			<div id="placeholder" class="demo-placeholder"></div>
+        </div>
+	</div>
+
+	<div id="footer">
+		Copyright 2019- National Instruments
+	</div>
+
+</body>
+</html>
