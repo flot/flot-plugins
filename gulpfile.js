@@ -1,10 +1,9 @@
 var gulp = require('gulp');
-var gulpDebug = require('gulp-debug');
 var filesExist = require('files-exist');
+var debug = require('gulp-debug');
 var concat = require('gulp-concat');
 var babel = require('gulp-babel');
 var maps = require('gulp-sourcemaps');
-var gulpSequence = require('gulp-sequence');
 var uglifyes = require('uglify-es');
 var composer = require('gulp-uglify/composer');
 var uglify = composer(uglifyes, console);
@@ -24,30 +23,38 @@ gulp.task('build_flot_plugins', function () {
     return gulp.src(filesExist(src4, { exceptionMessage: 'Missing file'}))
         .pipe(gulp.dest('dist/docs'));
 });
-gulp.task('build_flot_ni', function () {
+gulp.task('build_charting', function () {
     'use strict';
     var src = [
+        'lib/cbuffer.js',
+        'source/NationalInstruments/jquery.flot.historybuffer.js',
+        'source/NationalInstruments/jquery.flot.historybuffer.numeric.js',
+        'source/NationalInstruments/jquery.flot.historybuffer.analogWaveform.js',
+        'source/NationalInstruments/jquery.flot.segment-tree.js',
+        'source/NationalInstruments/jquery.flot.charting.js',
+    ];
+    return gulp.src(filesExist(src, { exceptionMessage: 'Missing file'}))
+        .pipe(concat('jquery.flot.charting.js'))
+        .pipe(gulp.dest('dist/source/NationalInstruments'))
+        .pipe(debug());
+});
+gulp.task('build_charting2', function () {
+    var src2 = [
         'source/NationalInstruments/jquery.flot.scattergraph.js',
         'source/NationalInstruments/jquery.flot.cursors.js',
         'source/NationalInstruments/jquery.thumb.js',
         'source/NationalInstruments/jquery.flot.parkinglot.js',
         'source/NationalInstruments/jquery.flot.range.cursors.js',
         'source/NationalInstruments/jquery.flot.axishandle.js',
-        'source/NationalInstruments/jquery.flot.charting.js',
-        'source/NationalInstruments/jquery.flot.historybuffer.analogWaveform.js',
-        'source/NationalInstruments/jquery.flot.historybuffer.js',
-        'source/NationalInstruments/jquery.flot.historybuffer.numeric.js',
-        'source/NationalInstruments/jquery.flot.segment-tree.js',
+        'dist/source/NationalInstruments/jquery.flot.charting.js',
     ];
-    return gulp.src(filesExist(src, { exceptionMessage: 'Missing file'}))
+    return gulp.src(filesExist(src2, { exceptionMessage: 'Missing file'}))
         .pipe(maps.init())
         .pipe(babel({
             presets: ['es2015'],
-            plugins: ["external-helpers-2"]
         }))
-        // .pipe(concat('jquery.flot.scattergraph.js'))
         .pipe(uglify({ecma: 5}))
         .pipe(maps.write('./'))
         .pipe(gulp.dest('dist/es5/NationalInstruments'));
 });
-gulp.task('build', gulp.series('build_flot_plugins', 'build_flot_ni'));
+gulp.task('build', gulp.series('build_charting', 'build_charting2', 'build_flot_plugins'));
