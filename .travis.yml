@@ -15,18 +15,18 @@ before_install:
 before_script:
 - sudo chown root /opt/google/chrome/chrome-sandbox
 - sudo chmod 4755 /opt/google/chrome/chrome-sandbox
-before_deploy:
-- tar -tf $(npm pack)
-install:
 - npm install
 script:
 - npm test
 - npm run build
+before_deploy:
+- npm prune --production
+- "./build.sh"
 env:
   secure: b8N5ilujDZuoJrBMZS8HMgyLOUT12M/5GKMXxQFoZuxzcnijTJjJZAMkm4yXB7jEZQeWHcXscHcBKr/yFH/M4UMt7AHvzZVyZvYDGALgWC8Z0KwGjqZUTEbvs22UXo+hHu/PS0BIXHphohGKnRpImCUltuZqg7sOnIUSHvPrBdSV1uIFFRp0iduiSYWw5A2npY0M7Liy3iiZYNaqJYFa6tdpUI1K2CQCgXdv1VQLegdetRaXWzncsPwvdd9AAQ701c7kN31ijX/00CctokDhf/I36MsJQCPon2J5jkp+qQ2FUQABaNlEuM/Xtnqxk4zEq4GG16jVU5a+vAIDQ8iw84CIKArmfhrrQKXYVyCDPa19fM6YgWHwYJRrG7KJDIoXDjBFnFYgNwyQJubkOiY0I3/F57zTChfnQIJ34HeKTV8WlK18pcuv7cq9OWgvdlFsfHkHiBSgEUx5MalLSTmsq1FBrvXbxy2mYuceYTvawNrV6RnM5H3ini109frFkLVkUtrgJxQXZu5tiyYmMW6A2Muhy4N4IdRnwuTtQMR9VPG68M5Inp3WqbQDAcSl6rPQDkiJqDi06ki9ESqhxA5tKjoTcYvXmOKfgtu05RccHNUbC0oY/W0W3JARUWH5sjU3RDP9YP+KBER2jmsw2KZzk3faD6nlzbNqrwHw52DNgrw=
 deploy:
 - provider: script
-  script: npm publish dist/
+  script: npm publish build/
   skip_cleanup: true
   on:
     tags: true
