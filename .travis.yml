@@ -29,7 +29,7 @@ deploy:
   skip_cleanup: true
   email: webapps.ops@ni.com
   api_key:
-    secure: kJyDLyReYLVr01TidziatIzTk1GpTvGLQo7XLAQReDemRkN13905TaYPsrl5IMnkLfk6RaizbCscx7z1MGi3P/U+2DC10OE4pbnUVrcCZLX9RPqLmVgVWxX+pPH+Mu3Td/Ay7CYeNdo031Lufxbc+m0kGlVnMyPBwctU36ES+OI=
+    secure: uqKJHqC+2q1oLuKxhLy7kmZz+nVdp0lFyjFe/T4koxwIzBCJlHR7cdF0QbIPwj/PdQ+CUeWW6ZU9vkKhu44SA8jZPBeF1kMYKVS3i/LMggJgq/Dij9INVUk7BtT1vkPBxJ7vLG2LpYlBta81yHb6F9xF6j7JMhs4Y2rgYBTjvitgmkh8vfoj+LlaEcEPc4HHEPX8tyYo8F1DNj8xl+sATd8iO8w5sClnxvI0OchKZCfeMprwKQaRIYLTNgwqqdog24CT0SAvgVAz+egnPxcP/2jm8tYaomy0QeQenjkuuUw1mqkeXf7KbCF3722Ov5JyQFBxKpX/5OGiNr0sCOQxmY1+TJ5lujcGul2Rse7w//ijYmUpAMBDSrczH9DpmS9qIeVsMPIEp608YiFStzJ2+a0uMR6yofho6FxD9EsRwrraH6dhVg0olxrs3SiXsdkEmaFtfOQy0FXy54lBkRzdlEbTN4DED9/dGHMsx+RQ12YSO8moQ9xny2+1Iyvtam5cfqzAQLAdqOecbeZbwOcOzhYJQzpLCVOTpidYEYxPqJkXeo8pTlrOGBEETmymCz9+aZEyzRmAjSvq97Ba+BkAXLOAk4SL5MtsYlPpBzk55XYOJNPa/wEm0iAu+IisLrVGsqQImZNkBsbbjNQ5DvFWyKKHNU5JflZ5YdQK41oMvjU=
   on:
     tags: true
     repo: flot/flot-plugins
