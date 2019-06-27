@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Flot Examples: Cursors</title>
+    <link href="example.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="../../../node_modules/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="../../../node_modules/flot/dist/es5/jquery.flot.js"></script>
+    <script type="text/javascript" src="../../../node_modules/flot-thumb-plugin/dist/es5/jquery.thumb.js"></script>
+    <script type="text/javascript" src="../../../source/NationalInstruments/jquery.flot.cursors.js"></script>
+    <script type="text/javascript" src="../../../node_modules/flot/lib/jquery.event.drag.js"></script>
+    <script type="text/javascript" src="../../../node_modules/flot/lib/jquery.mousewheel.js"></script>
+    <script type="text/javascript" src="example.js"></script>
+</head>
+
+<body>
+    <style>
+        .thumbLabel {
+            /*stroke: rgb(0, 26, 255);
+            stroke-width: 2px;*/
+            fill:rgb(0, 26, 255);
+            font-size: 18px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            cursor: move;
+            pointer-events: all;
+        }
+        .thumbIcon {
+            stroke: rgb(0, 26, 255);
+            stroke-width: 2px;
+            fill:rgb(0, 174, 255);
+            cursor: move;
+            pointer-events: all;
+        }
+    </style>
+    <div id="header">
+        <h2>Flot cursors</h2>
+    </div>
+    <div id="content">
+        <div class="demo-container">
+            <div id="placeholder" class="demo-placeholder"></div>
+        </div>
+        <p>
+            <input id="checkbox" type="checkbox" name="Dynamic data" value="0" checked>Dynamic chart data
+            <input id="interpolate_checkbox" type="checkbox" name="Dynamic data" value="1">Interpolate
+        </p>
+        <p>You can add cursors that will track data.</p>
+        <p>If you combine it with listening cursor updates, you can use it to display the data.</p>
+        <p id="hoverdata"></p>
+    </div>
+</body>
+
+</html>

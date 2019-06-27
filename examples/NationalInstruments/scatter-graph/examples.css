@@ -1,0 +1,21 @@
+.demo-placeholder {
+    box-sizing: border-box;
+    width: 850px;
+    height: 450px;
+    padding: 20px 15px 15px 15px;
+    margin: 15px auto 30px auto;
+    border: 1px solid #ddd;
+    background: #fff;
+}
+
+#filled {
+    margin: auto 2px auto 20px;
+}
+
+#drawLines {
+    margin: auto 2px auto 20px;
+}
+
+#lineWidth {
+    margin: auto 2px auto 20px;
+}

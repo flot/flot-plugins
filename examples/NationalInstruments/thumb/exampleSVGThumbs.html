@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>SVG Navigation Example</title>
+    <script type="text/javascript" src="../../../node_modules/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="../../../source/NationalInstruments/jquery.thumb.js"></script>
+
+    <style>
+        .draggable {
+            fill: #581845;
+            cursor: move;
+        }
+        .nonDraggable {
+            fill: rgb(129, 170, 41);
+            cursor: not-allowed;
+        }
+        .vertical {
+            fill: #C70039;
+            cursor: ns-resize;
+        }
+        .horizontal {
+            fill: #FFC300;
+            cursor: ew-resize;
+        }
+        .thumbLabel {
+            stroke: rgb(0, 26, 255);
+            stroke-width: 1px;
+            fill:rgb(0, 26, 255);
+            font-size: 20px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            cursor: inherit;
+            pointer-events: none;
+        }
+        .thumbIcon {
+            cursor: inherit;
+            pointer-events: all;
+        }
+        .thumb {
+            -webkit-tap-highlight-color:rgba(255, 255, 255, 0);
+        }
+    </style>
+
+    <script  type="text/javascript">
+        $(function() {
+            //create layer and thumbs
+            var verticalConstraint = function (mouseX, mouseY, currentX, currentY) {
+                return [currentX, mouseY];
+            }
+
+            var horizontalConstraint = function (mouseX, mouseY, currentX, currentY) {
+                return [mouseX, currentY];
+            }
+
+            var svgRoot = $.thumb.createSVGLayer();
+            var thumbOpts1 = {
+                    radius: 20,
+                    x: 150,
+                    y: 150,
+                    svgRoot: svgRoot,
+                    shape: 'left',
+                    abbreviation: 'TD',
+                    constraintFunction: verticalConstraint,
+                    classList: ['draggable', 'vertical']
+                },
+                thumbOpts2 = {
+                    radius: 20,
+                    x: 400,
+                    y: 400,
+                    svgRoot: svgRoot,
+                    shape: 'bottom',
+                    abbreviation: 'LR',
+                    constraintFunction: horizontalConstraint,
+                    classList: ['draggable', 'horizontal']
+                },
+                thumbOpts3 = {
+                    radius: 20,
+                    x: 150,
+                    y: 400,
+                    svgRoot: svgRoot,
+                    shape: 'right',
+                    abbreviation: 'Fixed',
+                    classList: ['nonDraggable']
+                },
+                thumbOpts4 = {
+                    radius: 20,
+                    x: 400,
+                    y: 150,
+                    svgRoot: svgRoot,
+                    shape: 'top',
+                    abbreviation: 'ALL',
+                    classList: ['draggable']
+                }
+
+            $.thumb.createThumb(thumbOpts1);
+            $.thumb.createThumb(thumbOpts2);
+            $.thumb.createThumb(thumbOpts3);
+            $.thumb.createThumb(thumbOpts4);
+        });
+
+    </script>
+</head>
+
+<body>
+    <div>
+        <h2>SVG draggable elements example</h2>
+    </div>
+    <div>
+        This examples ilustrates 4 thumbs: a static green thumb,
+      and 3 thumbs that can be moved based on mouse movement or touch gestures.
+      <br>
+      The dark red thumb can be moved only on vertical, meanwhile the dark orange
+      can be moved only on horizontal.
+    </div>
+</body>
+
+</html>
