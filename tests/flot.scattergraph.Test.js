@@ -20,7 +20,7 @@ describe('A scatter graph', function () {
                 scattergraph: {
                     show: true
                 }
-            }
+            },
         };
         series = {
             xaxis: {
@@ -46,7 +46,7 @@ describe('A scatter graph', function () {
         spyOn(ctx, 'arc').and.callThrough();
 
         plot.hooks.processRawData.forEach(function (hook) {
-            hook(plot, {points: []}, series.data, {points: []});
+            hook(plot, {points: [], xaxis: {options: {}}, yaxis: {options: {}}}, series.data, {points: []});
         });
         plot.hooks.drawSeries.forEach(function (hook) {
             hook(plot, ctx, series);
@@ -64,7 +64,7 @@ describe('A scatter graph', function () {
         spyOn(ctx, 'arc').and.callThrough();
 
         plot.hooks.processRawData.forEach(function (hook) {
-            hook(plot, {points: []}, series.data, {points: []});
+            hook(plot, {points: [], xaxis: {options: {}}, yaxis: {options: {}}}, series.data, {points: []});
         });
         plot.hooks.drawSeries.forEach(function (hook) {
             hook(plot, ctx, series);
@@ -84,7 +84,7 @@ describe('A scatter graph', function () {
         spyOn(ctx, 'arc').and.callThrough();
 
         plot.hooks.processRawData.forEach(function (hook) {
-            hook(plot, {points: []}, series.data, {points: []});
+            hook(plot, {points: [], xaxis: {options: {}}, yaxis: {options: {}}}, series.data, {points: []});
         });
         plot.hooks.drawSeries.forEach(function (hook) {
             hook(plot, ctx, series);
@@ -102,7 +102,7 @@ describe('A scatter graph', function () {
         spyOn(ctx, 'arc').and.callThrough();
 
         plot.hooks.processRawData.forEach(function (hook) {
-            hook(plot, {points: []}, series.data, {points: []});
+            hook(plot, {points: [], xaxis: {options: {}}, yaxis: {options: {}}}, series.data, {points: []});
         });
         plot.hooks.drawSeries.forEach(function (hook) {
             hook(plot, ctx, series);
@@ -120,7 +120,7 @@ describe('A scatter graph', function () {
         spyOn(ctx, 'arc').and.callThrough();
 
         plot.hooks.processRawData.forEach(function (hook) {
-            hook(plot, {points: []}, series.data, {points: []});
+            hook(plot, {points: [], xaxis: {options: {}}, yaxis: {options: {}}}, series.data, {points: []});
         });
         plot.hooks.drawSeries.forEach(function (hook) {
             hook(plot, ctx, series);
@@ -138,7 +138,7 @@ describe('A scatter graph', function () {
         spyOn(ctx, 'arc').and.callThrough();
         const spy = spyOnProperty(ctx, 'strokeStyle', 'set');
         plot.hooks.processRawData.forEach(function (hook) {
-            hook(plot, {points: []}, series.data, {points: []});
+            hook(plot, {points: [], xaxis: {options: {}}, yaxis: {options: {}}}, series.data, {points: []});
         });
         plot.hooks.drawSeries.forEach(function (hook) {
             hook(plot, ctx, series);
@@ -160,7 +160,7 @@ describe('A scatter graph', function () {
         spyOn(ctx, 'arc').and.callThrough();
         const spy = spyOnProperty(ctx, 'strokeStyle', 'set');
         plot.hooks.processRawData.forEach(function (hook) {
-            hook(plot, {points: []}, series.data, {points: []});
+            hook(plot, {points: [], xaxis: {options: {}}, yaxis: {options: {}}}, series.data, {points: []});
         });
         plot.hooks.drawSeries.forEach(function (hook) {
             hook(plot, ctx, series);
@@ -185,7 +185,7 @@ describe('A scatter graph', function () {
         spyOn(ctx, 'arc').and.callThrough();
         const spy = spyOnProperty(ctx, 'strokeStyle', 'set');
         plot.hooks.processRawData.forEach(function (hook) {
-            hook(plot, {points: []}, series.data, {points: []});
+            hook(plot, {points: [], xaxis: {options: {}}, yaxis: {options: {}}}, series.data, {points: []});
         });
         plot.hooks.drawSeries.forEach(function (hook) {
             hook(plot, ctx, series);
@@ -209,7 +209,7 @@ describe('A scatter graph', function () {
         spyOn(ctx, 'arc').and.callThrough();
         const spy = spyOnProperty(ctx, 'strokeStyle', 'set');
         plot.hooks.processRawData.forEach(function (hook) {
-            hook(plot, {points: []}, series.data, {points: []});
+            hook(plot, {points: [], xaxis: {options: {}}, yaxis: {options: {}}}, series.data, {points: []});
         });
         plot.hooks.drawSeries.forEach(function (hook) {
             hook(plot, ctx, series);
@@ -237,7 +237,7 @@ describe('A scatter graph', function () {
         spyOn(ctx, 'arc').and.callThrough();
         const spy = spyOnProperty(ctx, 'strokeStyle', 'set');
         plot.hooks.processRawData.forEach(function (hook) {
-            hook(plot, {points: []}, series.data, {points: []});
+            hook(plot, {points: [], xaxis: {options: {}}, yaxis: {options: {}}}, series.data, {points: []});
         });
         plot.hooks.drawSeries.forEach(function (hook) {
             hook(plot, ctx, series);
@@ -275,7 +275,7 @@ describe('A scatter graph', function () {
         spyOn(ctx, 'arc').and.callThrough();
         const spy = spyOnProperty(ctx, 'strokeStyle', 'set');
         plot.hooks.processRawData.forEach(function (hook) {
-            hook(plot, {points: []}, series.data, {points: []});
+            hook(plot, {points: [], xaxis: {options: {}}, yaxis: {options: {}}}, series.data, {points: []});
         });
         plot.hooks.drawSeries.forEach(function (hook) {
             hook(plot, ctx, series);
@@ -318,7 +318,7 @@ describe('A scatter graph', function () {
         spyOn(ctx, 'arc').and.callThrough();
         const spy = spyOnProperty(ctx, 'strokeStyle', 'set');
         plot.hooks.processRawData.forEach(function (hook) {
-            hook(plot, {points: []}, series.data, {points: []});
+            hook(plot, {points: [], xaxis: {options: {}}, yaxis: {options: {}}}, series.data, {points: []});
         });
         plot.hooks.drawSeries.forEach(function (hook) {
             hook(plot, ctx, series);
@@ -361,7 +361,7 @@ describe('A scatter graph', function () {
         var plot = $.plot(placeholder, [[]], options);
         series.data = [[{x: 1, y: 2, color: 1}, {x: 2, y: 3, color: 2}, {x: 3, y: 4, color: 3}, {x: 4, y: 5, color: 4}, {x: 5, y: 6, color: 5}]];
         plot.hooks.processRawData.forEach(function (hook) {
-            hook(plot, {points: []}, series.data, {points: []});
+            hook(plot, {points: [], xaxis: {options: {}}, yaxis: {options: {}}}, series.data, {points: []});
         });
         plot.hooks.drawSeries.forEach(function (hook) {
             hook(plot, ctx, series);
@@ -404,7 +404,7 @@ describe('A scatter graph', function () {
         series.data = [[{x: 1, y: 2, color: 1, shape: 1}, {x: 2, y: 3, color: 2, shape: 2}, {x: 3, y: 4, color: 3, shape: 3}, {x: 4, y: 5, color: 4, shape: 4}, {x: 5, y: 6, color: 5, shape: 5}]];
 
         plot.hooks.processRawData.forEach(function (hook) {
-            hook(plot, {points: []}, series.data, {points: []});
+            hook(plot, {points: [], xaxis: {options: {}}, yaxis: {options: {}}}, series.data, {points: []});
         });
         plot.hooks.drawSeries.forEach(function (hook) {
             hook(plot, ctx, series);
@@ -447,7 +447,7 @@ describe('A scatter graph', function () {
         series.data = [[{x: 1, y: 2, color: 1, shape: 1, size: 2}, {x: 2, y: 3, color: 2, shape: 2, size: 3}, {x: 3, y: 4, color: 3, shape: 3, size: 4}, {x: 4, y: 5, color: 4, shape: 4, size: 5}, {x: 5, y: 6, color: 5, shape: 5, size: 6}]];
 
         plot.hooks.processRawData.forEach(function (hook) {
-            hook(plot, {points: []}, series.data, {points: []});
+            hook(plot, {points: [], xaxis: {options: {}}, yaxis: {options: {}}}, series.data, {points: []});
         });
         plot.hooks.drawSeries.forEach(function (hook) {
             hook(plot, ctx, series);
