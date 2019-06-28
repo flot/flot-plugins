@@ -1,12 +1,9 @@
 var gulp = require('gulp');
 var filesExist = require('files-exist');
-var debug = require('gulp-debug');
 var concat = require('gulp-concat');
 var babel = require('gulp-babel');
 var maps = require('gulp-sourcemaps');
-var uglifyes = require('uglify-es');
-var composer = require('gulp-uglify/composer');
-var uglify = composer(uglifyes, console);
+const uglify = require('gulp-uglify');
 
 gulp.task('build_flot_plugins', function () {
     'use strict';
@@ -35,8 +32,7 @@ gulp.task('build_charting', function () {
     ];
     return gulp.src(filesExist(src, { exceptionMessage: 'Missing file'}))
         .pipe(concat('jquery.flot.charting.js'))
-        .pipe(gulp.dest('dist/source/NationalInstruments'))
-        .pipe(debug());
+        .pipe(gulp.dest('dist/source/NationalInstruments'));
 });
 gulp.task('build_charting2', function () {
     var src2 = [
@@ -46,14 +42,16 @@ gulp.task('build_charting2', function () {
         'source/NationalInstruments/jquery.flot.parkinglot.js',
         'source/NationalInstruments/jquery.flot.range.cursors.js',
         'source/NationalInstruments/jquery.flot.axishandle.js',
+        'source/NationalInstruments/jquery.flot.intensitygraph.js',
         'dist/source/NationalInstruments/jquery.flot.charting.js',
     ];
     return gulp.src(filesExist(src2, { exceptionMessage: 'Missing file'}))
         .pipe(maps.init())
         .pipe(babel({
-            presets: ['es2015'],
+            presets: ['@babel/env']
         }))
-        .pipe(uglify({ecma: 5}))
+        .pipe(concat('jquery.flot.plugins.js'))
+        .pipe(uglify())
         .pipe(maps.write('./'))
         .pipe(gulp.dest('dist/es5/NationalInstruments'));
 });

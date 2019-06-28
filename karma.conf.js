@@ -63,6 +63,7 @@ module.exports = function (config) {
         'source/NationalInstruments/jquery.flot.historybuffer.numeric.js',
         'source/NationalInstruments/jquery.flot.historybuffer.analogWaveform.js',
         'source/NationalInstruments/jquery.flot.segment-tree.js',
+        'node_modules/webcharts-development-settings/testsUtils/colors.js',
         'tests/cursors_dragUtilities.js',
         'tests/lib/jsverify.standalone.js',
         'tests/lib/jasmineHelpers2.js',
