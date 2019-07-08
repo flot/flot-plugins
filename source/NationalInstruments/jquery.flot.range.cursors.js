@@ -900,11 +900,11 @@ THE SOFTWARE.
             htmlNewline = '<br>';
 
         var xaxisPrecision = computeCursorsPrecision(plot, xaxis, cursor.xstart);
-        var xformattedValue = xaxis.tickFormatter(xaxis.c2p(cursor.xend) - xaxis.c2p(cursor.xstart), xaxis, xaxisPrecision);
+        var xformattedValue = xaxis.tickFormatter(xaxis.c2p(cursor.xend) - xaxis.c2p(cursor.xstart), xaxis, xaxisPrecision, plot);
         xformattedValue = xformattedValue.replace(htmlNewline, " ");
         xformattedValue = xformattedValue.replace(htmlSpace, " ");
         var yaxisPrecision = computeCursorsPrecision(plot, yaxis, cursor.ystart);
-        var yformattedValue = yaxis.tickFormatter(yaxis.c2p(cursor.yend) - yaxis.c2p(cursor.ystart), yaxis, yaxisPrecision);
+        var yformattedValue = yaxis.tickFormatter(yaxis.c2p(cursor.yend) - yaxis.c2p(cursor.ystart), yaxis, yaxisPrecision, plot);
         yformattedValue = yformattedValue.replace(htmlNewline, " ");
         yformattedValue = yformattedValue.replace(htmlSpace, " ");
         if (cursor.orientation === 'box') {
