@@ -3,3 +3,4 @@ debug.log
 coverage/**
 dist/
 .vscode
+.idea

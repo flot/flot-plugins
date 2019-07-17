@@ -37,11 +37,11 @@ gulp.task('build_charting', function () {
 gulp.task('build_charting2', function () {
     var src2 = [
         'source/NationalInstruments/jquery.flot.scattergraph.js',
-        'source/NationalInstruments/jquery.flot.cursors.js',
         'source/NationalInstruments/jquery.thumb.js',
+        'source/NationalInstruments/jquery.flot.cursors.js',
+        'source/NationalInstruments/jquery.flot.axishandle.js',
         'source/NationalInstruments/jquery.flot.parkinglot.js',
         'source/NationalInstruments/jquery.flot.range.cursors.js',
-        'source/NationalInstruments/jquery.flot.axishandle.js',
         'source/NationalInstruments/jquery.flot.intensitygraph.js',
         'dist/source/NationalInstruments/jquery.flot.charting.js',
     ];
