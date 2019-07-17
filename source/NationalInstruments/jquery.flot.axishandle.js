@@ -211,7 +211,7 @@ THE SOFTWARE.
             function extractTarget(touchedEl) {
                 let target = touchedEl,
                     elClass = touchedEl.getAttribute('class');
-                if (elClass.includes('thumbIcon') || elClass.includes('thumbLabel')) {
+                if (elClass.includes('interactionLayer')) {
                     target = touchedEl.parentNode;
                     elClass = target.getAttribute('class');
                 }
@@ -463,7 +463,7 @@ THE SOFTWARE.
         function updateThumbsLocation(handle, plot, width, height) {
             if (!handle.thumb) {
                 return;
-            } 
+            }
             const plotOffset = plot.getPlotOffset();
             if (isXAxisHandle(handle)) {
                 const thumbCy = handle.location === 'near'
