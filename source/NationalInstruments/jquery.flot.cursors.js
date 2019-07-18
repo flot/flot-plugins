@@ -564,7 +564,7 @@ THE SOFTWARE.
             function extractTarget(touchedEl) {
                 var target = touchedEl,
                     elClass = touchedEl.getAttribute('class');
-                if (elClass.includes('thumbIcon') || elClass.includes('thumbLabel')) {
+                if (elClass.includes('interactionLayer')) {
                     target = touchedEl.parentNode;
                     elClass = target.getAttribute('class');
                 }
