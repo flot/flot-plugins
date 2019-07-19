@@ -253,6 +253,7 @@ THE SOFTWARE.
         thumbInteractionLayer.setAttribute('pointer-events', 'all');
         thumbInteractionLayer.classList.add('interactionLayer');
         thumbInteractionLayer.style.fill = 'transparent';
+        thumbInteractionLayer.style.stroke = 'transparent';
         thumbGroup.appendChild(thumbInteractionLayer);
 
         // determine where to place the symbol by using the boundarybox
