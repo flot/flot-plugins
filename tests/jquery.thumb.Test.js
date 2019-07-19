@@ -74,6 +74,20 @@ describe('thumb plugin', function () {
                 expect(thumbElement.classList.contains(shape)).toBeTruthy();
             });
         });
+
+        it('there is a transparent interaction layer', () => {
+            const thumbOpts = {
+                x: 50,
+                y: 50,
+                size: 20,
+                svgRoot: svgRoot
+            };
+            $.thumb.createThumb(thumbOpts);
+            const thumbGroup = document.querySelector('.thumb');
+            const thumbInteractionLayer = thumbGroup.lastChild;
+            expect(thumbInteractionLayer.style.fill).toBe('transparent');
+            expect(thumbInteractionLayer.style.stroke).toBe('transparent');
+        });
     });
 
     describe('thumbs navigation', function() {
