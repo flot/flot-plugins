@@ -143,6 +143,7 @@ THE SOFTWARE.
             thumbLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text'),
             thumbTextBoundaryBox = document.createElementNS('http://www.w3.org/2000/svg', 'use'),
             thumbGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g'),
+            thumbInteractionLayer = document.createElementNS('http://www.w3.org/2000/svg', 'rect'),
             svgLayer = opts.svgRoot,
             radius = opts.size,
             cx = opts.x,
@@ -216,7 +217,7 @@ THE SOFTWARE.
         thumbLabel.setAttributeNS(null, 'lengthAdjust', 'spacingAndGlyphs');
         thumbLabel.setAttribute('class', 'thumbLabel');
         thumbLabel.textContent = opts.abbreviation;
-        thumbLabel.style.pointerEvents = 'all';
+        thumbLabel.style.pointerEvents = 'none';
 
         thumbGroup.appendChild(thumbIcon);
         thumbGroup.appendChild(thumbTextBoundaryBox);
@@ -241,6 +242,18 @@ THE SOFTWARE.
 
         thumbGroup.constraintFunction = opts.constraintFunction;
         svgLayer.appendChild(thumbGroup);
+
+        // thumb interaction layer
+        const bbox = thumbIcon.getBBox();
+        thumbInteractionLayer.setAttributeNS(null, 'width', bbox.width);
+        thumbInteractionLayer.setAttributeNS(null, 'height', bbox.height);
+        thumbInteractionLayer.setAttributeNS(null, 'x', bbox.x);
+        thumbInteractionLayer.setAttributeNS(null, 'y', bbox.y);
+        thumbInteractionLayer.setAttributeNS(null, 'transform', 'translate(' + -radius + ' ' + -radius + ')');
+        thumbInteractionLayer.setAttribute('pointer-events', 'all');
+        thumbInteractionLayer.classList.add('interactionLayer');
+        thumbInteractionLayer.style.fill = 'transparent';
+        thumbGroup.appendChild(thumbInteractionLayer);
 
         // determine where to place the symbol by using the boundarybox
         const boundaryBox = thumbTextBoundaryBox.getBBox();
@@ -383,15 +396,10 @@ THE SOFTWARE.
     }
 
     function extractTarget(evt) {
-        var target = evt.target;
-        var elClass = evt.target.getAttribute('class');
-        if (elClass && elClass.indexOf('thumbIcon') !== -1) {
-            target = evt.target.parentNode;
-            elClass = target.getAttribute('class');
-        }
-        if (elClass && elClass.indexOf('thumbLabel') !== -1) {
-            target = evt.target.parentNode;
-            elClass = target.getAttribute('class');
+        let target = evt.target;
+        let classes = target.getAttribute('class');
+        if (classes && classes.includes('interactionLayer')) {
+            return target.parentNode;
         }
         return target;
     }
