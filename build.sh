@@ -2,6 +2,7 @@
 build_dir="build"
 
 files=("dist"
+       "lib"
        "node_modules"
        "package.json"
 )
