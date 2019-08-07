@@ -267,6 +267,8 @@ THE SOFTWARE.
 
         _processRawData(plot, series, data, datapoints) {
             if (series.digitalWaveform.show) {
+                // data may have changed so we need to recalculate signal and bus values
+                this._initializeSignalsAndBuses = true;
                 datapoints.points = [];
                 // convert data to format with 3 points
                 // 1. x value, 2. state, 3. strength
@@ -292,13 +294,13 @@ THE SOFTWARE.
         }
 
         _lazyInitialize(plot) {
-            if (!this._initialized) {
+            if (this._initializeSignalsAndBuses) {
                 plot.getOptions().buses.forEach(bus => {
                     this._initializeBusValues(plot, bus);
                 });
                 this._initializeSignalAndBusPositions(plot);
 
-                this._initialized = true;
+                this._initializeSignalsAndBuses = false;
             }
         }
 
