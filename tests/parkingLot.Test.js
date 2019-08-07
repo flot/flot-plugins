@@ -269,6 +269,112 @@ describe('Parking Lot', () => {
             });
         });
 
+        [
+            { thumbLocationWord: 'top', edge: 'right', thumbLocation: 't' },
+            { thumbLocationWord: 'top', edge: 'left', thumbLocation: 't' },
+            { thumbLocationWord: 'bottom', edge: 'right', thumbLocation: 'b' },
+            { thumbLocationWord: 'bottom', edge: 'left', thumbLocation: 'b' },
+            { thumbLocationWord: 'left', edge: 'top', thumbLocation: 'l' },
+            { thumbLocationWord: 'left', edge: 'bottom', thumbLocation: 'l' },
+            { thumbLocationWord: 'right', edge: 'top', thumbLocation: 'r' },
+            { thumbLocationWord: 'right', edge: 'bottom', thumbLocation: 'r' },
+        ].forEach((parameter) => {
+            it(`should keep cursor thumb align with cursor line when the cursor thumb on ${parameter.thumbLocationWord} is moved into the graph range from ${parameter.edge}`, () => {
+                plot = $.plot("#placeholder", [sampleData], {
+                    cursors: [
+                        {
+                            showThumbs: parameter.thumbLocation,
+                            position: {
+                                relativeX: parameter.edge === 'right' ? 1.05 : -0.05,
+                                relativeY: parameter.edge === 'bottom' ? 1.05 : -0.05,
+                            },
+                        },
+                    ],
+                    parkingLot: {
+                    }
+                });
+                jasmine.clock().tick(20);
+
+                var cursor = plot.getCursors()[0]
+                var thumb = cursor.thumbs[0];
+                function thumbCenter() {
+                    var rect = thumb.getBoundingClientRect();
+                    return {
+                        x: (rect.left + rect.right) / 2,
+                        y: (rect.top + rect.bottom) / 2,
+                    };
+                }
+                var graphArea = {
+                    left: plot.offset().left + 1,
+                    right: plot.offset().left + plot.width(),
+                    top: plot.offset().top,
+                    bottom: plot.offset().top + plot.height(),
+                };
+
+                var delta = { x: 0, y: 0 },
+                    critalDelta = { x: 0, y: 0 }, // The drag delta that almost but not drag the thumb into the range
+                    secondDelta = { x: 0, y: 0 }, // Continue draging after the thumb gets into the range
+                    thumbInitCenter = thumbCenter();
+                switch (parameter.edge) {
+                case 'right':
+                    delta.x = graphArea.right - thumbInitCenter.x;
+                    critalDelta.x = delta.x + 1;
+                    secondDelta.x = -5;
+                    break;
+                case 'left':
+                    delta.x = graphArea.left - thumbInitCenter.x;
+                    critalDelta.x = delta.x - 1;
+                    secondDelta.x = 5;
+                    break;
+                case 'bottom':
+                    delta.y = graphArea.bottom - thumbInitCenter.y;
+                    critalDelta.y = delta.y + 1;
+                    secondDelta.y = -5;
+                    break;
+                case 'top':
+                    delta.y = graphArea.top - thumbInitCenter.y;
+                    critalDelta.y = delta.y - 1;
+                    secondDelta.y = 5;
+                    break;
+                }
+
+                function expectThumbInParkingLot() {
+                    expect(thumbCenter(thumb).x).toBeCloseTo(thumbInitCenter.x, 0);
+                    expect(thumbCenter(thumb).y).toBeCloseTo(thumbInitCenter.y, 0);    
+                }
+
+                function validateThumbAlignToCursor() {
+                    switch (parameter.edge) {
+                    case 'right':
+                    case 'left':
+                        expect(thumbCenter(thumb).x).toBeCloseTo(cursor.x + plot.offset().left, 0);
+                        break;
+                    case 'bottom':
+                    case 'top':
+                        expect(thumbCenter(thumb).y).toBeCloseTo(cursor.y + plot.offset().top, 0);
+                        break;
+                    }
+                }
+
+                simulate.mouseDown(thumb, 0, 0);
+                
+                simulate.mouseMove(thumb, critalDelta.x, critalDelta.y);
+                jasmine.clock().tick(20);
+                expectThumbInParkingLot();
+                
+                simulate.mouseMove(thumb, delta.x, delta.y);
+                jasmine.clock().tick(20);
+                validateThumbAlignToCursor();
+
+                simulate.mouseMove(thumb, secondDelta.x, secondDelta.y);
+                jasmine.clock().tick(20);
+                validateThumbAlignToCursor();
+
+                simulate.mouseUp(thumb, 0, 0);
+            });
+        });
+
+
         const isFirefox = typeof InstallTrigger !== 'undefined';
         // todo tlan: the following cases fail in Firefox
         const horizontalCases = [
