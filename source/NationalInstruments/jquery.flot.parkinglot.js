@@ -737,7 +737,6 @@ THE SOFTWARE.
         }
 
         _onThumbOutOfRange(event) {
-            console.log('out');
             // for the case where the thumb is off the graph we only need to add it to the docker
             // the parking lot's render method will position thumbs
             const orientation = event.detail.orientation;
@@ -776,7 +775,6 @@ THE SOFTWARE.
         }
 
         _onThumbIntoRange(plot, event) {
-            console.log('into');
             // for the case where thumb goes into the graph, not only we need to delete the thumb from the docker
             // but also we need to update thumb's position
             const orientation = event.detail.orientation;
@@ -914,7 +912,6 @@ THE SOFTWARE.
         static _updateThumbPosition(thumb, x, y) {
             const thumbPositionMatrix = thumb.getCTM();
 
-            console.log('_updateThumbPosition', x, y);
             const matrix = `matrix(${thumbPositionMatrix.a} ${thumbPositionMatrix.b} ${thumbPositionMatrix.c} ${thumbPositionMatrix.d} ${x} ${y})`;
             thumb.setAttribute('transform', matrix);
         };
