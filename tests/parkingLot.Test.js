@@ -413,7 +413,7 @@ describe('Parking Lot', () => {
                 // Since Firefox's element position is a little different, 1px buffer is used for the critical condition
                 switch (parameter.edge) {
                 case 'right':
-                    criticalDelta.x = graphRange.right - thumbInitCenter.x - 2 /* right edge has 1px lefter for thumb moving out */;
+                    criticalDelta.x = graphRange.right - thumbInitCenter.x - 1;
                     secondDelta.x = 2;
                     break;
                 case 'left':
