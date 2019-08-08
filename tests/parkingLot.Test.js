@@ -329,29 +329,29 @@ describe('Parking Lot', () => {
                     thumb = cursor.thumbs[0],
                     graphRange = getGraphRange(plot),
                     delta = { x: 0, y: 0 },
-                    critalDelta = { x: 0, y: 0 }, // The drag delta that almost but not drag the thumb into the range
+                    criticalDelta = { x: 0, y: 0 }, // The drag delta that almost but not drag the thumb into the range
                     secondDelta = { x: 0, y: 0 }, // Continue draging after the thumb gets into the range
                     thumbInitCenter = getElementCenter(thumb);
 
                 switch (parameter.edge) {
                 case 'right':
                     delta.x = graphRange.right - thumbInitCenter.x;
-                    critalDelta.x = delta.x + 1;
+                    criticalDelta.x = delta.x + 1;
                     secondDelta.x = -5;
                     break;
                 case 'left':
                     delta.x = graphRange.left + 1/* left edge has 1px righter for thumb moving in */ - thumbInitCenter.x;
-                    critalDelta.x = delta.x - 1;
+                    criticalDelta.x = delta.x - 1;
                     secondDelta.x = 5;
                     break;
                 case 'bottom':
                     delta.y = graphRange.bottom - thumbInitCenter.y;
-                    critalDelta.y = delta.y + 1;
+                    criticalDelta.y = delta.y + 1;
                     secondDelta.y = -5;
                     break;
                 case 'top':
                     delta.y = graphRange.top - thumbInitCenter.y;
-                    critalDelta.y = delta.y - 1;
+                    criticalDelta.y = delta.y - 1;
                     secondDelta.y = 5;
                     break;
                 }
@@ -363,7 +363,7 @@ describe('Parking Lot', () => {
 
                 simulate.mouseDown(thumb, 0, 0);
 
-                simulate.mouseMove(thumb, critalDelta.x, critalDelta.y);
+                simulate.mouseMove(thumb, criticalDelta.x, criticalDelta.y);
                 jasmine.clock().tick(20);
                 expectThumbInParkingLot();
 
@@ -401,37 +401,38 @@ describe('Parking Lot', () => {
                     }
                 });
                 jasmine.clock().tick(20);
-    
+
                 var cursor = plot.getCursors()[0],
                     thumb = cursor.thumbs[0],
                     parkingLot = plot.getParkingLot(),
                     graphRange = getGraphRange(plot),
-                    critalDelta = { x: 0, y: 0 }, // The drag delta that drag the thumb close to the edge
+                    criticalDelta = { x: 0, y: 0 }, // The drag delta that drag the thumb close to the edge
                     secondDelta = { x: 0, y: 0 }, // The final delta that drag the near-edge thumb out of the range
                     thumbInitCenter = getElementCenter(thumb);
-    
+
+                // Since Firefox's element position is a little different, 1px buffer is used for the critical condition
                 switch (parameter.edge) {
                 case 'right':
-                    critalDelta.x = graphRange.right - thumbInitCenter.x - 2 /* right edge has 1px lefter for thumb moving out */;
+                    criticalDelta.x = graphRange.right - thumbInitCenter.x - 2 /* right edge has 1px lefter for thumb moving out */;
                     secondDelta.x = 2;
                     break;
                 case 'left':
-                    critalDelta.x = graphRange.left - thumbInitCenter.x + 1;
+                    criticalDelta.x = graphRange.left - thumbInitCenter.x + 1;
                     secondDelta.x = -2;
                     break;
                 case 'bottom':
-                    critalDelta.y = graphRange.bottom - thumbInitCenter.y - 1;
+                    criticalDelta.y = graphRange.bottom - thumbInitCenter.y - 1;
                     secondDelta.y = 2;
                     break;
                 case 'top':
-                    critalDelta.y = graphRange.top - thumbInitCenter.y + 1;
+                    criticalDelta.y = graphRange.top - thumbInitCenter.y + 1;
                     secondDelta.y = -2;
                     break;
                 }
 
                 simulate.mouseDown(thumb, 0, 0);
                 
-                simulate.mouseMove(thumb, critalDelta.x, critalDelta.y);
+                simulate.mouseMove(thumb, criticalDelta.x, criticalDelta.y);
                 jasmine.clock().tick(20);
                 expect(parkingLot[`${parameter.expectedDocker}`].size).toBe(0);
                 validateThumbAlignToCursor(plot, thumb, parameter.thumbLocation, cursor);
