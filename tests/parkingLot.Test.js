@@ -406,26 +406,26 @@ describe('Parking Lot', () => {
                     thumb = cursor.thumbs[0],
                     parkingLot = plot.getParkingLot(),
                     graphRange = getGraphRange(plot),
-                    critalDelta = { x: 0, y: 0 }, // The drag delta that drag the thumb to the edge
-                    secondDelta = { x: 0, y: 0 }, // The final delta that drag the thumb on the edge out of the range
+                    critalDelta = { x: 0, y: 0 }, // The drag delta that drag the thumb close to the edge
+                    secondDelta = { x: 0, y: 0 }, // The final delta that drag the near-edge thumb out of the range
                     thumbInitCenter = getElementCenter(thumb);
     
                 switch (parameter.edge) {
                 case 'right':
-                    critalDelta.x = graphRange.right - thumbInitCenter.x - 1 /* right edge has 1px lefter for thumb moving out */;
-                    secondDelta.x = 1;
+                    critalDelta.x = graphRange.right - thumbInitCenter.x - 2 /* right edge has 1px lefter for thumb moving out */;
+                    secondDelta.x = 2;
                     break;
                 case 'left':
-                    critalDelta.x = graphRange.left - thumbInitCenter.x;
-                    secondDelta.x = -1;
+                    critalDelta.x = graphRange.left - thumbInitCenter.x + 1;
+                    secondDelta.x = -2;
                     break;
                 case 'bottom':
-                    critalDelta.y = graphRange.bottom - thumbInitCenter.y;
-                    secondDelta.y = 1;
+                    critalDelta.y = graphRange.bottom - thumbInitCenter.y - 1;
+                    secondDelta.y = 2;
                     break;
                 case 'top':
-                    critalDelta.y = graphRange.top - thumbInitCenter.y;
-                    secondDelta.y = -1;
+                    critalDelta.y = graphRange.top - thumbInitCenter.y + 1;
+                    secondDelta.y = -2;
                     break;
                 }
 
