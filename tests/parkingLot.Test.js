@@ -347,11 +347,11 @@ describe('Parking Lot', () => {
                     switch (parameter.edge) {
                     case 'right':
                     case 'left':
-                        expect(thumbCenter(thumb).x).toBeCloseTo(cursor.x + plot.offset().left, 0);
+                        expect(thumbCenter(thumb).x - (cursor.x + plot.offset().left)).toBeLessThan(2);
                         break;
                     case 'bottom':
                     case 'top':
-                        expect(thumbCenter(thumb).y).toBeCloseTo(cursor.y + plot.offset().top, 0);
+                        expect(thumbCenter(thumb).y - (cursor.y + plot.offset().top)).toBeLessThan(2);
                         break;
                     }
                 }
