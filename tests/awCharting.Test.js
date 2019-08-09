@@ -158,4 +158,18 @@ describe('A chart', function () {
 
         expect(plot.getData()[0].datapoints.points).toEqual([2, 2, 3, 3, 4, 4]);
     });
+
+    it('works with array of single analog waveform', function () {
+        var hb = new HistoryBufferWaveform(10);
+
+        hb.push([aw]);
+
+        plot = $.plot(placeholder, [{}], {
+            series: {
+                historyBuffer: hb
+            }
+        });
+
+        expect(plot.getData()[0].datapoints.points).toEqual([4, 1, 5, 2, 6, 3]);
+    });
 });
