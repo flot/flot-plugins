@@ -58,6 +58,8 @@ module.exports = function (config) {
         'source/NationalInstruments/jquery.flot.axishandle.js',
         'source/NationalInstruments/jquery.flot.parkinglot.js',
         'source/NationalInstruments/jquery.flot.intensitygraph.js',
+        'source/NationalInstruments/jquery.flot.digitalWaveform.js',
+        'source/NationalInstruments/jquery.flot.digitalAxis.js',
         'source/NationalInstruments/jquery.flot.charting.js',
         'source/NationalInstruments/jquery.flot.historybuffer.js',
         'source/NationalInstruments/jquery.flot.historybuffer.numeric.js',
