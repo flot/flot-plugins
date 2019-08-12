@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Digital Waveform Graph</title>
+    <link rel="stylesheet" type="text/css" href="examples.css">
+    <script type="text/javascript" src="../../../node_modules/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="../../../node_modules/flot/dist/es5/jquery.flot.js"></script>
+    <script type="text/javascript" src="../../../source/NationalInstruments/jquery.flot.digitalWaveform.js"></script>
+    <script type="text/javascript" src="../../../source/NationalInstruments/jquery.flot.digitalAxis.js"></script>
+
+    <script type="text/javascript">
+        $(function() {
+            'use strict';
+
+            let data = [
+                [0, 0, 0, 0, 0, 1, 1],
+                [0, 1, 1, 1, 1, 0, 1],
+                [1, 1, 1, 1, 0, 1, 0],
+                [1, 0, 0, 0, 1, 1, 1],
+                [0, 1, 1, 1, 0, 1, 0],
+                [1, 1, 1, 1, 1, 0, 0],
+                [0, 0, 0, 0, 1, 1, 0],
+                [0, 1, 1, 1, 0, 1, 1]
+            ];
+
+            let options = {
+                buses: [{}],
+                series: {
+                    flatdata: true,
+                    digitalWaveform: {
+                        show: true
+                    }
+                },
+                xaxis: {
+                    tickSize: 1,
+                    tickDecimals: 0,
+                    showMinorTicks: false
+                },
+                yaxis: {
+                    type: 'digital'
+                }
+            };
+
+            window.plot = $.plot('#placeholder', data, options);
+        });
+    </script>
+</head>
+
+<body>
+    <div id="header">
+        <h2>Digital waveform graph</h2>
+    </div>
+    <div id="content">
+        <div class="demo-container">
+            <div id="placeholder" class="demo-placeholder"><canvas id="theCanvas" class="flot-base" style="width: 100%; height: 100%"></div>
+        </div>
+    </div>
+</body>
+
+</html>

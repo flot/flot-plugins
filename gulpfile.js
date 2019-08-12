@@ -43,6 +43,8 @@ gulp.task('build_charting2', function () {
         'source/NationalInstruments/jquery.flot.parkinglot.js',
         'source/NationalInstruments/jquery.flot.range.cursors.js',
         'source/NationalInstruments/jquery.flot.intensitygraph.js',
+        'source/NationalInstruments/jquery.flot.digitalWaveform.js',
+        'source/NationalInstruments/jquery.flot.digitalAxis.js',
         'dist/source/NationalInstruments/jquery.flot.charting.js',
     ];
     return gulp.src(filesExist(src2, { exceptionMessage: 'Missing file'}))

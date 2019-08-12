@@ -7,5 +7,6 @@ Owner: National Instruments
  - [Axis handle](flot-axishandle.md)
  - [Cursors](flot-cursors.md)
  - [Range Cursor](flot-range-cursor.md)
- - [Charting](flot-charting.md)\
+ - [Charting](flot-charting.md)
  - [Intensity graph](intensitygraph.md)
+ - [Digital Waveform graph](flot-digital-waveform.md)
