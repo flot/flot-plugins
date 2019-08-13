@@ -327,21 +327,25 @@ THE SOFTWARE.
         }
 
         var page = getEventXYPosition(evt),
+            center = { x: page.X - currentState.deltaHandlingX, y: page.Y - currentState.deltaHandlingY },
             target = extractTarget(evt),
             svgRoot = extractSVGFromTarget(target),
-            eventHolder = svgRoot.eventHolder;
+            eventHolder = svgRoot.eventHolder,
+            positionHandled = false;
 
         if (currentState.selectedElement.constraintFunction) {
-            [page.X, page.Y] = currentState.selectedElement.constraintFunction(page.X, page.Y, currentState.x, currentState.y);
+            [page.X, page.Y, positionHandled] = currentState.selectedElement.constraintFunction(page.X, page.Y, currentState.x, currentState.y, center.x, center.y);
         }
 
-        var currentMatrix = currentState.selectedElement.getCTM(),
-            dx = page.X - currentState.x,
-            dy = page.Y - currentState.y;
-
-        currentMatrix.e += dx;
-        currentMatrix.f += dy;
-        currentState.selectedElement.transform.baseVal.getItem(0).setMatrix(currentMatrix);
+        if (!positionHandled) {
+            var currentMatrix = currentState.selectedElement.getCTM(),
+                dx = page.X - currentState.x,
+                dy = page.Y - currentState.y;
+    
+            currentMatrix.e += dx;
+            currentMatrix.f += dy;
+            currentState.selectedElement.transform.baseVal.getItem(0).setMatrix(currentMatrix);
+        }
 
         //update last mouse position
         currentState.x = page.X;
