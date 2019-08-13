@@ -68,13 +68,11 @@ console.log(hb1.toDataSeries()); //[[4, 1], [5, 2], [6, 3], [null, null], [1, 1]
 
     /* store an element in the history buffer, don't update stats */
     HistoryBufferWaveform.prototype.pushNoStatsUpdate = function (item) {
-        if (this.width === 1) {
+        if (this.width === 1 && !Array.isArray(item)) {
             this.buffer.push(item);
-        } else {
-            if (Array.isArray(item) && item.length === this.width) {
-                for (var i = 0; i < this.width; i++) {
-                    this.buffers[i].push(item[i]);
-                }
+        } else if (Array.isArray(item) && item.length === this.width) {
+            for (var i = 0; i < this.width; i++) {
+                this.buffers[i].push(item[i]);
             }
         }
     };

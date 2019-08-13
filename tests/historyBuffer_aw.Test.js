@@ -177,6 +177,22 @@ describe('An analogWaveform History Buffer', function () {
         //expect(serializedHb['data']).toEqual([[1, 11], [2, 22], [3, 33]]);
     });
 
+    it('can push array of waveforms for multiple plots', function () {
+        var hb = new HistoryBufferWaveform(10, 2);
+
+        hb.push([aw, aw1]);
+
+        expect(hb.toArray()).toEqual([[aw, aw1]]);
+    });
+
+    it('can push array of single waveform for single plot', function () {
+        var hb = new HistoryBufferWaveform(10);
+
+        hb.push([aw]);
+
+        expect(hb.toArray()).toEqual([aw]);
+    });
+
     describe('registerOnChange notification', function () {
         it('has an registerOnChange method', function () {
             var hb = new HistoryBufferWaveform(10, 1);
