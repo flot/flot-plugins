@@ -309,7 +309,7 @@ describe('Parking Lot', () => {
             { thumbLocationWord: 'right', edge: 'top', thumbLocation: 'r' },
             { thumbLocationWord: 'right', edge: 'bottom', thumbLocation: 'r' },
         ].forEach((parameter) => {
-            it(`should keep cursor thumb align with cursor line when the cursor thumb on ${parameter.thumbLocationWord} is moved into the graph range from ${parameter.edge}`, () => {
+            it(`should keep cursor thumb aligned with cursor line when the cursor thumb on ${parameter.thumbLocationWord} is moved into the graph range from ${parameter.edge}`, () => {
                 plot = $.plot("#placeholder", [sampleData], {
                     cursors: [
                         {
@@ -389,7 +389,7 @@ describe('Parking Lot', () => {
             { thumbLocationWord: 'right', edge: 'top', thumbLocation: 'r', expectedDocker: 'topRightVerticalDocker' },
             { thumbLocationWord: 'right', edge: 'bottom', thumbLocation: 'r', expectedDocker: 'bottomRightVerticalDocker' },
         ].forEach((parameter) => {
-            it(`should keep cursor thumb align with cursor line until the center of thumb on ${parameter.thumbLocationWord} is moved out of the graph range cross ${parameter.edge} edge`, () => {
+            it(`should keep cursor thumb aligned with cursor line until the center of thumb on ${parameter.thumbLocationWord} is moved out of the graph range cross ${parameter.edge} edge`, () => {
                 plot = $.plot("#placeholder", [sampleData], {
                     cursors: [
                         {
