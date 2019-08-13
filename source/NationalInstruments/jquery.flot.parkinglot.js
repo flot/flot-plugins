@@ -150,51 +150,51 @@ THE SOFTWARE.
         }
 
         _createThumbConstrain(plot) {
-            const horizontalThumbConstrain = (mouseX, mouseY, previousX, previousY) => {
+            const horizontalThumbConstrain = (mouseX, mouseY, previousX, previousY, thumbX, thumbY) => {
                 const thumb = this.thumbMoveState.selectedElement;
                 const plotOffset = plot.getPlotOffset();
-                let x = mouseX;
+                let thumbPositioned = false;
                 if (this.thumbMoveState.inParkingLot) {
                     const offset = plot.offset();
-                    const mouseInGraph = mouseX >= offset.left && mouseX <= offset.left + plot.width();
-                    if (mouseInGraph) {
+                    const thumbInGraph = thumbX >= offset.left && thumbX <= offset.left + plot.width();
+                    if (thumbInGraph) {
                         $.thumb.setHidden(thumb, false);
-                        const detail = { target: thumb, edge: this.thumbMoveState.parkingLotLocation, orientation: 'horizontal', position: mouseX - offset.left + plotOffset.left };
+                        const detail = { target: thumb, edge: this.thumbMoveState.parkingLotLocation, orientation: 'horizontal', position: thumbX - offset.left + plotOffset.left };
                         if (this.thumbMoveState.axisHandle) {
                             detail.axisHandle = this.thumbMoveState.axisHandle;
                         }
                         this._dispatchThumbEvent('thumbIntoRange', detail, plot.getEventHolder());
-                        x = previousX;
+                        thumbPositioned = true;
                         this.thumbMoveState.inParkingLot = false;
                     }
                 } else {
-                    [this.thumbMoveState.inParkingLot, this.thumbMoveState.parkingLotLocation] = this._willHorizontalThumbBeMovedOffGraph(thumb, mouseX, plot);
+                    [this.thumbMoveState.inParkingLot, this.thumbMoveState.parkingLotLocation] = this._willHorizontalThumbBeMovedOffGraph(thumb, thumbX, plot);
                 }
 
-                return [x, previousY];
+                return [mouseX, previousY, thumbPositioned];
             };
-            const verticalThumbConstrain = (mouseX, mouseY, previousX, previousY) => {
+            const verticalThumbConstrain = (mouseX, mouseY, previousX, previousY, thumbX, thumbY) => {
                 const thumb = this.thumbMoveState.selectedElement;
                 const plotOffset = plot.getPlotOffset();
-                let y = mouseY;
+                let thumbPositioned = false;
                 if (this.thumbMoveState.inParkingLot) {
                     const offset = plot.offset();
-                    const mouseInGraph = mouseY >= offset.top && mouseY <= offset.top + plot.height();
-                    if (mouseInGraph) {
+                    const thumbInGraph = thumbY >= offset.top && thumbY <= offset.top + plot.height();
+                    if (thumbInGraph) {
                         $.thumb.setHidden(thumb, false);
-                        const detail = { target: thumb, edge: this.thumbMoveState.parkingLotLocation, orientation: 'vertical', position: mouseY - offset.top + plotOffset.top };
+                        const detail = { target: thumb, edge: this.thumbMoveState.parkingLotLocation, orientation: 'vertical', position: thumbY - offset.top + plotOffset.top };
                         if (this.thumbMoveState.axisHandle) {
                             detail.axisHandle = this.thumbMoveState.axisHandle;
                         }
                         this._dispatchThumbEvent('thumbIntoRange', detail, plot.getEventHolder());
-                        y = previousY;
+                        thumbPositioned = true;
                         this.thumbMoveState.inParkingLot = false;
                     }
                 } else {
-                    [this.thumbMoveState.inParkingLot, this.thumbMoveState.parkingLotLocation] = this._willVerticalThumbBeMovedOffGraph(thumb, mouseY, plot);
+                    [this.thumbMoveState.inParkingLot, this.thumbMoveState.parkingLotLocation] = this._willVerticalThumbBeMovedOffGraph(thumb, thumbY, plot);
                 }
 
-                return [previousX, y];
+                return [previousX, mouseY, thumbPositioned];
             };
             return {
                 horizontal: horizontalThumbConstrain,

@@ -913,9 +913,9 @@ THE SOFTWARE.
                 thumbCx = cursor.x + plotOffset.left;
                 thumbCy = cursor.showThumbs.indexOf('b') !== -1 ? plot.height() + plotOffset.top + constants.thumbRadius : plotOffset.top - constants.thumbRadius;
                 // cursor uses the default constrain function unless we provide one explicitly
-                constraintFunction = cursor.horizontalThumbConstrain ? cursor.horizontalThumbConstrain : function (mouseX, mouseY, currentX, currentY) {
+                constraintFunction = cursor.horizontalThumbConstrain ? cursor.horizontalThumbConstrain : function (mouseX, mouseY, currentX, currentY, thumbX, thumbY) {
                     var offsetLeft = plot.offset().left,
-                        x = Math.max(offsetLeft, Math.min(mouseX, plot.width() + offsetLeft));
+                        x = Math.max(offsetLeft, Math.min(thumbX, plot.width() + offsetLeft)) - thumbX + mouseX;
                     return [x, currentY];
                 };
 
@@ -932,9 +932,9 @@ THE SOFTWARE.
             if (yAxisThumb(cursor) && !cursor.thumbs[yThumbIndex]) {
                 thumbCx = cursor.showThumbs.indexOf('l') !== -1 ? plotOffset.left - constants.thumbRadius : plotOffset.left + plot.width() + constants.thumbRadius;
                 thumbCy = cursor.y + plotOffset.top;
-                constraintFunction = cursor.verticalThumbConstrain ? cursor.verticalThumbConstrain : function (mouseX, mouseY, currentX, currentY) {
+                constraintFunction = cursor.verticalThumbConstrain ? cursor.verticalThumbConstrain : function (mouseX, mouseY, currentX, currentY, thumbX, thumbY) {
                     var offset = plot.offset(),
-                        y = Math.max(offset.top, Math.min(mouseY, plot.height() + offset.top));
+                        y = Math.max(offset.top, Math.min(thumbY, plot.height() + offset.top)) - thumbY + mouseY;
                     return [currentX, y];
                 };
 
