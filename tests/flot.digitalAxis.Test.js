@@ -82,4 +82,13 @@ describe('A digital axis', function() {
         let signals = placeholder.find('.flot-digital-axis-signal');
         expect(signals.length).toBe(0);
     });
+
+    it('should draw custom signal symbols', function() {
+        options.yaxis.signalSymbol = '<i>S</i>';
+        $.plot(placeholder, [[0, 1, 0]], options);
+
+        let signal = placeholder.find('.flot-digital-axis-signal')[0];
+        let symbol = signal.children[0];
+        expect(symbol.innerHTML).toBe('<i>S</i>');
+    });
 });
