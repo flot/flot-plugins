@@ -131,8 +131,8 @@ THE SOFTWARE.
                             states: [
                                 { value: 0, shape: 'step_down' },
                                 { value: 1, shape: 'step_up' },
-                                { value: 2, shape: 'rect_filled', color: COLOR_RED },
-                                { value: 3, shape: 'step_center', color: COLOR_RED }
+                                { value: 255, shape: 'rect_filled', color: COLOR_RED },
+                                { value: 254, shape: 'step_center', color: COLOR_RED }
                             ],
                             strengths: [
                                 { value: 0, color: COLOR_GREEN },
@@ -164,9 +164,9 @@ THE SOFTWARE.
                 let invalidState = states.find(state => state !== 0 && state !== 1);
                 if (invalidState) {
                     switch (invalidState) {
-                        case 2:
+                        case 255:
                             return 'X';
-                        case 3:
+                        case 254:
                             return 'Z';
                         default:
                             return null;
