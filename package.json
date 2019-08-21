@@ -54,7 +54,7 @@
     "webcharts-development-settings": "^1.0.9"
   },
   "dependencies": {
-    "flot": "^3.2.8",
+    "flot": "^3.2.9",
     "jquery": "^3.1.0",
     "ni-data-types": "^1.0.5"
   }
