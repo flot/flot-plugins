@@ -411,7 +411,7 @@ describe('A chart', function () {
                 }
             });
 
-            expect(plot.getData()[0].bars.barWidth).toBe(0.8);
+            expect(plot.getData()[0].bars.barWidth).toBe(80);
         });
 
         it('should consider barWidth 0.8 for not defined dt of analogWaveform', function() {

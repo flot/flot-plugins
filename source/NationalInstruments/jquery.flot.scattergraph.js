@@ -434,10 +434,10 @@ THE SOFTWARE.
                         drawTriangleE(ctx, axisx.p2c(x), axisy.p2c(y), size, filled);
                         break;
                     case 'triangle_w':
-                        drawTriangleW(ctx, axisx.p2c(x), axisy.p2c(y), size);
+                        drawTriangleW(ctx, axisx.p2c(x), axisy.p2c(y), size, filled);
                         break;
                     case 'cross_v':
-                        drawCrossV(ctx, axisx.p2c(x), axisy.p2c(y), size);
+                        drawCrossV(ctx, axisx.p2c(x), axisy.p2c(y), size, filled);
                         break;
                     case 'cross_d':
                         drawCrossD(ctx, axisx.p2c(x), axisy.p2c(y), size);
