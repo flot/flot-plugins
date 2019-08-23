@@ -59,6 +59,11 @@ describe('A digital waveform', function() {
         expect(ctx.lineTo).not.toHaveBeenCalled();
     });
 
+    it('should not crash when drawing bus with empty signal', function () {
+        options.buses = [{}];
+        $.plot(placeholder, [[]], options);
+    });
+
     it('should add x values for flat data', function() {
         let data = [
             { data: [0, 1, 1], flatdata: true },
@@ -166,11 +171,11 @@ describe('A digital waveform', function() {
         ]);
     });
 
-    it('should draw logic state unkown as filled bar', function() {
+    it('should draw logic state unknown as filled bar', function() {
         let data = [
-            [[0, 2], [1, 0]],
-            [[0, 2], [1, 2]],
-            [[0, 0], [1, 2]]
+            [[0, 255], [1, 0]],
+            [[0, 255], [1, 255]],
+            [[0, 0], [1, 255]]
         ];
         let plot = $.plot(placeholder, data, options);
         let ctx = setupCanvasToSpyOn(plot);
@@ -191,9 +196,9 @@ describe('A digital waveform', function() {
 
     it('should draw logic state high impedance as centered step', function() {
         let data = [
-            [[0, 3], [1, 0]],
-            [[0, 0], [1, 3]],
-            [[0, 1], [1, 3]]
+            [[0, 254], [1, 0]],
+            [[0, 0], [1, 254]],
+            [[0, 1], [1, 254]]
         ];
         let plot = $.plot(placeholder, data, options);
         let ctx = setupCanvasToSpyOn(plot);
@@ -449,9 +454,9 @@ describe('A digital waveform', function() {
 
     it('should draw bus with invalid states as red bar', function() {
         [
-            [[[0, 2, 0], [1, 2, 0]], [[0, 1, 0], [1, 1, 0]]],
-            [[[0, 0, 0], [1, 0, 0]], [[0, 3, 0], [1, 3, 0]]],
-            [[[0, 2, 1], [1, 2, 1]], [[0, 1, 1], [1, 1, 1]]]
+            [[[0, 255, 0], [1, 255, 0]], [[0, 1, 0], [1, 1, 0]]],
+            [[[0, 0, 0], [1, 0, 0]], [[0, 254, 0], [1, 254, 0]]],
+            [[[0, 255, 1], [1, 255, 1]], [[0, 1, 1], [1, 1, 1]]]
         ].forEach(data => {
             options.buses = [{ collapsed: true }];
             let plot = $.plot(placeholder, data, options);
@@ -602,11 +607,11 @@ describe('A digital waveform', function() {
                 labelFormatter: test.labelFormatter
             }];
             let data = [
-                { data: [0, 1, 1, 2, 3], flatdata: true },
-                { data: [0, 0, 0, 2, 3], flatdata: true },
-                { data: [0, 1, 1, 2, 3], flatdata: true },
-                { data: [0, 1, 1, 2, 3], flatdata: true },
-                { data: [0, 1, 1, 2, 3], flatdata: true }
+                { data: [0, 1, 1, 255, 254], flatdata: true },
+                { data: [0, 0, 0, 255, 254], flatdata: true },
+                { data: [0, 1, 1, 255, 254], flatdata: true },
+                { data: [0, 1, 1, 255, 254], flatdata: true },
+                { data: [0, 1, 1, 255, 254], flatdata: true }
             ];
             let plot = $.plot(placeholder, data, options);
             let ctx = setupCanvasToSpyOn(plot);

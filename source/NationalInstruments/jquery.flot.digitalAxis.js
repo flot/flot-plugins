@@ -83,7 +83,8 @@ THE SOFTWARE.
                 }
 
                 let busLabel = bus.label || `Bus ${index + 1}`;
-                let busElement = createBusTreeItem(digitalAxis.p2c(bus.top), digitalAxis.p2c(bus.bottom), busLabel, expanded, onShowHideSignals);
+                let symbol = expanded ? digitalAxis.options.busSymbolExpanded : digitalAxis.options.busSymbolCollapsed;
+                let busElement = createBusTreeItem(digitalAxis.p2c(bus.top), digitalAxis.p2c(bus.bottom), busLabel, symbol, expanded, onShowHideSignals);
                 tree.append(busElement);
 
                 signals.forEach(series => {
@@ -107,31 +108,32 @@ THE SOFTWARE.
     function createSignalEntry(tree, series, data, digitalAxis, assignedToBus) {
         let signal = series.digitalWaveform.signal;
         let signalLabel = series.label || `Signal ${data.indexOf(series) + 1}`;
-        let signalElement = createSignalTreeItem(digitalAxis.p2c(signal.top), digitalAxis.p2c(signal.bottom), signalLabel, assignedToBus);
+        let symbol = digitalAxis.options.signalSymbol;
+        let signalElement = createSignalTreeItem(digitalAxis.p2c(signal.top), digitalAxis.p2c(signal.bottom), signalLabel, symbol, assignedToBus);
         tree.append(signalElement);
     }
 
-    function createBusTreeItem(y1, y2, label, expanded, onShowHideSignals) {
+    function createBusTreeItem(y1, y2, label, symbol, expanded, onShowHideSignals) {
         let container = createTreeItemContainer(y1, y2);
         container.addClass('flot-digital-axis-bus');
-        let symbol = createTreeItemSymbol(expanded ? 'arrow-up' : 'arrow-down');
-        symbol.css({
+        let symbolElement = createTreeItemSymbol(expanded ? 'arrow-up' : 'arrow-down', symbol);
+        symbolElement.css({
             'cursor': 'pointer'
         });
-        symbol.click(onShowHideSignals);
-        symbol.appendTo(container);
+        symbolElement.click(onShowHideSignals);
+        symbolElement.appendTo(container);
         createTreeItemLabel(label).appendTo(container);
         return container;
     }
 
-    function createSignalTreeItem(y1, y2, label, indented) {
+    function createSignalTreeItem(y1, y2, label, symbol, indented) {
         let container = createTreeItemContainer(y1, y2);
         container.addClass('flot-digital-axis-signal');
         if (indented) {
             container.css('padding-left', '25px');
         }
 
-        createTreeItemSymbol('digital-signal').appendTo(container);
+        createTreeItemSymbol('digital-signal', symbol).appendTo(container);
         createTreeItemLabel(label).appendTo(container);
         return container;
     }
@@ -163,7 +165,7 @@ THE SOFTWARE.
         return container;
     }
 
-    function createTreeItemSymbol(symbol) {
+    function createTreeItemSymbol(symbol, html) {
         let symbolToSvgPath = (symbol) => {
             switch (symbol) {
                 case 'arrow-down':
@@ -187,24 +189,28 @@ THE SOFTWARE.
             }
         });
 
-        let svg = $(document.createElementNS("http://www.w3.org/2000/svg", "svg"));
-        svg.css({
-            'width': '100%',
-            'height': '100%'
-        });
-        svg.attr({
-            'viewBox': '0 0 100 100'
-        });
-        svg.appendTo(container);
+        if (html) {
+            container.append(html);
+        } else {
+            let svg = $(document.createElementNS("http://www.w3.org/2000/svg", "svg"));
+            svg.css({
+                'width': '100%',
+                'height': '100%'
+            });
+            svg.attr({
+                'viewBox': '0 0 100 100'
+            });
+            svg.appendTo(container);
 
-        let path = $(document.createElementNS("http://www.w3.org/2000/svg", "path"));
-        path.attr({
-            'stroke': 'black',
-            'stroke-width': 15,
-            'fill': 'transparent',
-            'd': symbolToSvgPath(symbol)
-        });
-        path.appendTo(svg);
+            let path = $(document.createElementNS("http://www.w3.org/2000/svg", "path"));
+            path.attr({
+                'stroke': 'black',
+                'stroke-width': 15,
+                'fill': 'transparent',
+                'd': symbolToSvgPath(symbol)
+            });
+            path.appendTo(svg);
+        }
 
         return container;
     }
