@@ -336,34 +336,36 @@ THE SOFTWARE.
                     signalSamples.push(DigitalSample.fromDatapoints(signal.datapoints, i));
                 }
                 return signalSamples;
-            });
+            }).filter(samples => samples.length > 0);
 
             let busSamples = [];
-            const startX = Math.max(...samples.map(s => s[0].x));
-            const endX = Math.max(...samples.map(s => s[s.length - 1].x));
-            // contains indexes of samples for the current x
-            const indexes = samples.map(() => 0);
-            let x = startX;
-            while (x <= endX) {
-                busSamples.push({
-                    x: x,
-                    samples: samples.map((s, i) => s[indexes[i]])
-                });
-                // search next greater x
-                x = indexes.reduce((acc, index, i) => {
-                    const nextSample = samples[i][index + 1];
-                    if (nextSample !== undefined && nextSample.x < acc) {
-                        acc = nextSample.x;
-                    }
-                    return acc;
-                }, Number.POSITIVE_INFINITY);
-                // increment indexes where next x is still smaller than x
-                indexes.forEach((index, i) => {
-                    const nextSample = samples[i][index + 1];
-                    if (nextSample !== undefined && nextSample.x <= x) {
-                        indexes[i]++;
-                    }
-                });
+            if (samples.length > 0) {
+                const startX = Math.max(...samples.map(s => s[0].x));
+                const endX = Math.max(...samples.map(s => s[s.length - 1].x));
+                // contains indexes of samples for the current x
+                const indexes = samples.map(() => 0);
+                let x = startX;
+                while (x <= endX) {
+                    busSamples.push({
+                        x: x,
+                        samples: samples.map((s, i) => s[indexes[i]])
+                    });
+                    // search next greater x
+                    x = indexes.reduce((acc, index, i) => {
+                        const nextSample = samples[i][index + 1];
+                        if (nextSample !== undefined && nextSample.x < acc) {
+                            acc = nextSample.x;
+                        }
+                        return acc;
+                    }, Number.POSITIVE_INFINITY);
+                    // increment indexes where next x is still smaller than x
+                    indexes.forEach((index, i) => {
+                        const nextSample = samples[i][index + 1];
+                        if (nextSample !== undefined && nextSample.x <= x) {
+                            indexes[i]++;
+                        }
+                    });
+                }
             }
 
             return busSamples;

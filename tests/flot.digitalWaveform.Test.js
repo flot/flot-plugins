@@ -59,6 +59,11 @@ describe('A digital waveform', function() {
         expect(ctx.lineTo).not.toHaveBeenCalled();
     });
 
+    it('should not crash when drawing bus with empty signal', function () {
+        options.buses = [{}];
+        $.plot(placeholder, [[]], options);
+    });
+
     it('should add x values for flat data', function() {
         let data = [
             { data: [0, 1, 1], flatdata: true },
