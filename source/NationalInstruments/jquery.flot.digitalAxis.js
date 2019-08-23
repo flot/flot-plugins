@@ -83,7 +83,8 @@ THE SOFTWARE.
                 }
 
                 let busLabel = bus.label || `Bus ${index + 1}`;
-                let busElement = createBusTreeItem(digitalAxis.p2c(bus.top), digitalAxis.p2c(bus.bottom), busLabel, expanded, onShowHideSignals);
+                let symbol = expanded ? digitalAxis.options.busSymbolExpanded : digitalAxis.options.busSymbolCollapsed;
+                let busElement = createBusTreeItem(digitalAxis.p2c(bus.top), digitalAxis.p2c(bus.bottom), busLabel, symbol, expanded, onShowHideSignals);
                 tree.append(busElement);
 
                 signals.forEach(series => {
@@ -112,15 +113,15 @@ THE SOFTWARE.
         tree.append(signalElement);
     }
 
-    function createBusTreeItem(y1, y2, label, expanded, onShowHideSignals) {
+    function createBusTreeItem(y1, y2, label, symbol, expanded, onShowHideSignals) {
         let container = createTreeItemContainer(y1, y2);
         container.addClass('flot-digital-axis-bus');
-        let symbol = createTreeItemSymbol(expanded ? 'arrow-up' : 'arrow-down');
-        symbol.css({
+        let symbolElement = createTreeItemSymbol(expanded ? 'arrow-up' : 'arrow-down', symbol);
+        symbolElement.css({
             'cursor': 'pointer'
         });
-        symbol.click(onShowHideSignals);
-        symbol.appendTo(container);
+        symbolElement.click(onShowHideSignals);
+        symbolElement.appendTo(container);
         createTreeItemLabel(label).appendTo(container);
         return container;
     }

@@ -91,4 +91,24 @@ describe('A digital axis', function() {
         let symbol = signal.children[0];
         expect(symbol.innerHTML).toBe('<i>S</i>');
     });
+
+    it('should draw custom collapsed bus symbols', function() {
+        options.buses = [{ collapsed: true }];
+        options.yaxis.busSymbolCollapsed = '<i>C</i>';
+        $.plot(placeholder, [[0, 1, 0]], options);
+
+        let bus = placeholder.find('.flot-digital-axis-bus')[0];
+        let symbol = bus.children[0];
+        expect(symbol.innerHTML).toBe('<i>C</i>');
+    });
+
+    it('should draw custom expanded bus symbols', function() {
+        options.buses = [{ collapsed: false }];
+        options.yaxis.busSymbolExpanded = '<i>E</i>';
+        $.plot(placeholder, [[0, 1, 0]], options);
+
+        let bus = placeholder.find('.flot-digital-axis-bus')[0];
+        let symbol = bus.children[0];
+        expect(symbol.innerHTML).toBe('<i>E</i>');
+    });
 });
