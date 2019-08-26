@@ -24,6 +24,15 @@ describe('A digital axis', function() {
         expect(axis.show).toBe(false);
     });
 
+    it('should calculate plot offset depending on labels', function() {
+        options.buses = [{ label: 'Bus' }];
+        let plot = $.plot(placeholder, [{ data: [0, 1, 0], label: 'Signal' }], options);
+
+        let offset = plot.getPlotOffset();
+        expect(offset.left).toBeGreaterThan(0);
+        expect(offset.left).toBeLessThanOrEqual(placeholder.width() * 0.5);
+    });
+
     it('should add plot offset depending on the width', function() {
         options.yaxis.width = 0.3;
         let plot = $.plot(placeholder, [[0, 1, 0]], options);
