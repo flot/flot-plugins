@@ -69,7 +69,7 @@ THE SOFTWARE.
             };
 
             data.forEach(series => {
-                if (series.digitalWaveform.show) {
+                if (series.digitalWaveform.signal.visible) {
                     let assignedToBus = buses[series.digitalWaveform.signal.bus] !== undefined;
                     let signalElement = createSignalTreeItem(0, 0, series.label, digitalAxis.options.signalSymbol, assignedToBus);
                     let elementWidth = getElementWidth(signalElement);
@@ -83,9 +83,11 @@ THE SOFTWARE.
                 maxWidth = Math.max(maxWidth, elementWidth);
             });
 
-            let relativeMaxWidth = (maxWidth + 10) / placeholder.width();
-            let axisWidth = Math.min(relativeMaxWidth, 0.5);
-            offset.left = placeholder.width() * axisWidth;
+            if (maxWidth > 0) {
+                let relativeMaxWidth = (maxWidth + 10) / placeholder.width();
+                let axisWidth = Math.min(relativeMaxWidth, 0.5);
+                offset.left = placeholder.width() * axisWidth;
+            }
         } else {
             offset.left = placeholder.width() * digitalAxis.options.width;
         }
