@@ -423,7 +423,7 @@ THE SOFTWARE.
 
         _adjustSeriesDataRange(plot, series, range) {
             this._lazyInitialize(plot);
-            if (series.digitalWaveform.signal.visible) {
+            if (series.digitalWaveform.show) {
                 if (series.data.length > 1) {
                     let points = series.datapoints.points;
                     let ps = series.datapoints.pointsize;

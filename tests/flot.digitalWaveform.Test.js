@@ -108,7 +108,7 @@ describe('A digital waveform', function() {
     });
 
     it('should increment data max of x-axis by last step size of signal', function() {
-        options.buses = [{}, { collapsed: true }, {}];
+        options.buses = [{ collapsed: true }];
         let data = [
             [[5, 0, 1], [10, 1, 0], [13, 0, 2]]
         ];
