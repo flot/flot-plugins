@@ -182,7 +182,6 @@ THE SOFTWARE.
         let container = $('<div>', {
             css: {
                 'order': 1,
-                'width': '12px',
                 'display': 'flex',
                 'align-items': 'center',
                 'margin-right': '10px'
@@ -192,6 +191,8 @@ THE SOFTWARE.
         if (html) {
             container.append(html);
         } else {
+            container.css('width', '12px');
+
             let svg = $(document.createElementNS("http://www.w3.org/2000/svg", "svg"));
             svg.css({
                 'width': '100%',
