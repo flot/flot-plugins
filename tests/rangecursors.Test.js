@@ -546,4 +546,85 @@ describe('Flot cursors', function () {
             expect(spy).toHaveBeenCalledWith('0.15', jasmine.any(Number), jasmine.any(Number));
         });
     });
+    fdescribe('cursorupdates', function() {
+        it("should be called when a cursor is added", function() {
+            plot = $.plot(placeholder, [sampledata], {});
+
+            var spy = jasmine.createSpy('spy');
+            placeholder.on('cursorupdates', spy);
+
+            plot.addRangeCursor({
+                name: 'Blue cursor',
+                mode: 'x',
+                color: 'blue',
+                position: {
+                    relativeX: 0.5,
+                    relativeY: 0.6
+                }
+            });
+            jasmine.clock().tick(20);
+
+            expect(spy).toHaveBeenCalled();
+        });
+
+        it("should be called with the cursors name", function() {
+            var spy = jasmine.createSpy('spy');
+            placeholder.on('cursorupdates', spy);
+
+            var cursor,
+                oncursorupdates = function (event, cursordata) {
+                    cursor = cursordata[0];
+                };
+            placeholder.bind("cursorupdates", oncursorupdates);
+
+            plot = $.plot(placeholder, [sampledata], {
+                rangecursors: [
+                    {
+                        name: 'Blue cursor',
+                        color: 'blue',
+                        position: {
+                            xstart: 1,
+                            xend: 1.15
+                        },
+                        showValue: true
+                    }
+                ]
+            });
+            jasmine.clock().tick(20);
+
+            expect(spy).toHaveBeenCalled();
+            expect(cursor.rangecursor).toEqual('Blue cursor');
+        });
+
+        it("should return the cursors intersection", function() {
+            var spy = jasmine.createSpy('spy');
+            placeholder.on('cursorupdates', spy);
+            var cursorXStart, cursorXEnd;
+
+            placeholder.bind("cursorupdates", function (event, cursordata) {
+                cursorXStart = cursordata[0].position.xstart;
+                cursorXEnd = cursordata[0].position.xend;
+            });
+
+            plot = $.plot("#placeholder", [sampledata], {
+                rangecursors: [
+                    {
+                        name: 'Blue cursor',
+                        color: 'blue',
+                        position: {
+                            xstart: 1,
+                            xend: 1.15
+                        },
+                        showValue: true
+                    }
+                ]
+            });
+
+            jasmine.clock().tick(20);
+
+            expect(spy).toHaveBeenCalled();
+            expect(cursorXStart).toBeCloseTo(1, 8);
+            expect(cursorXEnd).toBeCloseTo(1.15, 8);
+        });
+    });
 });
