@@ -63,18 +63,16 @@ THE SOFTWARE.
             }
         }
 
-        drawRectCrossX(ctx, x1, x2, y1, y2, color, startX, endX) {
-            const drawSegment = (ctx, x1, x2, y1, y2, startX, endX) => {
+        drawRectCrossX(ctx, x1, x2, x11, x21, y1, y2, color, startX, endX) {
+            const drawSegment = (ctx, x1, x2, x11, x21, y1, y2, startX, endX) => {
                 if (startX) {
-                    let x = x1 + (x2 - x1) * BUS_CROSS_DISTANCE / 2;
                     ctx.moveTo(x1, y1);
-                    ctx.lineTo(x, y2);
+                    ctx.lineTo(x11, y2);
                 } else {
                     ctx.moveTo(x1, y2);
                 }
                 if (endX) {
-                    let x = x1 + (x2 - x1) - (x2 - x1) * BUS_CROSS_DISTANCE / 2;
-                    ctx.lineTo(x, y2);
+                    ctx.lineTo(x21, y2);
                     ctx.lineTo(x2, y1);
                 } else {
                     ctx.lineTo(x2, y2);
@@ -83,8 +81,8 @@ THE SOFTWARE.
 
             ctx.beginPath();
             ctx.strokeStyle = color;
-            drawSegment(ctx, x1, x2, (y1 + y2) / 2, y1, startX, endX);
-            drawSegment(ctx, x1, x2, (y1 + y2) / 2, y2, startX, endX);
+            drawSegment(ctx, x1, x2, x11, x21, (y1 + y2) / 2, y1, startX, endX);
+            drawSegment(ctx, x1, x2, x11, x21, (y1 + y2) / 2, y2, startX, endX);
             ctx.stroke();
         }
     }
@@ -295,6 +293,7 @@ THE SOFTWARE.
 
         _lazyInitialize(plot) {
             if (this._initializeSignalsAndBuses) {
+                this._busTransitionWidth = Number.POSITIVE_INFINITY;
                 plot.getOptions().buses.forEach(bus => {
                     this._initializeBusValues(plot, bus);
                 });
@@ -351,6 +350,7 @@ THE SOFTWARE.
                         samples: samples.map((s, i) => s[indexes[i]])
                     });
                     // search next greater x
+                    let prevx = x;
                     x = indexes.reduce((acc, index, i) => {
                         const nextSample = samples[i][index + 1];
                         if (nextSample !== undefined && nextSample.x < acc) {
@@ -358,6 +358,7 @@ THE SOFTWARE.
                         }
                         return acc;
                     }, Number.POSITIVE_INFINITY);
+                    this._busTransitionWidth = Math.min(this._busTransitionWidth, (x - prevx) * BUS_CROSS_DISTANCE);
                     // increment indexes where next x is still smaller than x
                     indexes.forEach((index, i) => {
                         const nextSample = samples[i][index + 1];
@@ -423,7 +424,7 @@ THE SOFTWARE.
 
         _adjustSeriesDataRange(plot, series, range) {
             this._lazyInitialize(plot);
-            if (series.digitalWaveform.signal.visible) {
+            if (series.digitalWaveform.show) {
                 if (series.data.length > 1) {
                     let points = series.datapoints.points;
                     let ps = series.datapoints.pointsize;
@@ -598,6 +599,8 @@ THE SOFTWARE.
                 if (value && shape && color) {
                     const x1c = axes.xaxis.p2c(x1);
                     const x2c = axes.xaxis.p2c(x2);
+                    const x11c = axes.xaxis.p2c(x1 + this._busTransitionWidth / 2);
+                    const x21c = axes.xaxis.p2c(x2 - this._busTransitionWidth / 2);
                     const lastValue = bus.values[i - 1];
                     const nextValue = bus.values[i + 1];
                     switch (shape) {
@@ -605,7 +608,7 @@ THE SOFTWARE.
                             this.renderer.drawRect(ctx, x1c, x2c, y1c, y2c, color, false, value !== lastValue, value !== nextValue);
                             break;
                         case 'rect_cross_x':
-                            this.renderer.drawRectCrossX(ctx, x1c, x2c, y1c, y2c, color, value !== lastValue, value !== nextValue);
+                            this.renderer.drawRectCrossX(ctx, x1c, x2c, x11c, x21c, y1c, y2c, color, value !== lastValue, value !== nextValue);
                             break;
                     }
                 }
@@ -652,21 +655,21 @@ THE SOFTWARE.
                             ? bus.samples[i + 1].x
                             : bus.samples[i].x + bus.samples[i].x - bus.samples[i - 1].x;
                         if (x1 <= axes.xaxis.max && x2 >= axes.xaxis.min) {
-                            let transitionWidth = (axes.xaxis.p2c(x2) - axes.xaxis.p2c(bus.samples[i].x)) * BUS_CROSS_DISTANCE;
+                            let transitionWidth = this._busTransitionWidth;
                             let x;
                             switch (bus.labelPosition) {
                                 case 'center':
                                     x = axes.xaxis.p2c((x1 + x2) / 2);
                                     break;
                                 case 'left':
-                                    x = axes.xaxis.p2c(x1) + transitionWidth / 2;
+                                    x = axes.xaxis.p2c(x1 + transitionWidth / 2);
                                     break;
                                 case 'right':
-                                    x = axes.xaxis.p2c(x2) - transitionWidth / 2;
+                                    x = axes.xaxis.p2c(x2 - transitionWidth / 2);
                                     break;
                             }
                             let text = this._getFormattedBusValue(bus, value);
-                            let maxWidth = (axes.xaxis.p2c(x2) - axes.xaxis.p2c(x1)) - transitionWidth;
+                            let maxWidth = (axes.xaxis.p2c(x2 - transitionWidth) - axes.xaxis.p2c(x1 + transitionWidth));
                             this._drawText(ctx, x, y, text, maxWidth);
                         }
                         x1 = null;

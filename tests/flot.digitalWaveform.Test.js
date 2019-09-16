@@ -108,7 +108,7 @@ describe('A digital waveform', function() {
     });
 
     it('should increment data max of x-axis by last step size of signal', function() {
-        options.buses = [{}, { collapsed: true }, {}];
+        options.buses = [{ collapsed: true }];
         let data = [
             [[5, 0, 1], [10, 1, 0], [13, 0, 2]]
         ];
@@ -430,7 +430,7 @@ describe('A digital waveform', function() {
 
         plot.draw();
 
-        expect(renderer.drawRectCrossX).toHaveBeenCalledWith(ctx, jasmine.any(Number), jasmine.any(Number), jasmine.any(Number), jasmine.any(Number), '#4da74d', jasmine.any(Boolean), jasmine.any(Boolean));
+        expect(renderer.drawRectCrossX).toHaveBeenCalledWith(ctx, jasmine.any(Number), jasmine.any(Number), jasmine.any(Number), jasmine.any(Number), jasmine.any(Number), jasmine.any(Number), '#4da74d', jasmine.any(Boolean), jasmine.any(Boolean));
     });
 
     it('should draw bus with mixed strengths in yellow', function() {
@@ -448,7 +448,7 @@ describe('A digital waveform', function() {
 
             plot.draw();
 
-            expect(renderer.drawRectCrossX).toHaveBeenCalledWith(ctx, jasmine.any(Number), jasmine.any(Number), jasmine.any(Number), jasmine.any(Number), '#edc240', jasmine.any(Boolean), jasmine.any(Boolean));
+            expect(renderer.drawRectCrossX).toHaveBeenCalledWith(ctx, jasmine.any(Number), jasmine.any(Number), jasmine.any(Number), jasmine.any(Number), jasmine.any(Number), jasmine.any(Number), '#edc240', jasmine.any(Boolean), jasmine.any(Boolean));
         });
     });
 
@@ -487,11 +487,34 @@ describe('A digital waveform', function() {
 
         let bus = plot.getOptions().buses[0];
         expect(renderer.drawRectCrossX.calls.allArgs()).toEqual([
-            [ctx, 0.5, 1, bus.top, bus.bottom, '#4da74d', true, true],
-            [ctx, 1, 1.5, bus.top, bus.bottom, '#4da74d', true, false],
-            [ctx, 1.5, 2, bus.top, bus.bottom, '#4da74d', false, false],
-            [ctx, 2, 2.5, bus.top, bus.bottom, '#4da74d', false, true],
-            [ctx, 2.5, 3, bus.top, bus.bottom, '#4da74d', true, true]
+            [ctx, 0.5, 1, jasmine.any(Number), jasmine.any(Number), bus.top, bus.bottom, '#4da74d', true, true],
+            [ctx, 1, 1.5, jasmine.any(Number), jasmine.any(Number), bus.top, bus.bottom, '#4da74d', true, false],
+            [ctx, 1.5, 2, jasmine.any(Number), jasmine.any(Number), bus.top, bus.bottom, '#4da74d', false, false],
+            [ctx, 2, 2.5, jasmine.any(Number), jasmine.any(Number), bus.top, bus.bottom, '#4da74d', false, true],
+            [ctx, 2.5, 3, jasmine.any(Number), jasmine.any(Number), bus.top, bus.bottom, '#4da74d', true, true]
+        ]);
+    });
+
+    it('should draw bus transitions with a width depending on smallest x step', function() {
+        options.buses = [{ collapsed: true }];
+        let data = [
+            [[0, 0], [2, 1], [4, 1]],
+            [[0, 1], [1, 1], [2, 0], [3, 0]]
+        ];
+        let plot = $.plot(placeholder, data, options);
+        let ctx = setupCanvasToSpyOn(plot);
+        let renderer = plot.getDigitalWaveform().renderer;
+
+        spyOn(renderer, 'drawRectCrossX').and.callThrough();
+
+        plot.draw();
+
+        expect(renderer.drawRectCrossX.calls.allArgs()).toEqual([
+            [ctx, jasmine.any(Number), jasmine.any(Number), 0.05, 0.95, jasmine.any(Number), jasmine.any(Number), jasmine.any(String), jasmine.any(Boolean), jasmine.any(Boolean)],
+            [ctx, jasmine.any(Number), jasmine.any(Number), 1.05, 1.95, jasmine.any(Number), jasmine.any(Number), jasmine.any(String), jasmine.any(Boolean), jasmine.any(Boolean)],
+            [ctx, jasmine.any(Number), jasmine.any(Number), 2.05, 2.95, jasmine.any(Number), jasmine.any(Number), jasmine.any(String), jasmine.any(Boolean), jasmine.any(Boolean)],
+            [ctx, jasmine.any(Number), jasmine.any(Number), 3.05, 3.95, jasmine.any(Number), jasmine.any(Number), jasmine.any(String), jasmine.any(Boolean), jasmine.any(Boolean)],
+            [ctx, jasmine.any(Number), jasmine.any(Number), 4.05, 4.95, jasmine.any(Number), jasmine.any(Number), jasmine.any(String), jasmine.any(Boolean), jasmine.any(Boolean)]
         ]);
     });
 
@@ -783,7 +806,7 @@ describe('A digital waveform', function() {
                 spyOn(ctx, 'moveTo').and.callThrough();
                 spyOn(ctx, 'lineTo').and.callThrough();
 
-                renderer.drawRectCrossX(ctx, 0, 2, 0, 1, '#abc123', true, true);
+                renderer.drawRectCrossX(ctx, 0, 2, 0.1, 1.9, 0, 1, '#abc123', true, true);
 
                 expect(ctx.moveTo.calls.allArgs()).toEqual([[0, 0.5], [0, 0.5]]);
                 expect(ctx.lineTo.calls.allArgs()).toEqual([[0.1, 0], [1.9, 0], [2, 0.5], [0.1, 1], [1.9, 1], [2, 0.5]]);
@@ -793,7 +816,7 @@ describe('A digital waveform', function() {
                 spyOn(ctx, 'moveTo').and.callThrough();
                 spyOn(ctx, 'lineTo').and.callThrough();
 
-                renderer.drawRectCrossX(ctx, 0, 2, 0, 1, '#abc123', true, false);
+                renderer.drawRectCrossX(ctx, 0, 2, 0.1, 1.9, 0, 1, '#abc123', true, false);
 
                 expect(ctx.moveTo.calls.allArgs()).toEqual([[0, 0.5], [0, 0.5]]);
                 expect(ctx.lineTo.calls.allArgs()).toEqual([[0.1, 0], [2, 0], [0.1, 1], [2, 1]]);
@@ -803,7 +826,7 @@ describe('A digital waveform', function() {
                 spyOn(ctx, 'moveTo').and.callThrough();
                 spyOn(ctx, 'lineTo').and.callThrough();
 
-                renderer.drawRectCrossX(ctx, 0, 2, 0, 1, '#abc123', false, true);
+                renderer.drawRectCrossX(ctx, 0, 2, 0.1, 1.9, 0, 1, '#abc123', false, true);
 
                 expect(ctx.moveTo.calls.allArgs()).toEqual([[0, 0], [0, 1]]);
                 expect(ctx.lineTo.calls.allArgs()).toEqual([[1.9, 0], [2, 0.5], [1.9, 1], [2, 0.5]]);
