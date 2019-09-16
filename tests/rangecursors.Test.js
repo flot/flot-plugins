@@ -546,7 +546,7 @@ describe('Flot cursors', function () {
             expect(spy).toHaveBeenCalledWith('0.15', jasmine.any(Number), jasmine.any(Number));
         });
     });
-    fdescribe('cursorupdates', function() {
+    describe('cursorupdates', function() {
         it("should be called when a cursor is added", function() {
             plot = $.plot(placeholder, [sampledata], {});
 
