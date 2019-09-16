@@ -310,7 +310,7 @@ THE SOFTWARE.
                 updateCursorPositionOnMove(currentlySelectedCursor, x, y);
                 currentlySelectedCursor.startMovePosition.x = x;
                 currentlySelectedCursor.startMovePosition.y = y;
-                plot.getPlaceholder().trigger('cursordrag', {rangecursor: currentlySelectedCursor.name, target: currentlySelectedCursor});
+                plot.getPlaceholder().trigger('cursordrag', currentlySelectedCursor);
                 plot.triggerRedrawOverlay();
                 e.stopImmediatePropagation();
                 e.preventDefault();
@@ -382,7 +382,7 @@ THE SOFTWARE.
                     targetCursor.selected = true;
                     targetCursor.dragLocation = dragLocation;
                     plot.getPlaceholder().css('cursor', 'move');
-                    plot.getPlaceholder().trigger('cursordragstart', {rangecursor: targetCursor.name, target: targetCursor});
+                    plot.getPlaceholder().trigger('cursordragstart', targetCursor);
                     plot.triggerRedrawOverlay();
                     e.stopImmediatePropagation();
                     e.preventDefault();
@@ -398,7 +398,7 @@ THE SOFTWARE.
                 currentlySelectedCursor.selected = false;
                 updateCursorPositionOnMove(currentlySelectedCursor, x, y);
                 plot.getPlaceholder().css('cursor', 'default');
-                plot.getPlaceholder().trigger('cursordragend', {rangecursor: currentlySelectedCursor.name, target: currentlySelectedCursor});
+                plot.getPlaceholder().trigger('cursordragend', currentlySelectedCursor);
                 plot.triggerRedrawOverlay();
                 e.stopImmediatePropagation();
                 e.preventDefault();
