@@ -546,4 +546,128 @@ describe('Flot cursors', function () {
             expect(spy).toHaveBeenCalledWith('0.15', jasmine.any(Number), jasmine.any(Number));
         });
     });
+    describe('cursorupdates', function() {
+        beforeAll(function () {
+            loadDragSimulators();
+        });
+    
+        it("should be called when a cursor is added", function() {
+            plot = $.plot(placeholder, [sampledata], {});
+
+            var spy = jasmine.createSpy('spy');
+            placeholder.on('cursorupdates', spy);
+
+            plot.addRangeCursor({
+                name: 'Blue cursor',
+                mode: 'x',
+                color: 'blue',
+                position: {
+                    relativeX: 0.5,
+                    relativeY: 0.6
+                }
+            });
+            jasmine.clock().tick(20);
+
+            expect(spy).toHaveBeenCalled();
+        });
+
+        it("should be called with the cursors name", function() {
+            var spy = jasmine.createSpy('spy');
+            placeholder.on('cursorupdates', spy);
+
+            var cursor,
+                oncursorupdates = function (event, cursordata) {
+                    cursor = cursordata[0];
+                };
+            placeholder.bind("cursorupdates", oncursorupdates);
+
+            plot = $.plot(placeholder, [sampledata], {
+                rangecursors: [
+                    {
+                        name: 'Blue cursor',
+                        color: 'blue',
+                        position: {
+                            xstart: 1,
+                            xend: 1.15
+                        },
+                        showValue: true
+                    }
+                ]
+            });
+            jasmine.clock().tick(20);
+
+            expect(spy).toHaveBeenCalled();
+            expect(cursor.rangecursor).toEqual('Blue cursor');
+        });
+
+        it("should return the cursors intersection", function() {
+            var spy = jasmine.createSpy('spy');
+            placeholder.on('cursorupdates', spy);
+            var cursorXStart, cursorXEnd;
+
+            placeholder.bind("cursorupdates", function (event, cursordata) {
+                cursorXStart = cursordata[0].position.xstart;
+                cursorXEnd = cursordata[0].position.xend;
+            });
+
+            plot = $.plot("#placeholder", [sampledata], {
+                rangecursors: [
+                    {
+                        name: 'Blue cursor',
+                        color: 'blue',
+                        position: {
+                            xstart: 1,
+                            xend: 1.15
+                        },
+                        showValue: true
+                    }
+                ]
+            });
+
+            jasmine.clock().tick(20);
+
+            expect(spy).toHaveBeenCalled();
+            expect(cursorXStart).toBeCloseTo(1, 8);
+            expect(cursorXEnd).toBeCloseTo(1.15, 8);
+        });
+
+        it("should send drag events when the range cursor is moved", function() {
+            var spy = jasmine.createSpy('spy');
+            placeholder.on('cursordragstart', spy);
+            var spy1 = jasmine.createSpy('spy');
+            placeholder.on('cursordrag', spy1);
+            var spy2 = jasmine.createSpy('spy');
+            placeholder.on('cursordragend', spy2);
+            plot = $.plot("#placeholder", [sampledata], {
+                pan: {
+                    interactive: true
+                },
+                rangecursors: [
+                    {
+                        name: 'Blue cursor',
+                        color: 'blue',
+                        position: { relativeXStart: 0.5, relativeXEnd: 0.6 }
+                    }
+                ]
+            });
+            jasmine.clock().tick(20);
+    
+            var cursor = plot.getRangeCursors()[0];
+            var options = { mouseX: plot.getPlotOffset().left + plot.width() * 0.5,
+                mouseY: plot.getPlotOffset().top + plot.height() * 0.6 };
+            $('.flot-overlay').simulate("flotdragstart", options);
+            jasmine.clock().tick(20);
+    
+            var cursorX = plot.getPlotOffset().left + plot.width() * 0.5 + 20;
+            var cursorY = plot.getPlotOffset().top + plot.height() * 0.2;
+                var options = { mouseX: cursorX, mouseY: cursorY, dx: 13, dy: 5 };
+            $('.flot-overlay').simulate("flotdrag", options);
+
+            $('.flot-overlay').simulate("flotdragend", options);
+            jasmine.clock().tick(20);
+            expect(spy).toHaveBeenCalled();
+            expect(spy1).toHaveBeenCalled();
+            expect(spy2).toHaveBeenCalled();
+        });
+    });
 });
