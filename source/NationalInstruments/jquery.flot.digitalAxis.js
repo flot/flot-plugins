@@ -26,21 +26,71 @@ THE SOFTWARE.
     }
 
     function init(plot) {
-        plot.hooks.processOptions.push((plot, options) => {
-            let digitalAxis = getDigitalAxis(plot);
-            if (digitalAxis) {
-                plot.hooks.processOffset.push(processOffset);
-                plot.hooks.draw.push(draw);
-
-                digitalAxis.options.show = false;
-            }
-        });
+        plot.hooks.processOptions.push(processOptions);
     }
 
-    function processOffset(plot, offset) {
-        let width = plot.getPlaceholder().width();
+    function processOptions(plot, options) {
         let digitalAxis = getDigitalAxis(plot);
-        offset.left = width * digitalAxis.options.width;
+        if (digitalAxis) {
+            plot.hooks.processDatapoints.push(processDatapoints);
+            plot.hooks.processOffset.push(processOffset);
+            plot.hooks.draw.push(draw);
+
+            digitalAxis.options.show = false;
+
+            for (let i = 0; i < options.buses.length; i++) {
+                if (!options.buses[i].label) {
+                    options.buses[i].label = `Bus ${i + 1}`;
+                }
+            }
+        }
+    }
+
+    function processDatapoints(plot, series, datapoints) {
+        if (series.digitalWaveform.show && !series.label) {
+            let data = plot.getData();
+            series.label = `Signal ${data.indexOf(series) + 1}`;
+        }
+    }
+    
+    function processOffset(plot, offset) {
+        let placeholder = plot.getPlaceholder();
+        let digitalAxis = getDigitalAxis(plot);
+        if (digitalAxis.options.width === 'automatic') {
+            let data = plot.getData();
+            let buses = plot.getOptions().buses;
+            let maxWidth = 0;
+            let getElementWidth = (element) => {
+                element.css('visibility', 'hidden');
+                placeholder.append(element);
+                let elementWidth = element.outerWidth();
+                element.remove();
+                return elementWidth;
+            };
+
+            data.forEach(series => {
+                if (series.digitalWaveform.signal.visible) {
+                    let assignedToBus = buses[series.digitalWaveform.signal.bus] !== undefined;
+                    let signalElement = createSignalTreeItem(0, 0, series.label, digitalAxis.options.signalSymbol, assignedToBus);
+                    let elementWidth = getElementWidth(signalElement);
+                    maxWidth = Math.max(maxWidth, elementWidth);
+                }
+            });
+
+            buses.forEach(bus => {
+                let busElement = createBusTreeItem(0, 0, bus.label, digitalAxis.options.busSymbolCollapsed, false);
+                let elementWidth = getElementWidth(busElement);
+                maxWidth = Math.max(maxWidth, elementWidth);
+            });
+
+            if (maxWidth > 0) {
+                let relativeMaxWidth = (maxWidth + 10) / placeholder.width();
+                let axisWidth = Math.min(relativeMaxWidth, 0.5);
+                offset.left = placeholder.width() * axisWidth;
+            }
+        } else {
+            offset.left = placeholder.width() * digitalAxis.options.width;
+        }
     }
 
     function draw(plot, ctx) {
@@ -62,7 +112,7 @@ THE SOFTWARE.
         let digitalAxis = getDigitalAxis(plot);
         let plotOffset = plot.getPlotOffset();
         tree.css({
-            'width': `${digitalAxis.options.width * 100}%`,
+            'width': `${plotOffset.left}px`,
             'position': 'absolute',
             'top': plotOffset.top,
             'bottom': plotOffset.bottom,
@@ -82,9 +132,8 @@ THE SOFTWARE.
                     plot.draw();
                 }
 
-                let busLabel = bus.label || `Bus ${index + 1}`;
                 let symbol = expanded ? digitalAxis.options.busSymbolExpanded : digitalAxis.options.busSymbolCollapsed;
-                let busElement = createBusTreeItem(digitalAxis.p2c(bus.top), digitalAxis.p2c(bus.bottom), busLabel, symbol, expanded, onShowHideSignals);
+                let busElement = createBusTreeItem(digitalAxis.p2c(bus.top), digitalAxis.p2c(bus.bottom), bus.label, symbol, expanded, onShowHideSignals);
                 tree.append(busElement);
 
                 signals.forEach(series => {
@@ -107,9 +156,8 @@ THE SOFTWARE.
 
     function createSignalEntry(tree, series, data, digitalAxis, assignedToBus) {
         let signal = series.digitalWaveform.signal;
-        let signalLabel = series.label || `Signal ${data.indexOf(series) + 1}`;
         let symbol = digitalAxis.options.signalSymbol;
-        let signalElement = createSignalTreeItem(digitalAxis.p2c(signal.top), digitalAxis.p2c(signal.bottom), signalLabel, symbol, assignedToBus);
+        let signalElement = createSignalTreeItem(digitalAxis.p2c(signal.top), digitalAxis.p2c(signal.bottom), series.label, symbol, assignedToBus);
         tree.append(signalElement);
     }
 
@@ -182,7 +230,6 @@ THE SOFTWARE.
         let container = $('<div>', {
             css: {
                 'order': 1,
-                'width': '12px',
                 'display': 'flex',
                 'align-items': 'center',
                 'margin-right': '10px'
@@ -192,6 +239,8 @@ THE SOFTWARE.
         if (html) {
             container.append(html);
         } else {
+            container.css('width', '12px');
+
             let svg = $(document.createElementNS("http://www.w3.org/2000/svg", "svg"));
             svg.css({
                 'width': '100%',
@@ -217,7 +266,7 @@ THE SOFTWARE.
 
     let defaultOptions = {
         yaxis: {
-            width: 0.2
+            width: 'automatic'
         }
     };
 
