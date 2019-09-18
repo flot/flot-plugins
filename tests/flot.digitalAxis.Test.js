@@ -34,11 +34,19 @@ describe('A digital axis', function() {
     });
 
     it('should add plot offset depending on the width', function() {
-        options.yaxis.width = 0.3;
+        options.yaxis.width = 100;
         let plot = $.plot(placeholder, [[0, 1, 0]], options);
 
         let offset = plot.getPlotOffset();
-        expect(offset.left).toBeGreaterThanOrEqual(placeholder.width() * options.yaxis.width);
+        expect(offset.left).toBeGreaterThanOrEqual(100);
+    });
+
+    it('should set width of html element', function() {
+        options.yaxis.width = 100;
+        $.plot(placeholder, [[0, 1, 0]], options);
+
+        let element = placeholder.find('#flot-digital-axis');
+        expect(element.width()).toBe(100);
     });
 
     it('should show signals for each visible signal', function() {
