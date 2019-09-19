@@ -86,11 +86,13 @@ THE SOFTWARE.
             if (maxWidth > 0) {
                 let relativeMaxWidth = (maxWidth + 10) / placeholder.width();
                 let axisWidth = Math.min(relativeMaxWidth, 0.5);
-                offset.left = placeholder.width() * axisWidth;
+                digitalAxis.options.elementWidth = placeholder.width() * axisWidth;
             }
         } else {
-            offset.left = placeholder.width() * digitalAxis.options.width;
+            digitalAxis.options.elementWidth = digitalAxis.options.width;
         }
+
+        offset.left += digitalAxis.options.elementWidth
     }
 
     function draw(plot, ctx) {
@@ -112,7 +114,7 @@ THE SOFTWARE.
         let digitalAxis = getDigitalAxis(plot);
         let plotOffset = plot.getPlotOffset();
         tree.css({
-            'width': `${plotOffset.left}px`,
+            'width': `${digitalAxis.options.elementWidth}px`,
             'position': 'absolute',
             'top': plotOffset.top,
             'bottom': plotOffset.bottom,
