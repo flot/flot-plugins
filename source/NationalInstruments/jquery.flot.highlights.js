@@ -59,11 +59,14 @@ THE SOFTWARE.
 
         _drawOverlay(plot, ctx) {
             const series = plot.getData();
-            const options = plot.getOptions();
+            if (!this._options.show) {
+                return;
+            }
+
             const plotOffset = plot.getPlotOffset();
             ctx.save();
             ctx.translate(plotOffset.left, plotOffset.top);
-            ctx.lineWidth = options.series.highlights.lineWidth;
+            ctx.lineWidth = this._options.lineWidth;
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
             let lastPointIndex;
