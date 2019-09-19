@@ -15,7 +15,8 @@ describe('Flot highlights', function () {
     var d3 = [[0, 12], [7, 12], null, [7, 2.5], [12, 2.5]];
     var plot;
     var placeholder;
-    var selectedIndexes = [[], [], []]
+    var selectedIndexes = [[], [], []];
+    var selectedRange = [[], [], []];
 
     beforeEach(function () {
         var fixture = setFixtures('<div id="demo-container" style="width: 800px;height: 600px">').find('#demo-container').get(0);
@@ -47,6 +48,28 @@ describe('Flot highlights', function () {
                     highlightBars: false,
                     lineWidth: 5,
                     selectedIndexes:selectedIndexes
+                }
+            }
+        });
+        var spy = spyOn(plot.drawSymbol, 'square').and.callThrough();
+        plot.triggerRedrawOverlay();
+        jasmine.clock().tick(20);
+        expect(spy).toHaveBeenCalled();
+    });
+    it('should highlight a range of points', function () {
+        selectedRange = [[0, 5], [], []];
+        plot = $.plot("#placeholder", [ d1, d2, d3 ], {
+            series: {
+                lines: { show: true },
+                points: { show: true, symbol: 'square' },
+                highlights: {
+                    show: true,
+                    highlightColor: '#00FF00',
+                    highlightLines: false,
+                    highlightPoints: true,
+                    highlightBars: false,
+                    lineWidth: 5,
+                    selectedRange:selectedRange
                 }
             }
         });

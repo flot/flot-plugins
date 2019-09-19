@@ -29,6 +29,7 @@ THE SOFTWARE.
             return {
                 series: {
                     highlights: {
+                        selectedRange: [],
                         selectedIndexes: [],
                         show: false,
                         lineWidth: 1,
@@ -82,6 +83,19 @@ THE SOFTWARE.
 
                         if (this._options.highlightBars) {
                             this._drawBarHighlight(series[j], [series[j].datapoints.points[pointIndex * ps], series[j].datapoints.points[pointIndex * ps + 1]], ctx);
+                        }
+                    }
+                }
+
+                let highlightRange = this._options.selectedRange[j];
+                if (highlightRange) {
+                    for (let i = highlightRange[0]; i < highlightRange[1]; i++) {
+                        if (this._options.highlightPoints) {
+                            this._drawPointHighlight(series[j], plot, ctx, i);
+                        }
+
+                        if (this._options.highlightBars) {
+                            this._drawBarHighlight(series[j], [series[j].datapoints.points[i * ps], series[j].datapoints.points[i * ps + 1]], ctx);
                         }
                     }
                 }
