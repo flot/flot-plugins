@@ -95,8 +95,9 @@ THE SOFTWARE.
         }
 
         _drawPointHighlight(series, plot, ctx, pointIndex) {
-            let x = series.data[pointIndex][0];
-            let y = series.data[pointIndex][1];
+            const ps = series.datapoints.pointsize;
+            let x = series.datapoints.points[pointIndex * ps];
+            let y = series.datapoints.points[pointIndex * ps + 1];
             const axisx = series.xaxis;
             const axisy = series.yaxis;
             const highlightColor = (typeof this._options.highlightColor === "string") ? this._options.highlightColor : $.color.parse(series.color).scale('a', 0.5).toString();
