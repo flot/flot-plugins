@@ -125,7 +125,8 @@ THE SOFTWARE.
             ctx.strokeStyle = highlightColor;
             ctx.fillStyle = highlightColor;
             ctx.shadowColor = 'black';
-            ctx.shadowBlur = 7;
+            ctx.shadowBlur = 3;
+            ctx.shadowOffsetY = 1;
             let radius = 1.5 * pointRadius;
             x = axisx.p2c(x);
             y = axisy.p2c(y);
