@@ -22,7 +22,6 @@ $(function () {
 
     var d3 = [[0, 12], [7, 12], null, [7, 2.5], [12, 2.5]];
 
-    var d4 = [[0, 0], [1, 1], [2, 2], [3, 3], [4, 4]];
     function update () {
         $.plot("#placeholder", [ d1, d2, d3 ], {
             crosshair: {

@@ -29,14 +29,14 @@ THE SOFTWARE.
             return {
                 series: {
                     highlights: {
-                        selectedRange: [],
-                        selectedIndexes: [],
+                        selectedRange: [], // the selected index range inside which points will be highlighted
+                        selectedIndexes: [], // the selected indexes of the points that will be highlighted
                         show: false,
-                        lineWidth: 1,
-                        highlightColor: '#ffffff',
-                        highlightPoints: true,
-                        highlightLines: false,
-                        highlightBars: false,
+                        highlightLineWidth: 1, // the line width of the highlight
+                        highlightColor: '#ffffff', // the color to draw the highlights - there will be a faint black shadow around them
+                        highlightPoints: true, // highlight points
+                        highlightLines: false, // highlight entires lines - if any point in selectedIndexes belongs to the line highlight the entire line
+                        highlightBars: false, // highlight bars
                     }
                 }
             }

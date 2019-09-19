@@ -46,7 +46,7 @@ describe('Flot highlights', function () {
                     highlightLines: false,
                     highlightPoints: true,
                     highlightBars: false,
-                    lineWidth: 5,
+                    highlightLineWidth: 5,
                     selectedIndexes:selectedIndexes
                 }
             }
@@ -68,7 +68,7 @@ describe('Flot highlights', function () {
                     highlightLines: false,
                     highlightPoints: true,
                     highlightBars: false,
-                    lineWidth: 5,
+                    highlightLineWidth: 5,
                     selectedRange:selectedRange
                 }
             }
@@ -90,7 +90,7 @@ describe('Flot highlights', function () {
                     highlightLines: false,
                     highlightPoints: true,
                     highlightBars: false,
-                    lineWidth: 5,
+                    highlightLineWidth: 5,
                     selectedIndexes:selectedIndexes
                 }
             }
@@ -112,7 +112,7 @@ describe('Flot highlights', function () {
                     highlightLines: true,
                     highlightPoints: false,
                     highlightBars: false,
-                    lineWidth: 5,
+                    highlightLineWidth: 5,
                     selectedIndexes:selectedIndexes
                 }
             }
@@ -135,7 +135,7 @@ describe('Flot highlights', function () {
                     highlightLines: false,
                     highlightPoints: false,
                     highlightBars: true,
-                    lineWidth: 5,
+                    highlightLineWidth: 5,
                     selectedIndexes:selectedIndexes
                 }
             }
