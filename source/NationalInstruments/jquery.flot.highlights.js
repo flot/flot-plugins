@@ -123,6 +123,9 @@ THE SOFTWARE.
             const pointRadius = series.points.radius + series.points.lineWidth / 2;
             ctx.lineWidth = pointRadius;
             ctx.strokeStyle = highlightColor;
+            ctx.fillStyle = highlightColor;
+            ctx.shadowColor = 'black';
+            ctx.shadowBlur = 7;
             let radius = 1.5 * pointRadius;
             x = axisx.p2c(x);
             y = axisy.p2c(y);
@@ -136,7 +139,7 @@ THE SOFTWARE.
             }
 
             ctx.closePath();
-            ctx.stroke();
+            ctx.fill();
         }
 
         _drawLineHighlight(series, plot, ctx) {
