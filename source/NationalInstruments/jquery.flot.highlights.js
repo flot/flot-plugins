@@ -98,9 +98,12 @@ THE SOFTWARE.
                             this._drawBarHighlight(series[j], [series[j].datapoints.points[i * ps], series[j].datapoints.points[i * ps + 1]], ctx);
                         }
                     }
+                    if (this._options.highlightLines) {
+                        this._drawLineHighlight(series[j], plot, ctx, highlightRange);
+                    }
                 }
 
-                if (this._options.highlightLines && highlightIndexes.length > 0) {
+                if (this._options.highlightLines && highlightIndexes && highlightIndexes.length > 0) {
                     this._drawLineHighlight(series[j], plot, ctx);
                 }
             }
@@ -120,6 +123,7 @@ THE SOFTWARE.
                 return;
             }
 
+            ctx.save();
             const pointRadius = series.points.radius + series.points.lineWidth / 2;
             ctx.lineWidth = pointRadius;
             ctx.strokeStyle = highlightColor;
@@ -141,16 +145,29 @@ THE SOFTWARE.
 
             ctx.closePath();
             ctx.fill();
+            ctx.restore();
         }
 
-        _drawLineHighlight(series, plot, ctx) {
+        _drawLineHighlight(series, plot, ctx, highlightRange) {
+            const ps = series.datapoints.pointsize;
+            let originalPoints;
             const plotOffset = plot.getPlotOffset();
             ctx.translate(-plotOffset.left, -plotOffset.top);
             const originalWidth = series.lines.lineWidth;
             const originalColor = series.color;
             series.lines.lineWidth += this._options.lineWidth;
             series.color = this._options.highlightColor;
+            if (highlightRange) {
+                originalPoints = [...series.datapoints.points];
+                series.datapoints.points.splice(highlightRange[1] * ps);
+                series.datapoints.points.splice(0, highlightRange[0] * ps);
+            }
+
             $.plot.drawSeries.drawSeriesLines(series, ctx, plotOffset, plot.width(), plot.height(), plot.drawSymbol, () => this._options.highlightColor);
+            if (highlightRange) {
+                series.datapoints.points = originalPoints;
+            }
+
             series.lines.lineWidth = originalWidth;
             series.color = originalColor;
             $.plot.drawSeries.drawSeriesLines(series, ctx, plotOffset, plot.width(), plot.height(), plot.drawSymbol, () => this._options.highlightColor);

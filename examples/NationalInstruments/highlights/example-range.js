@@ -21,7 +21,7 @@ $(function () {
             highlights: {
                 show: true,
                 highlightColor: '#00FF00',
-                highlightLines: false,
+                highlightLines: true,
                 highlightPoints: true,
                 highlightBars: false,
                 lineWidth: 5,
