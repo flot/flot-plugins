@@ -122,6 +122,28 @@ describe('Flot highlights', function () {
         jasmine.clock().tick(20);
         expect(spy).toHaveBeenCalled();
     });
+    it('should highlight a range on lines', function () {
+        selectedRange = [[0, 5], [], []];
+        plot = $.plot("#placeholder", [ d1, d2, d3 ], {
+            series: {
+                lines: { show: true },
+                points: { show: true },
+                highlights: {
+                    show: true,
+                    highlightColor: '#00FF00',
+                    highlightLines: true,
+                    highlightPoints: false,
+                    highlightBars: false,
+                    highlightLineWidth: 5,
+                    selectedRange:selectedRange
+                }
+            }
+        });
+        var spy = spyOn($.plot.drawSeries, 'drawSeriesLines').and.callThrough();
+        plot.triggerRedrawOverlay();
+        jasmine.clock().tick(20);
+        expect(spy).toHaveBeenCalled();
+    });
     it('should highlight bars', function () {
         selectedIndexes = [[0], [], []];
         plot = $.plot("#placeholder", [ d1, d2, d3 ], {
