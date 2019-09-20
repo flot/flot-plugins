@@ -81,6 +81,7 @@ THE SOFTWARE.
 
             function processRawData (plot, s, sData, sDatapoints) {
                 var opts = plot.getOptions();
+                sDatapoints.points.length = 0;
                 if (opts.series.scattergraph.show === true && sData[0]) {
                     if (!Array.isArray(sData[0]) && Array.isArray(sData[0].x)) {
                         isObjectOfArray = true;
@@ -96,10 +97,6 @@ THE SOFTWARE.
                         return;
                     }
 
-                    var xmax = Number.NEGATIVE_INFINITY;
-                    var ymax = Number.NEGATIVE_INFINITY;
-                    var ymin = Number.POSITIVE_INFINITY;
-                    var xmin = Number.POSITIVE_INFINITY;
                     var x, y;
                     for (var i = 0; i < dataLen; i++) {
                         if (isArrayOfObject) {
@@ -113,30 +110,11 @@ THE SOFTWARE.
                             y = sData[0][i][1];
                         }
                         
-                        if (x > xmax) {
-                            xmax = x;
-                        }
-
-                        if (y > ymax) {
-                            ymax = y;
-                        }
-
-                        if (x < xmin) {
-                            xmin = x;
-                        }
-
-                        if (y < ymin) {
-                            ymin = y;
-                        }
+                        sDatapoints.points.push(x);
+                        sDatapoints.points.push(y);
                     }
 
                     sDatapoints.pointsize = 2;
-
-                    // push two data points, one with xmin, ymin, the other one with xmax, ymax
-                    // so the autoscale algorithms can determine the draw size.
-                    sDatapoints.points.length = 0;
-                    sDatapoints.points.push(xmin, ymin);
-                    sDatapoints.points.push(xmax, ymax);
                     sDatapoints.format = [
                         {x: true, y: false, number: true, computeRange: true},
                         {x: false, y: true, number: true, computeRange: true}
