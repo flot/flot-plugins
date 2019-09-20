@@ -65,7 +65,7 @@ THE SOFTWARE.
             }
         }
         function onMouseDown(e) {
-            if (opt.grid.editable){
+            if (opt && opt.grid.editable){
                 var positem = getMousePosition(e);
                 if(positem[1]){
                     var v = null;
@@ -90,7 +90,7 @@ THE SOFTWARE.
             }    
         }        
         function onMouseUp(e){
-            if (opt.series.justEditing){
+            if (opt && opt.series.justEditing){
                 placeHolder.trigger("plotup",opt.series.justEditing);
                 placeHolder.trigger("datadrop",opt.series.justEditing);
                 var s = opt.series.justEditing[1].series;
@@ -102,7 +102,7 @@ THE SOFTWARE.
         function onMouseMove(e) {
             var i; 
             var positem = getMousePosition(e);
-            if (opt.series.justEditing) { 
+            if (opt && opt.series.justEditing) { 
                 i = opt.series.justEditing[1].seriesIndex;        
                 switch(plot.getData()[i].editMode){
                     case "none":
@@ -190,12 +190,12 @@ THE SOFTWARE.
             octx.save();
             octx.clearRect(0, 0, plot.getPlaceholder().width, plot.getPlaceholder().height);
             octx.translate(plot.getPlotOffset().left, plot.getPlotOffset().top);
-            if(opt.series.justEditing){
+            if(opt && opt.series.justEditing){
                 serie = plot.getData()[opt.series.justEditing[1].seriesIndex],
                 x = opt.series.justEditing[0].x1,y = opt.series.justEditing[0].y1;
                 if(serie.nearBy.drawEdit){ serie.nearBy.drawEdit(octx,x,y,serie);}
             }
-            else if(opt.series.justMoving){
+            else if(opt && opt.series.justMoving){
                 serie = plot.getData()[opt.series.justMoving[1].seriesIndex];
                 if(serie.nearBy.drawHover){ serie.nearBy.drawHover(octx,serie,opt.series.justMoving[1].dataIndex);}
             }
