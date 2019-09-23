@@ -10,3 +10,4 @@ Owner: National Instruments
  - [Charting](flot-charting.md)
  - [Intensity graph](intensitygraph.md)
  - [Digital Waveform graph](flot-digital-waveform.md)
+ - [Highlights](flot-highlights.md)
