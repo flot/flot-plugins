@@ -22,9 +22,9 @@ The plugin supports these options:
     ]
 ```
 
-**selectedRange** the selected index range inside which points will be highlighted.
+**selectedRange** the selected index range inside which points will be highlighted. This is an array of arrays one for each series - each sub array contains the ranges to be selected on the corresponding series. Each range is an array of two numbers - the start and end index to use.
 
-**selectedIndexes** the selected indexes of the points that will be highlighted.
+**selectedIndexes** the selected indexes of the points that will be highlighted. This is an array of arrays one for each series - each sub array contains the indexes to be selected on the corresponding series.
 
 **show** show higlights
 
