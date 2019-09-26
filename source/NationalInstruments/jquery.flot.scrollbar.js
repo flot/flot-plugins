@@ -59,40 +59,68 @@ THE SOFTWARE.
         }
 
         get template() {
-            return '<div class="flot-scrollbar-container">' +
-                '<div class="flot-scrollbar-left-handle"></div>' +
-                '<div class="flot-scrollbar"></div>' +
-                '<div class="flot-scrollbar-right-handle"></div>' +
+            return '<div class="flot-scrollbar-outer-container">' +
+                    '<div class="flot-scrollbar-move-left"></div>' +
+                    '<div class="flot-scrollbar-container">' +
+                        '<div class="flot-scrollbar">' +
+                            '<div class="flot-scrollbar-left-handle"></div>' +
+                            '<div class="flot-scrollbar-right-handle"></div>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="flot-scrollbar-move-right"></div>' +
                 '</div>'
         }
 
         _createElement() {
-            const container = $(this.template)
+            const outerContainer = $(this.template)
                 .css({
                     position: 'absolute',
                     bottom: 0,
-                    boxSizing: 'border-box',
                     height: this._options.height + 'px',
-                    padding: '2px 0',
-                    backgroundColor: this._options.backgroundColor
+                    backgroundColor: this._options.backgroundColor,
+                    display: 'flex'
                 })
                 .dblclick(() => this._plot.recenter({ axes: [this.xaxis] }))
                 .on('mouseup', (e) => this._mouseClick(e));
 
-            this._scrollbar = container.find('.flot-scrollbar')
+            this._moveLeftButton = outerContainer.find('.flot-scrollbar-move-left')
                 .css({
-                    position: 'absolute',
-                    height: 'calc(100% - 4px)',
+                    height: this._options.height + 'px',
+                    width: '18px',
+                    flex: '0 0 auto',
+                    textAlign: 'center'
+                });
+
+            this._moveRightButton = outerContainer.find('.flot-scrollbar-move-right')
+                .css({
+                    height: this._options.height + 'px',
+                    width: '18px',
+                    flex: '0 0 auto',
+                    textAlign: 'center'
+                });
+
+            this._container = outerContainer.find('.flot-scrollbar-container')
+                .css({
+                    flex: '1 0 auto',
+                    boxSizing: 'border-box',
+                    padding: '2px 0'
+                });
+
+            this._scrollbar = this._container.find('.flot-scrollbar')
+                .css({
+                    position: 'relative',
+                    height: '100%',
                     backgroundColor: this._options.barColor
                 })
                 .hover(() => this._hoverIn(), () => this._hoverOut())
                 .on('mousedown', (e) => this._mouseDown(e, true, true));
 
-            this._leftHandle = container.find('.flot-scrollbar-left-handle')
+            this._leftHandle = this._scrollbar.find('.flot-scrollbar-left-handle')
                 .css({
                     position: 'absolute',
-                    height: 'calc(100% - 4px)',
+                    height: '100%',
                     width: HANDLE_WIDTH + 'px',
+                    left: 0,
                     opacity: 0,
                     zIndex: 1,
                     cursor: 'ew-resize'
@@ -100,11 +128,12 @@ THE SOFTWARE.
                 .hover(() => this._hoverIn(), () => this._hoverOut())
                 .on('mousedown', (e) => this._mouseDown(e, true, false));
 
-            this._rightHandle = container.find('.flot-scrollbar-right-handle')
+            this._rightHandle = this._scrollbar.find('.flot-scrollbar-right-handle')
                 .css({
                     position: 'absolute',
-                    height: 'calc(100% - 4px)',
+                    height: '100%',
                     width: HANDLE_WIDTH + 'px',
+                    right: 0,
                     opacity: 0,
                     zIndex: 1,
                     cursor: 'ew-resize'
@@ -112,7 +141,7 @@ THE SOFTWARE.
                 .hover(() => this._hoverIn(), () => this._hoverOut())
                 .on('mousedown', (e) => this._mouseDown(e, false, true));
 
-            return container;
+            return outerContainer;
         }
 
         _hoverIn() {
@@ -140,10 +169,13 @@ THE SOFTWARE.
         }
         
         _mouseDown(event, moveLeft, moveRight) {
+            if (!(moveLeft && moveRight)) {
+                event.stopPropagation();
+            }
             this._startScrolling(moveLeft, moveRight);
             const startx = event.pageX;
             const width = this._scrollbar.width();
-            const startLeft = this._scrollbar.position().left;
+            const startLeft = this._scrollbar.offset().left - this._container.offset().left;
             const startRight = startLeft + width;
             $(document.body).on('mousemove', (e) => {
                 const dx = e.pageX - startx;
@@ -207,7 +239,7 @@ THE SOFTWARE.
 
         _moveScrollbar(left, right) {
             if (right > left && right - left > HANDLE_WIDTH * 2) {
-                const width = this._plot.width();
+                const width = this._container.width();
                 const xaxis = this.xaxis;
                 const range = Math.abs(xaxis.datamax - xaxis.datamin);
                 const min = left / width * range;
@@ -232,7 +264,7 @@ THE SOFTWARE.
         }
 
         _positionScrollbar() {
-            const width = this._plot.width();
+            const width = this._container.width();
             const xaxis = this.xaxis;
             const range = Math.abs(xaxis.datamax - xaxis.datamin);
             const left = xaxis.min / range * width;
@@ -240,15 +272,7 @@ THE SOFTWARE.
             
             this._scrollbar.css({
                 left: left,
-                width: right - left
-            });
-
-            this._leftHandle.css({
-                left: left - HANDLE_WIDTH / 2
-            });
-
-            this._rightHandle.css({
-                left: right - HANDLE_WIDTH / 2,
+                width: right - left,
             });
         }
 
@@ -258,12 +282,12 @@ THE SOFTWARE.
 
         _render() {
             const placeholder = this._plot.getPlaceholder();
-            this._container = $('.flot-scrollbar-container');
-            if (!this._container.length) {
-                this._container = this._createElement().appendTo(placeholder);
+            this._outerContainer = $('.flot-scrollbar-outer-container');
+            if (!this._outerContainer.length) {
+                this._outerContainer = this._createElement().appendTo(placeholder);
             }
 
-            this._container.css({
+            this._outerContainer.css({
                 left: this._plot.getPlotOffset().left,
                 width: this._plot.width() + 'px',
                 height: this._options.height + 'px',

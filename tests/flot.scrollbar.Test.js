@@ -27,19 +27,20 @@ describe('A scrollbar', function() {
     it('should create a scrollbar', function() {
         plot = $.plot(placeholder, data, options);
         
-        let container = placeholder.find('.flot-scrollbar-container');
-        expect(container.length).toBe(1);
-        expect(container.children().length).toBe(3);
-        expect(container.find('.flot-scrollbar').length).toBe(1);
-        expect(container.find('.flot-scrollbar-left-handle').length).toBe(1);
-        expect(container.find('.flot-scrollbar-right-handle').length).toBe(1);
+        let outerContainer = placeholder.find('.flot-scrollbar-outer-container');
+        expect(outerContainer.length).toBe(1);
+        expect(outerContainer.children().length).toBe(3);
+        let scrollbar = outerContainer.find('.flot-scrollbar');
+        expect(scrollbar.length).toBe(1);
+        expect(scrollbar.find('.flot-scrollbar-left-handle').length).toBe(1);
+        expect(scrollbar.find('.flot-scrollbar-right-handle').length).toBe(1);
     });
 
     it('should hide when disabled', function() {
         options.scrollbar.show = false;
         plot = $.plot(placeholder, data, options);
         
-        let container = placeholder.find('.flot-scrollbar-container');
+        let container = placeholder.find('.flot-scrollbar-outer-container');
         expect(container.length).toBe(0);
     });
 
@@ -54,7 +55,7 @@ describe('A scrollbar', function() {
     it('should be positioned below plot', function() {
         plot = $.plot(placeholder, data, options);
         
-        let container = placeholder.find('.flot-scrollbar-container');
+        let container = placeholder.find('.flot-scrollbar-outer-container');
         expect(container.offset().left).toBe(placeholder.offset().left + plot.getPlotOffset().left);
         expect(container.offset().top + container.outerHeight()).toBe(placeholder.offset().top + placeholder.height());
         expect(container.width()).toBe(plot.width());
@@ -69,7 +70,7 @@ describe('A scrollbar', function() {
         
         let container = placeholder.find('.flot-scrollbar-container');
         let scrollbar = container.find('.flot-scrollbar');
-        expect(scrollbar.position().left).toBeCloseTo(container.width() / 3);
+        expect(scrollbar.offset().left - container.offset().left).toBeCloseTo(container.width() / 3);
         expect(scrollbar.width()).toBeCloseTo(container.width() / 3);
     });
 
