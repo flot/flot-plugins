@@ -33,7 +33,7 @@ THE SOFTWARE.
                     show: false,
                     height: 18,
                     backgroundColor: 'rgb(240, 240, 240)',
-                    barColor: 'rgb(195, 195, 195)'
+                    color: 'rgb(195, 195, 195)'
                 }
             }
         }
@@ -42,6 +42,8 @@ THE SOFTWARE.
             this._plot = plot;
             this._options = options.scrollbar;
             this._scrolling = false;
+            this._disableMoveLeft = false;
+            this._disableMoveRight = false;
             this._createHooks();
         }
 
@@ -60,14 +62,22 @@ THE SOFTWARE.
 
         get template() {
             return '<div class="flot-scrollbar-outer-container">' +
-                    '<div class="flot-scrollbar-move-left"></div>' +
+                    '<div class="flot-scrollbar-move-left">' +
+                        '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink style="width:100%;height:100%" viewBox="0 0 24 24">' +
+                            '<polyline points="8,12 13,7 13,17" shape-rendering="crispEdges"/>' +
+                        '</svg>' +
+                    '</div>' +
                     '<div class="flot-scrollbar-container">' +
                         '<div class="flot-scrollbar">' +
                             '<div class="flot-scrollbar-left-handle"></div>' +
                             '<div class="flot-scrollbar-right-handle"></div>' +
                         '</div>' +
                     '</div>' +
-                    '<div class="flot-scrollbar-move-right"></div>' +
+                    '<div class="flot-scrollbar-move-right">' +
+                        '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink style="width:100%;height:100%" viewBox="0 0 24 24">' +
+                            '<polyline points="17,12 11,7 11,17" shape-rendering="crispEdges"/>' +
+                        '</svg>' +
+                    '</div>' +
                 '</div>'
         }
 
@@ -79,41 +89,43 @@ THE SOFTWARE.
                     height: this._options.height + 'px',
                     backgroundColor: this._options.backgroundColor,
                     display: 'flex'
-                })
-                .dblclick(() => this._plot.recenter({ axes: [this.xaxis] }))
-                .on('mouseup', (e) => this._mouseClick(e));
+                });
 
             this._moveLeftButton = outerContainer.find('.flot-scrollbar-move-left')
                 .css({
                     height: this._options.height + 'px',
                     width: '18px',
-                    flex: '0 0 auto',
-                    textAlign: 'center'
-                });
+                    flex: '0 0 auto'
+                })
+                .hover(() => this._moveButtonHoverIn(this._moveLeftButton, this._disableMoveLeft), () => this._moveButtonHoverOut(this._moveLeftButton))
+                .on('mousedown', () => this._moveButtonMouseDown(this._moveLeftButton));
 
             this._moveRightButton = outerContainer.find('.flot-scrollbar-move-right')
                 .css({
                     height: this._options.height + 'px',
                     width: '18px',
-                    flex: '0 0 auto',
-                    textAlign: 'center'
-                });
+                    flex: '0 0 auto'
+                })
+                .hover(() => this._moveButtonHoverIn(this._moveRightButton, this._disableMoveRight), () => this._moveButtonHoverOut(this._moveRightButton))
+                .on('mousedown', () => this._moveButtonMouseDown(this._moveRightButton));
 
             this._container = outerContainer.find('.flot-scrollbar-container')
                 .css({
                     flex: '1 0 auto',
                     boxSizing: 'border-box',
                     padding: '2px 0'
-                });
+                })
+                .dblclick(() => this._plot.recenter({ axes: [this.xaxis] }))
+                .on('mouseup', (e) => this._containerMouseClick(e));
 
             this._scrollbar = this._container.find('.flot-scrollbar')
                 .css({
                     position: 'relative',
                     height: '100%',
-                    backgroundColor: this._options.barColor
+                    backgroundColor: this.scrollbarColor
                 })
-                .hover(() => this._hoverIn(), () => this._hoverOut())
-                .on('mousedown', (e) => this._mouseDown(e, true, true));
+                .hover(() => this._scrollbarHoverIn(), () => this._scrollbarHoverOut())
+                .on('mousedown', (e) => this._scrollbarMouseDown(e, true, true));
 
             this._leftHandle = this._scrollbar.find('.flot-scrollbar-left-handle')
                 .css({
@@ -125,8 +137,8 @@ THE SOFTWARE.
                     zIndex: 1,
                     cursor: 'ew-resize'
                 })
-                .hover(() => this._hoverIn(), () => this._hoverOut())
-                .on('mousedown', (e) => this._mouseDown(e, true, false));
+                .hover(() => this._scrollbarHoverIn(), () => this._scrollbarHoverOut())
+                .on('mousedown', (e) => this._scrollbarMouseDown(e, true, false));
 
             this._rightHandle = this._scrollbar.find('.flot-scrollbar-right-handle')
                 .css({
@@ -138,37 +150,72 @@ THE SOFTWARE.
                     zIndex: 1,
                     cursor: 'ew-resize'
                 })
-                .hover(() => this._hoverIn(), () => this._hoverOut())
-                .on('mousedown', (e) => this._mouseDown(e, false, true));
+                .hover(() => this._scrollbarHoverIn(), () => this._scrollbarHoverOut())
+                .on('mousedown', (e) => this._scrollbarMouseDown(e, false, true));
 
             return outerContainer;
         }
 
-        _hoverIn() {
+        _scrollbarHoverIn() {
             if (!this._scrolling) {
-                const color = $.color.parse(this._options.barColor).scale('rgb', 0.85).toString();
-                this._scrollbar.css('backgroundColor', color);
+                this._scrollbar.css('backgroundColor', this.scrollbarHoverColor);
             }
         }
 
-        _hoverOut() {
+        _scrollbarHoverOut() {
             if (!this._scrolling) {
-                this._scrollbar.css('backgroundColor', this._options.barColor);
+                this._scrollbar.css('backgroundColor', this.scrollbarColor);
             }
         }
 
-        _mouseClick(event) {
+        _moveButtonHoverIn(moveButton, disabled) {
+            if (!disabled) {
+                moveButton.css('backgroundColor', this.moveButtonHoverColor);
+            }
+        }
+
+        _moveButtonHoverOut(moveButton) {
+            moveButton.css('backgroundColor', 'unset');
+        }
+
+        _setMoveButtonColors(moveButton, disabled) {
+            moveButton.css('fill', disabled ? this.moveButtonDisabledColor : this.moveButtonColor);
+            if (moveButton.is(':hover') && !disabled) {
+                this._moveButtonHoverIn(moveButton, disabled);
+            } else {
+                this._moveButtonHoverOut(moveButton);
+            }
+        }
+
+        get moveAmount() {
+            return this._scrollbar.width() * 0.1;
+        }
+
+        _moveButtonMouseDown(moveButton) {
+            let disabled, moveAmount;
+            if (moveButton === this._moveLeftButton) {
+                disabled = this._disableMoveLeft;
+                moveAmount = -this.moveAmount;
+            } else if (moveButton === this._moveRightButton) {
+                disabled = this._disableMoveRight;
+                moveAmount = this.moveAmount;
+            }
+
+            if (!disabled) {
+                this._move(moveAmount);
+            }
+        }
+
+        _containerMouseClick(event) {
             if (!this._scrolling) {
                 const x = event.pageX - this._container.offset().left;
-                const barWidthHalf = this._scrollbar.width() / 2;
-                const left = (x - barWidthHalf);
-                const right = (x + barWidthHalf);
-                const { left: newLeft, right: newRight } = this._clipScrollbar(left, right, true, true);
-                this._moveScrollbar(newLeft, newRight);
+                const currentX = this._scrollbar.offset().left - this._container.offset().left + this._scrollbar.width() / 2;
+                const amount = x - currentX;
+                this._move(amount);
             }
         }
-        
-        _mouseDown(event, moveLeft, moveRight) {
+
+        _scrollbarMouseDown(event, moveLeft, moveRight) {
             if (!(moveLeft && moveRight)) {
                 event.stopPropagation();
             }
@@ -191,9 +238,7 @@ THE SOFTWARE.
 
         _startScrolling(moveLeft, moveRight) {
             this._scrolling = true;
-
-            const color = $.color.parse(this._options.barColor).scale('rgb', 0.7).toString();
-            this._scrollbar.css('backgroundColor', color);
+            this._scrollbar.css('backgroundColor', this.scrollbarMoveColor);
 
             if (moveLeft) {
                 this._rightHandle.hide();
@@ -209,10 +254,17 @@ THE SOFTWARE.
             this._rightHandle.show();
             this._scrolling = false;
             if (this._scrollbar.is(':hover')) {
-                this._hoverIn();
+                this._scrollbarHoverIn();
             } else {
-                this._hoverOut();
+                this._scrollbarHoverOut();
             }
+        }
+
+        _move(amount) {
+            const left = this._scrollbar.offset().left - this._container.offset().left + amount;
+            const right = left + this._scrollbar.width();
+            const { left: newLeft, right: newRight } = this._clipScrollbar(left, right, true, true);
+            this._moveScrollbar(newLeft, newRight);
         }
 
         _clipScrollbar(left, right, moveLeft, moveRight) {
@@ -274,6 +326,11 @@ THE SOFTWARE.
                 left: left,
                 width: right - left,
             });
+
+            this._disableMoveLeft = left === 0;
+            this._setMoveButtonColors(this._moveLeftButton, this._disableMoveLeft);
+            this._disableMoveRight = right === width;
+            this._setMoveButtonColors(this._moveRightButton, this._disableMoveRight);
         }
 
         get xaxis() {
@@ -294,6 +351,30 @@ THE SOFTWARE.
             });
 
             this._positionScrollbar();
+        }
+
+        get scrollbarColor() {
+            return this._options.color;
+        }
+        
+        get scrollbarHoverColor() {
+            return $.color.parse(this.scrollbarColor).scale('rgb', 0.85).toString();
+        }
+
+        get scrollbarMoveColor() {
+            return $.color.parse(this.scrollbarColor).scale('rgb', 0.6).toString();
+        }
+
+        get moveButtonColor() {
+            return $.color.parse(this.scrollbarColor).scale('rgb', 0.5).toString();
+        }
+
+        get moveButtonHoverColor() {
+            return this.scrollbarColor;
+        }
+        
+        get moveButtonDisabledColor() {
+            return this.scrollbarHoverColor;
         }
     };
 
