@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Scrollbar</title>
+    <link rel="stylesheet" type="text/css" href="example.css">
+    <script type="text/javascript" src="../../../node_modules/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="../../../node_modules/flot/dist/es5/jquery.flot.js"></script>
+    <script type="text/javascript" src="../../../source/NationalInstruments/jquery.flot.scrollbar.js"></script>
+
+    <script type="text/javascript">
+        $(function() {
+            'use strict';
+
+            let options = {
+                scrollbar: {
+                    show: true
+                }
+            }
+
+            let data = [{ data: [0, 1, 2, 3], flatdata: true, lines: { show: true } }];
+
+            window.plot = $.plot('#placeholder', data, options);
+        });
+    </script>
+</head>
+
+<body>
+    <div id="header">
+        <h2>Digital waveform graph</h2>
+    </div>
+    <div id="content">
+        <div class="demo-container">
+            <div id="placeholder" class="demo-placeholder"><canvas id="theCanvas" class="flot-base" style="width: 100%; height: 100%"></div>
+        </div>
+    </div>
+</body>
+
+</html>
