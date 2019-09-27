@@ -15,6 +15,8 @@ describe('A scrollbar', function() {
             }
         },
         data = [{ data: [0, 1, 2, 3], flatdata: true, lines: { show: true } }];
+
+        jasmine.clock().install();
     });
 
     afterEach(function () {
@@ -22,6 +24,7 @@ describe('A scrollbar', function() {
             plot.shutdown();
         }
         placeholder.empty();
+        jasmine.clock().uninstall();
     });
 
     it('should create a scrollbar', function() {
@@ -172,23 +175,20 @@ describe('A scrollbar', function() {
         expect(xaxis.max).toBeCloseTo(2.1);
     });
 
-    it('should pan multiple times on click and hold', function(done) {
+    it('should pan multiple times on click and hold', function() {
         options.xaxis = {
             offset: { below: 1, above: -1 }
         }
         plot = $.plot(placeholder, data, options);
         
         let moveLeftButton = placeholder.find('.flot-scrollbar-move-left');
-        moveLeftButton.simulate('mousedown');
         // starts moving after 500 ms and moves every 50 ms
-        setTimeout(() => {
-            moveLeftButton.simulate('mouseup');
-            let xaxis = plot.getXAxes()[0];
-            expect(xaxis.min).toBeCloseTo(0.7);
-            expect(xaxis.max).toBeCloseTo(1.7);
-            done();
-        }, 620);
-
+        moveLeftButton.simulate('mousedown');
+        jasmine.clock().tick(600);
+        moveLeftButton.simulate('mouseup');
+        let xaxis = plot.getXAxes()[0];
+        expect(xaxis.min).toBeCloseTo(0.7);
+        expect(xaxis.max).toBeCloseTo(1.7);
     })
 
     function simulateMove(element, dx) {
