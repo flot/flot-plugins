@@ -172,6 +172,25 @@ describe('A scrollbar', function() {
         expect(xaxis.max).toBeCloseTo(2.1);
     });
 
+    it('should pan multiple times on click and hold', function(done) {
+        options.xaxis = {
+            offset: { below: 1, above: -1 }
+        }
+        plot = $.plot(placeholder, data, options);
+        
+        let moveLeftButton = placeholder.find('.flot-scrollbar-move-left');
+        moveLeftButton.simulate('mousedown');
+        // starts moving after 500 ms and moves every 50 ms
+        setTimeout(() => {
+            moveLeftButton.simulate('mouseup');
+            let xaxis = plot.getXAxes()[0];
+            expect(xaxis.min).toBeCloseTo(0.7);
+            expect(xaxis.max).toBeCloseTo(1.7);
+            done();
+        }, 620);
+
+    })
+
     function simulateMove(element, dx) {
         let position = { clientX: element.offset().left + element.width() / 2, clientY: element.offset().top + element.height() / 2 };
         element.simulate('mousedown', position);

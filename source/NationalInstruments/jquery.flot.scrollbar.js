@@ -101,7 +101,7 @@ THE SOFTWARE.
                 })
                 .hover(() => this._moveButtonHoverIn(this._moveLeftButton, this._disableMoveLeft), () => this._moveButtonHoverOut(this._moveLeftButton))
                 .on('mousedown', () => this._moveButtonMouseDown(this._moveLeftButton))
-                .on('mouseup', () => this._moveButtonMouseUp(this._moveLeftButton));
+                .on('mouseup mouseleave', () => this._moveButtonMouseUp(this._moveLeftButton));
 
             this._moveRightButton = outerContainer.find('.flot-scrollbar-move-right')
                 .css({
@@ -111,7 +111,7 @@ THE SOFTWARE.
                 })
                 .hover(() => this._moveButtonHoverIn(this._moveRightButton, this._disableMoveRight), () => this._moveButtonHoverOut(this._moveRightButton))
                 .on('mousedown', () => this._moveButtonMouseDown(this._moveRightButton))
-                .on('mouseup', () => this._moveButtonMouseUp(this._moveRightButton));
+                .on('mouseup mouseleave', () => this._moveButtonMouseUp(this._moveRightButton));
 
             this._container = outerContainer.find('.flot-scrollbar-container')
                 .css({
@@ -215,10 +215,17 @@ THE SOFTWARE.
             if (!disabled) {
                 this._setMoveButtonColors(moveButton, disabled, true);
                 this._move(moveAmount);
+                this._moveTimeout = setTimeout(() => {
+                    this._moveInterval = setInterval(() => {
+                        this._move(moveAmount);
+                    }, 50);
+                }, 500);
             }
         }
 
         _moveButtonMouseUp(moveButton) {
+            clearTimeout(this._moveTimeout);
+            clearInterval(this._moveInterval);
             
             let disabled;
             if (moveButton === this._moveLeftButton) {
