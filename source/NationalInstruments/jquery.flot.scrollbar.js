@@ -42,6 +42,8 @@ THE SOFTWARE.
             this._plot = plot;
             this._options = options.scrollbar;
             this._scrolling = false;
+            this._movingLeft = false;
+            this._movingRight = false;
             this._disableMoveLeft = false;
             this._disableMoveRight = false;
             this._createHooks();
@@ -87,7 +89,7 @@ THE SOFTWARE.
                     position: 'absolute',
                     bottom: 0,
                     height: this._options.height + 'px',
-                    backgroundColor: this._options.backgroundColor,
+                    backgroundColor: this.backgroundColor,
                     display: 'flex'
                 });
 
@@ -98,7 +100,8 @@ THE SOFTWARE.
                     flex: '0 0 auto'
                 })
                 .hover(() => this._moveButtonHoverIn(this._moveLeftButton, this._disableMoveLeft), () => this._moveButtonHoverOut(this._moveLeftButton))
-                .on('mousedown', () => this._moveButtonMouseDown(this._moveLeftButton));
+                .on('mousedown', () => this._moveButtonMouseDown(this._moveLeftButton))
+                .on('mouseup', () => this._moveButtonMouseUp(this._moveLeftButton));
 
             this._moveRightButton = outerContainer.find('.flot-scrollbar-move-right')
                 .css({
@@ -107,7 +110,8 @@ THE SOFTWARE.
                     flex: '0 0 auto'
                 })
                 .hover(() => this._moveButtonHoverIn(this._moveRightButton, this._disableMoveRight), () => this._moveButtonHoverOut(this._moveRightButton))
-                .on('mousedown', () => this._moveButtonMouseDown(this._moveRightButton));
+                .on('mousedown', () => this._moveButtonMouseDown(this._moveRightButton))
+                .on('mouseup', () => this._moveButtonMouseUp(this._moveRightButton));
 
             this._container = outerContainer.find('.flot-scrollbar-container')
                 .css({
@@ -178,12 +182,17 @@ THE SOFTWARE.
             moveButton.css('backgroundColor', 'unset');
         }
 
-        _setMoveButtonColors(moveButton, disabled) {
-            moveButton.css('fill', disabled ? this.moveButtonDisabledColor : this.moveButtonColor);
-            if (moveButton.is(':hover') && !disabled) {
-                this._moveButtonHoverIn(moveButton, disabled);
+        _setMoveButtonColors(moveButton, disabled, moving) {
+            if (moving && !disabled) {
+                moveButton.css('fill', this.backgroundColor);
+                moveButton.css('backgroundColor', this.scrollbarMoveColor);
             } else {
-                this._moveButtonHoverOut(moveButton);
+                moveButton.css('fill', disabled ? this.moveButtonDisabledColor : this.moveButtonColor);
+                if (moveButton.is(':hover') && !disabled) {
+                    this._moveButtonHoverIn(moveButton, disabled);
+                } else {
+                    this._moveButtonHoverOut(moveButton);
+                }
             }
         }
 
@@ -195,15 +204,32 @@ THE SOFTWARE.
             let disabled, moveAmount;
             if (moveButton === this._moveLeftButton) {
                 disabled = this._disableMoveLeft;
+                this._movingLeft = !disabled;
                 moveAmount = -this.moveAmount;
             } else if (moveButton === this._moveRightButton) {
                 disabled = this._disableMoveRight;
+                this._movingRight = !disabled;
                 moveAmount = this.moveAmount;
             }
 
             if (!disabled) {
+                this._setMoveButtonColors(moveButton, disabled, true);
                 this._move(moveAmount);
             }
+        }
+
+        _moveButtonMouseUp(moveButton) {
+            
+            let disabled;
+            if (moveButton === this._moveLeftButton) {
+                this._movingLeft = false;
+                disabled = this._disableMoveLeft;
+            } else if (moveButton === this._moveRightButton) {
+                this._movingRight = false;
+                disabled = this._disableMoveRight;
+            }
+
+            this._setMoveButtonColors(moveButton, disabled, false);
         }
 
         _containerMouseClick(event) {
@@ -328,9 +354,9 @@ THE SOFTWARE.
             });
 
             this._disableMoveLeft = left === 0;
-            this._setMoveButtonColors(this._moveLeftButton, this._disableMoveLeft);
+            this._setMoveButtonColors(this._moveLeftButton, this._disableMoveLeft, this._movingLeft);
             this._disableMoveRight = right === width;
-            this._setMoveButtonColors(this._moveRightButton, this._disableMoveRight);
+            this._setMoveButtonColors(this._moveRightButton, this._disableMoveRight, this._movingRight);
         }
 
         get xaxis() {
@@ -353,6 +379,10 @@ THE SOFTWARE.
             this._positionScrollbar();
         }
 
+        get backgroundColor() {
+            return this._options.backgroundColor;
+        }
+        
         get scrollbarColor() {
             return this._options.color;
         }
