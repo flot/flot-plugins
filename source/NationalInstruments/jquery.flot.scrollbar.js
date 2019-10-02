@@ -24,29 +24,43 @@ THE SOFTWARE.
 (function ($) {
     'use strict';
 
-    const HANDLE_WIDTH = 10;
+    const HANDLE_SIZE = 10;
+    const Direction = Object.freeze({
+        Horizontal: 0,
+        Vertical: 1
+    });
 
     class Scrollbar {
-        static get defaultOptions() {
+        get defaultOptions() {
             return {
-                scrollbar: {
-                    show: false,
-                    height: 18,
-                    backgroundColor: 'rgb(240, 240, 240)',
-                    color: 'rgb(195, 195, 195)'
-                }
+                size: 18,
+                backgroundColor: 'rgb(240, 240, 240)',
+                color: 'rgb(195, 195, 195)',
+                direction: 'horizontal'
             }
         }
 
         constructor(plot, options) {
             this._plot = plot;
-            this._options = options.scrollbar;
+            this._options = Object.assign(this.defaultOptions, options);
+            this.axis.options.autoScale = 'exact';
             this._scrolling = false;
-            this._movingLeft = false;
-            this._movingRight = false;
-            this._disableMoveLeft = false;
-            this._disableMoveRight = false;
+            this._movingBelow = false;
+            this._movingAbove = false;
+            this._disableMoveBelow = false;
+            this._disableMoveAbove = false;
             this._createHooks();
+        }
+
+        get direction() {
+            switch (this._options.direction) {
+                case 'horizontal':
+                    return Direction.Horizontal;
+                case 'vertical':
+                    return Direction.Vertical;
+                default:
+                    return Direction.Horizontal;
+            }
         }
 
         _createHooks() {
@@ -59,100 +73,115 @@ THE SOFTWARE.
         }
 
         _processOffset(offset) {
-            offset.bottom += this._options.height;
+            switch (this.direction) {
+                case Direction.Horizontal:
+                    offset.bottom += this._options.size;
+                    break;
+                case Direction.Vertical:
+                    offset.left += this._options.size;
+                    break;
+            }
         }
 
-        get template() {
-            return '<div class="flot-scrollbar-outer-container">' +
-                    '<div class="flot-scrollbar-move-left">' +
+        get axisRange() {
+            return Math.abs(this.axis.datamax - this.axis.datamin);
+        }
+
+        _getTemplate(className) {
+            const html = '<div class="[className]">' +
+                    '<div class="flot-scrollbar-move-below">' +
                         '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink style="width:100%;height:100%" viewBox="0 0 24 24">' +
                             '<polyline points="8,12 13,7 13,17" shape-rendering="crispEdges"/>' +
                         '</svg>' +
                     '</div>' +
                     '<div class="flot-scrollbar-container">' +
                         '<div class="flot-scrollbar">' +
-                            '<div class="flot-scrollbar-left-handle"></div>' +
-                            '<div class="flot-scrollbar-right-handle"></div>' +
+                            '<div class="flot-scrollbar-below-handle"></div>' +
+                            '<div class="flot-scrollbar-above-handle"></div>' +
                         '</div>' +
                     '</div>' +
-                    '<div class="flot-scrollbar-move-right">' +
+                    '<div class="flot-scrollbar-move-above">' +
                         '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink style="width:100%;height:100%" viewBox="0 0 24 24">' +
                             '<polyline points="17,12 11,7 11,17" shape-rendering="crispEdges"/>' +
                         '</svg>' +
                     '</div>' +
                 '</div>'
+            return html.replace('[className]', className);
         }
 
-        _createElement() {
-            const outerContainer = $(this.template)
+        _createElement(className) {
+            const outerContainer = $(this._getTemplate(className))
                 .css({
                     position: 'absolute',
                     bottom: 0,
-                    height: this._options.height + 'px',
                     backgroundColor: this.backgroundColor,
-                    display: 'flex'
+                    display: 'flex',
+                    flexDirection: this.direction === Direction.Horizontal ? 'row' : 'column-reverse'
                 });
 
-            this._moveLeftButton = outerContainer.find('.flot-scrollbar-move-left')
+            this._moveBelowButton = outerContainer.find('.flot-scrollbar-move-below')
                 .css({
-                    height: this._options.height + 'px',
-                    width: '18px',
-                    flex: '0 0 auto'
+                    height: this.direction === Direction.Horizontal ? '100%' : '18px',
+                    width: this.direction === Direction.Horizontal ? '18px' : '100%',
+                    flex: '0 0 auto',
+                    transform: this.direction === Direction.Horizontal ? '' : 'rotate(270deg)'
                 })
-                .hover(() => this._moveButtonHoverIn(this._moveLeftButton, this._disableMoveLeft), () => this._moveButtonHoverOut(this._moveLeftButton))
-                .on('mousedown', () => this._moveButtonMouseDown(this._moveLeftButton))
-                .on('mouseup mouseleave', () => this._moveButtonMouseUp(this._moveLeftButton));
+                .hover(() => this._moveButtonHoverIn(this._moveBelowButton, this._disableMoveBelow), () => this._moveButtonHoverOut(this._moveBelowButton))
+                .on('mousedown', () => this._moveButtonMouseDown(this._moveBelowButton))
+                .on('mouseup mouseleave', () => this._moveButtonMouseUp(this._moveBelowButton));
 
-            this._moveRightButton = outerContainer.find('.flot-scrollbar-move-right')
+            this._moveAboveButton = outerContainer.find('.flot-scrollbar-move-above')
                 .css({
-                    height: this._options.height + 'px',
-                    width: '18px',
-                    flex: '0 0 auto'
+                    height: this.direction === Direction.Horizontal ? '100%' : '18px',
+                    width: this.direction === Direction.Horizontal ? '18px' : '100%',
+                    flex: '0 0 auto',
+                    transform: this.direction === Direction.Horizontal ? '' : 'rotate(270deg)'
                 })
-                .hover(() => this._moveButtonHoverIn(this._moveRightButton, this._disableMoveRight), () => this._moveButtonHoverOut(this._moveRightButton))
-                .on('mousedown', () => this._moveButtonMouseDown(this._moveRightButton))
-                .on('mouseup mouseleave', () => this._moveButtonMouseUp(this._moveRightButton));
+                .hover(() => this._moveButtonHoverIn(this._moveAboveButton, this._disableMoveAbove), () => this._moveButtonHoverOut(this._moveAboveButton))
+                .on('mousedown', () => this._moveButtonMouseDown(this._moveAboveButton))
+                .on('mouseup mouseleave', () => this._moveButtonMouseUp(this._moveAboveButton));
 
             this._container = outerContainer.find('.flot-scrollbar-container')
                 .css({
                     flex: '1 0 auto',
                     boxSizing: 'border-box',
-                    padding: '2px 0'
+                    padding: this.direction === Direction.Horizontal ? '2px 0' : '0 2px'
                 })
-                .dblclick(() => this._plot.recenter({ axes: [this.xaxis] }))
+                .dblclick(() => this._plot.recenter({ axes: [this.axis] }))
                 .on('mouseup', (e) => this._containerMouseClick(e));
 
             this._scrollbar = this._container.find('.flot-scrollbar')
                 .css({
                     position: 'relative',
-                    height: '100%',
                     backgroundColor: this.scrollbarColor
                 })
                 .hover(() => this._scrollbarHoverIn(), () => this._scrollbarHoverOut())
                 .on('mousedown', (e) => this._scrollbarMouseDown(e, true, true));
 
-            this._leftHandle = this._scrollbar.find('.flot-scrollbar-left-handle')
+            this._belowHandle = this._scrollbar.find('.flot-scrollbar-below-handle')
                 .css({
                     position: 'absolute',
-                    height: '100%',
-                    width: HANDLE_WIDTH + 'px',
+                    height: this.direction === Direction.Horizontal ? '100%' : HANDLE_SIZE + 'px',
+                    width: this.direction === Direction.Horizontal ? HANDLE_SIZE + 'px' : '100%',
                     left: 0,
+                    bottom: 0,
                     opacity: 0,
                     zIndex: 1,
-                    cursor: 'ew-resize'
+                    cursor: this.direction === Direction.Horizontal ? 'ew-resize' : 'ns-resize'
                 })
                 .hover(() => this._scrollbarHoverIn(), () => this._scrollbarHoverOut())
                 .on('mousedown', (e) => this._scrollbarMouseDown(e, true, false));
 
-            this._rightHandle = this._scrollbar.find('.flot-scrollbar-right-handle')
+            this._aboveHandle = this._scrollbar.find('.flot-scrollbar-above-handle')
                 .css({
                     position: 'absolute',
-                    height: '100%',
-                    width: HANDLE_WIDTH + 'px',
+                    height: this.direction === Direction.Horizontal ? '100%' : HANDLE_SIZE + 'px',
+                    width: this.direction === Direction.Horizontal ? HANDLE_SIZE + 'px' : '100%',
                     right: 0,
+                    top: 0,
                     opacity: 0,
                     zIndex: 1,
-                    cursor: 'ew-resize'
+                    cursor: this.direction === Direction.Horizontal ? 'ew-resize' : 'ns-resize'
                 })
                 .hover(() => this._scrollbarHoverIn(), () => this._scrollbarHoverOut())
                 .on('mousedown', (e) => this._scrollbarMouseDown(e, false, true));
@@ -196,19 +225,27 @@ THE SOFTWARE.
             }
         }
 
+        get scrollbarSize() {
+            return this.direction === Direction.Horizontal ? this._scrollbar.width() : this._scrollbar.height();
+        }
+
+        get containerSize() {
+            return this.direction === Direction.Horizontal ? this._container.width() : this._container.height();
+        }
+        
         get moveAmount() {
-            return this._scrollbar.width() * 0.1;
+            return this.scrollbarSize * 0.1;
         }
 
         _moveButtonMouseDown(moveButton) {
             let disabled, moveAmount;
-            if (moveButton === this._moveLeftButton) {
-                disabled = this._disableMoveLeft;
-                this._movingLeft = !disabled;
+            if (moveButton === this._moveBelowButton) {
+                disabled = this._disableMoveBelow;
+                this._movingBelow = !disabled;
                 moveAmount = -this.moveAmount;
-            } else if (moveButton === this._moveRightButton) {
-                disabled = this._disableMoveRight;
-                this._movingRight = !disabled;
+            } else if (moveButton === this._moveAboveButton) {
+                disabled = this._disableMoveAbove;
+                this._movingAbove = !disabled;
                 moveAmount = this.moveAmount;
             }
 
@@ -228,12 +265,12 @@ THE SOFTWARE.
             clearInterval(this._moveInterval);
             
             let disabled;
-            if (moveButton === this._moveLeftButton) {
-                this._movingLeft = false;
-                disabled = this._disableMoveLeft;
-            } else if (moveButton === this._moveRightButton) {
-                this._movingRight = false;
-                disabled = this._disableMoveRight;
+            if (moveButton === this._moveBelowButton) {
+                this._movingBelow = false;
+                disabled = this._disableMoveBelow;
+            } else if (moveButton === this._moveAboveButton) {
+                this._movingAbove = false;
+                disabled = this._disableMoveAbove;
             }
 
             this._setMoveButtonColors(moveButton, disabled, false);
@@ -241,50 +278,70 @@ THE SOFTWARE.
 
         _containerMouseClick(event) {
             if (!this._scrolling) {
-                const x = event.pageX - this._container.offset().left;
-                const currentX = this._scrollbar.offset().left - this._container.offset().left + this._scrollbar.width() / 2;
-                const amount = x - currentX;
+                let amount;
+                switch (this.direction) {
+                    case Direction.Horizontal:
+                        const x = event.pageX - this._container.offset().left;
+                        const currentX = this._scrollbar.offset().left - this._container.offset().left + this._scrollbar.width() / 2;
+                        amount = x - currentX;
+                        break;
+                    case Direction.Vertical:
+                        const y = event.pageY - this._container.offset().top;
+                        const currentY = this._scrollbar.offset().top - this._container.offset().top + this._scrollbar.height() / 2;
+                        amount = currentY - y;
+                        break;
+                }
+
                 this._move(amount);
             }
         }
 
-        _scrollbarMouseDown(event, moveLeft, moveRight) {
-            if (!(moveLeft && moveRight)) {
+        _scrollbarMouseDown(event, moveBelow, moveAbove) {
+            if (!(moveBelow && moveAbove)) {
                 event.stopPropagation();
             }
-            this._startScrolling(moveLeft, moveRight);
-            const startx = event.pageX;
-            const width = this._scrollbar.width();
-            const startLeft = this._scrollbar.offset().left - this._container.offset().left;
-            const startRight = startLeft + width;
+            this._startScrolling(moveBelow, moveAbove);
+            const start = this.direction === Direction.Horizontal ? event.pageX : event.pageY;
+            const size = this.scrollbarSize;
+            let startBelow, startAbove
+            switch (this.direction) {
+                case Direction.Horizontal:
+                    startBelow = this._scrollbar.offset().left - this._container.offset().left;
+                    startAbove = this.containerSize - startBelow - size;
+                    break;
+                case Direction.Vertical:
+                    startAbove = this._scrollbar.offset().top - this._container.offset().top;
+                    startBelow = this.containerSize - startAbove - size;
+                    break;
+            }
             $(document.body).on('mousemove', (e) => {
-                const dx = e.pageX - startx;
-                const left = moveLeft ? startLeft + dx : startLeft;
-                const right = moveRight ? startRight + dx : startRight;
-                const { left: newLeft, right: newRight } = this._clipScrollbar(left, right, moveLeft, moveRight);
-                this._moveScrollbar(newLeft, newRight);
+                const d = this.direction === Direction.Horizontal ? start - e.pageX : e.pageY - start;
+                const below = moveBelow ? startBelow - d : startBelow;
+                const above = moveAbove ? startAbove + d : startAbove;
+                const { below: newBelow, above: newAbove } = this._clipScrollbar(below, above, moveBelow, moveAbove);
+                this._moveScrollbar(newBelow, newAbove);
             }).on('mouseup', () => {
                 this._stopScrolling();
                 $(document.body).off('mousemove').off('mouseup');
             });
         }
 
-        _startScrolling(moveLeft, moveRight) {
+        _startScrolling(moveBelow, moveAbove) {
             this._scrolling = true;
             this._scrollbar.css('backgroundColor', this.scrollbarMoveColor);
 
-            if (moveLeft) {
-                this._rightHandle.hide();
+            if (moveBelow) {
+                this._aboveHandle.hide();
             }
 
-            if (moveRight) {
-                this._leftHandle.hide();
+            if (moveAbove) {
+                this._belowHandle.hide();
             }
         }
 
         _stopScrolling() {
-            this._leftHandle.show();
-            this._rightHandle.show();
+            this._belowHandle.show();
+            this._aboveHandle.show();
             this._scrolling = false;
             if (this._scrollbar.is(':hover')) {
                 this._scrollbarHoverIn();
@@ -294,54 +351,55 @@ THE SOFTWARE.
         }
 
         _move(amount) {
-            const left = this._scrollbar.offset().left - this._container.offset().left + amount;
-            const right = left + this._scrollbar.width();
-            const { left: newLeft, right: newRight } = this._clipScrollbar(left, right, true, true);
-            this._moveScrollbar(newLeft, newRight);
+            let below, above;
+            switch (this.direction) {
+                case Direction.Horizontal:
+                    below = this._scrollbar.offset().left - this._container.offset().left + amount;
+                    above = this.containerSize - below - this.scrollbarSize;
+                    break;
+                case Direction.Vertical:
+                    above = this._scrollbar.offset().top - this._container.offset().top - amount;
+                    below = this.containerSize - above - this.scrollbarSize;
+                    break;
+            }
+            const { below: newBelow, above: newAbove } = this._clipScrollbar(below, above, true, true);
+            this._moveScrollbar(newBelow, newAbove);
         }
 
-        _clipScrollbar(left, right, moveLeft, moveRight) {
-            const min = 0;
-            const max = this._container.width();
-            const width = this._scrollbar.width();
-
-            if (moveLeft && left < min) {
-                left = min;
-                if (moveRight) {
-                    right = width;
+        _clipScrollbar(below, above, moveBelow, moveAbove) {
+            if (moveBelow && below < 0) {
+                below = 0;
+                if (moveAbove) {
+                    above = this.containerSize - this.scrollbarSize;
                 }
             }
 
-            if (moveRight && right > max) {
-                right = max;
-                if (moveLeft) {
-                    left = max - width;
+            if (moveAbove && above < 0) {
+                above = 0;
+                if (moveBelow) {
+                    below = this.containerSize - this.scrollbarSize;
                 }
             }
 
-            return { left: left, right: right };
+            return { below: below, above: above };
         }
 
-        _moveScrollbar(left, right) {
-            if (right > left && right - left > HANDLE_WIDTH * 2) {
-                const width = this._container.width();
-                const xaxis = this.xaxis;
-                const range = Math.abs(xaxis.datamax - xaxis.datamin);
-                const min = left / width * range;
-                const max = right / width * range;
-
-                let offsetBelow = $.plot.saturated.saturate(xaxis.options.offset.below - (xaxis.min - min));
-                let offsetAbove = $.plot.saturated.saturate(xaxis.options.offset.above - (xaxis.max - max));
+        _moveScrollbar(below, above) {
+            const size = this.containerSize;
+            if (Math.abs(size - above - below) > HANDLE_SIZE * 2) {
+                const range = this.axisRange;
+                let offsetBelow = $.plot.saturated.saturate(below / size * range);
+                let offsetAbove = $.plot.saturated.saturate(-above / size * range);
 
                 if (!isFinite(offsetBelow)) {
                     offsetBelow = 0;
                 }
-
+                
                 if (!isFinite(offsetAbove)) {
                     offsetAbove = 0;
                 }
-
-                xaxis.options.offset = { below: offsetBelow, above: offsetAbove };
+                
+                this.axis.options.offset = { below: offsetBelow, above: offsetAbove };
 
                 this._plot.setupGrid(true);
                 this._plot.draw();
@@ -349,39 +407,63 @@ THE SOFTWARE.
         }
 
         _positionScrollbar() {
-            const width = this._container.width();
-            const xaxis = this.xaxis;
-            const range = Math.abs(xaxis.datamax - xaxis.datamin);
-            const left = xaxis.min / range * width;
-            const right = xaxis.max / range * width;
+            const size = this.containerSize;
+            const axis = this.axis;
+            const range = this.axisRange;
+            const below = (axis.min - axis.datamin) / range * size;
+            const above = (axis.datamax - axis.max) / range * size;
             
-            this._scrollbar.css({
-                left: left,
-                width: right - left,
-            });
+            switch (this.direction) {
+                case Direction.Horizontal:
+                    this._scrollbar.css({
+                        left: below,
+                        width: size - above - below,
+                        height: '100%'
+                    });
+                    break;
+                case Direction.Vertical:
+                    this._scrollbar.css({
+                        top: above,
+                        height: size - above - below,
+                        width: '100%'
+                    });
+                    break;
+            }
+            
 
-            this._disableMoveLeft = left === 0;
-            this._setMoveButtonColors(this._moveLeftButton, this._disableMoveLeft, this._movingLeft);
-            this._disableMoveRight = right === width;
-            this._setMoveButtonColors(this._moveRightButton, this._disableMoveRight, this._movingRight);
+            this._disableMoveBelow = below === 0;
+            this._setMoveButtonColors(this._moveBelowButton, this._disableMoveBelow, this._movingBelow);
+            this._disableMoveAbove = above === 0;
+            this._setMoveButtonColors(this._moveAboveButton, this._disableMoveAbove, this._movingAbove);
         }
 
-        get xaxis() {
-            return this._plot.getXAxes()[0];
+        get axis() {
+            return this.direction === Direction.Horizontal ? this._plot.getXAxes()[0] : this._plot.getYAxes()[0];
         }
 
         _render() {
-            const placeholder = this._plot.getPlaceholder();
-            this._outerContainer = $('.flot-scrollbar-outer-container');
+            const className = this.direction === Direction.Horizontal ? 'flot-scrollbar-horizontal' : 'flot-scrollbar-vertical';
+            this._outerContainer = $('.' + className);
             if (!this._outerContainer.length) {
-                this._outerContainer = this._createElement().appendTo(placeholder);
+                this._outerContainer = this._createElement(className).appendTo(this._plot.getPlaceholder());
             }
 
-            this._outerContainer.css({
-                left: this._plot.getPlotOffset().left,
-                width: this._plot.width() + 'px',
-                height: this._options.height + 'px',
-            });
+            switch (this.direction) {
+                case Direction.Horizontal:
+                    this._outerContainer.css({
+                        left: this._plot.getPlotOffset().left,
+                        width: this._plot.width() + 'px',
+                        height: this._options.size + 'px',
+                    });
+                    break;
+                case Direction.Vertical:
+                        this._outerContainer.css({
+                            top: this._plot.getPlotOffset().top,
+                            width: this._options.size + 'px',
+                            height: this._plot.height() + 'px',
+                        });
+                        break;
+            }
 
             this._positionScrollbar();
         }
@@ -416,22 +498,22 @@ THE SOFTWARE.
     };
 
     function init(plot) {
-        let scrollbar;
+        let scrollbars;
 
         plot.hooks.processOptions.push((plot, options) => {
-            if (options.scrollbar && options.scrollbar.show) {
-                scrollbar = new Scrollbar(plot, options);
+            if (Array.isArray(options.scrollbars)) {
+                scrollbars = options.scrollbars.map(scrollbarOptions => new Scrollbar(plot, scrollbarOptions));
             }
         });
 
-        plot.getScrollbar = function() {
-            return scrollbar;
+        plot.getScrollbars = function() {
+            return scrollbars;
         }
     }
 
     $.plot.plugins.push({
         init: init,
-        options: Scrollbar.defaultOptions,
+        options: { scrollbars: [] },
         name: 'scrollbar',
         version: '1.0'
     });
