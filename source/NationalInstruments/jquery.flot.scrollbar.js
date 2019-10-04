@@ -385,7 +385,7 @@ THE SOFTWARE.
 
         _moveScrollbar(below, above) {
             const size = this.containerSize;
-            if (Math.abs(size - above - below) > HANDLE_SIZE * 2) {
+            if (below < size - above && Math.abs(size - above - below) > HANDLE_SIZE * 3) {
                 const range = this.axisRange;
                 let offsetBelow = $.plot.saturated.saturate(below / size * range);
                 let offsetAbove = $.plot.saturated.saturate(-above / size * range);
