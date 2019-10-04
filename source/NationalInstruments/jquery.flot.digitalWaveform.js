@@ -260,6 +260,7 @@ THE SOFTWARE.
 
         _expandCollapseBus(plot, bus, expand) {
             bus.collapsed = !expand;
+            plot.getAxes().yaxis.options.offset = { above: 0, below: 0 };
             this._initializeSignalAndBusPositions(plot);
         }
 
@@ -444,8 +445,8 @@ THE SOFTWARE.
                         .concat(signals.map(series => series.digitalWaveform.signal.top))
                         .concat(buses.map(bus => bus.bottom))
                         .concat(buses.map(bus => bus.top));
-                    axis.datamin = Math.min(...boundaries);
-                    axis.datamax = Math.max(...boundaries);
+                    axis.datamin = Math.floor(Math.min(...boundaries));
+                    axis.datamax = Math.ceil(Math.max(...boundaries));
                     break;
             }
         }

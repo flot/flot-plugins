@@ -103,8 +103,8 @@ describe('A digital waveform', function() {
         let plot = $.plot(placeholder, data, options);
 
         let axes = plot.getAxes();
-        expect(axes.yaxis.datamin).toBeCloseTo(0.1);
-        expect(axes.yaxis.datamax).toBeCloseTo(6.9);
+        expect(axes.yaxis.datamin).toBeCloseTo(0);
+        expect(axes.yaxis.datamax).toBeCloseTo(7);
     });
 
     it('should increment data max of x-axis by last step size of signal', function() {
