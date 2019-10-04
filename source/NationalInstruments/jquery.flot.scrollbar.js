@@ -144,7 +144,6 @@ THE SOFTWARE.
             this._container = outerContainer.find('.flot-scrollbar-container')
                 .css({
                     flex: '1 0 auto',
-                    boxSizing: 'border-box',
                     padding: this.direction === Direction.Horizontal ? '2px 0' : '0 2px'
                 })
                 .dblclick(() => this._plot.recenter({ axes: [this.axis] }))
@@ -412,7 +411,7 @@ THE SOFTWARE.
             const range = this.axisRange;
             const below = (axis.min - axis.datamin) / range * size;
             const above = (axis.datamax - axis.max) / range * size;
-            
+
             switch (this.direction) {
                 case Direction.Horizontal:
                     this._scrollbar.css({
@@ -429,7 +428,6 @@ THE SOFTWARE.
                     });
                     break;
             }
-            
 
             this._disableMoveBelow = below === 0;
             this._setMoveButtonColors(this._moveBelowButton, this._disableMoveBelow, this._movingBelow);
@@ -447,7 +445,7 @@ THE SOFTWARE.
             if (!this._outerContainer.length) {
                 this._outerContainer = this._createElement(className).appendTo(this._plot.getPlaceholder());
             }
-
+            
             switch (this.direction) {
                 case Direction.Horizontal:
                     this._outerContainer.css({
@@ -455,14 +453,26 @@ THE SOFTWARE.
                         width: this._plot.width() + 'px',
                         height: this._options.size + 'px',
                     });
+                    this._scrollbar.css('width', '100%');
                     break;
                 case Direction.Vertical:
-                        this._outerContainer.css({
-                            top: this._plot.getPlotOffset().top,
-                            width: this._options.size + 'px',
-                            height: this._plot.height() + 'px',
-                        });
-                        break;
+                    const getBorderWidth = () => {
+                        const bw = this._plot.getOptions().grid.borderWidth;
+                        return typeof bw === 'object' ? this.direction === Direction.Horizontal ? bw.bottom || 0 : bw.left || 0 : bw;
+                    }
+
+                    const getAxisWidth = () => {
+                        return this.axis.box ? this.axis.box.width : 0;
+                    }
+                
+                    this._outerContainer.css({
+                        top: this._plot.getPlotOffset().top,
+                        left: this._plot.getPlotOffset().left - getBorderWidth() - getAxisWidth() - this._options.size,
+                        width: this._options.size + 'px',
+                        height: this._plot.height() + 'px',
+                    });
+                    this._scrollbar.css('height', '100%');
+                    break;
             }
 
             this._positionScrollbar();
