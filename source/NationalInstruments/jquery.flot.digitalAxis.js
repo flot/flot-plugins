@@ -87,6 +87,8 @@ THE SOFTWARE.
                 let relativeMaxWidth = (maxWidth + 10) / placeholder.width();
                 let axisWidth = Math.min(relativeMaxWidth, 0.5);
                 digitalAxis.options.elementWidth = placeholder.width() * axisWidth;
+            } else {
+                digitalAxis.options.elementWidth = 0;
             }
         } else {
             digitalAxis.options.elementWidth = digitalAxis.options.width;
