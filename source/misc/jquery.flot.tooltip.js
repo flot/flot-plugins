@@ -174,7 +174,7 @@
                 }
             };
 
-            if (item) {
+            if (item && !isNaN(item.dataIndex)) {
                 plot.showTooltip(item, that.tooltipOptions.snap ? item : pos);
             } else if (that.plotOptions.series.lines.show && that.tooltipOptions.lines === true) {
                 var maxDistance = that.plotOptions.grid.mouseActiveRadius;
