@@ -746,6 +746,7 @@ describe("Cursors interaction", function () {
 
         var cursor = plot.getCursors()[0];
         expect(cursor.selected).toBe(true);
+        $('.flot-overlay').simulate("flotdragend", options);
     });
 
     describe('Mouse pointer', function () {
