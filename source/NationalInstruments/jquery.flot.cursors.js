@@ -61,6 +61,7 @@ THE SOFTWARE.
         const thumbPreviousPositionMap = new Map();
         let plotPositionConstrain;
         let svgRoot;
+        var isDragging = false;
 
         function createCursor(options) {
             const defaultCursor = createDefaultCursor();
@@ -647,6 +648,10 @@ THE SOFTWARE.
         }
 
         function handleCursorMouseOver(e, x, y, pageX, pageY) {
+            if (isDragging) {
+                return;
+            }
+            
             var currentlySelectedCursor = selectedCursor(cursors);
 
             if (currentlySelectedCursor && e.buttons === 0) {
@@ -694,6 +699,7 @@ THE SOFTWARE.
         }
 
         function handleCursorMoveStart(e, x, y, pageX, pageY) {
+            isDragging = true;
             var currentlySelectedCursor = selectedCursor(cursors);
             snapMode = snapModes.xy;
             if (currentlySelectedCursor) {
@@ -751,6 +757,7 @@ THE SOFTWARE.
         }
 
         function handleCursorMoveEnd(e, x, y, pageX, pageY) {
+            isDragging = false;
             var currentlySelectedCursor = selectedCursor(cursors);
 
             if (currentlySelectedCursor) {
