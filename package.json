@@ -10,7 +10,7 @@
   },
   "scripts": {
     "eslint": "eslint \"./source/**/*.js\"",
-    "test": "karma start karma.conf.js --browsers=Chrome",
+    "test": "karma start karma.conf.js --single-run",
     "karma": "karma start",
     "build": "gulp build"
   },
