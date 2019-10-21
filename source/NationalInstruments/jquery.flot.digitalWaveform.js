@@ -702,11 +702,17 @@ THE SOFTWARE.
 
         _drawText(ctx, x, y, text, maxWidth) {
             const fittingText = this._getFittingText(ctx, text, maxWidth);
-            ctx.fillText(fittingText, x, y);
+            if (fittingText.length) {
+                ctx.fillText(fittingText, x, y);
+            }
         }
 
         _getFittingText(ctx, text, maxWidth) {
             const ellipsisWidth = ctx.measureText(BUS_LABEL_ELLIPSIS).width;
+            const minWidth = ctx.measureText(text.substring(0, 1)).width + ellipsisWidth;
+            if (minWidth > maxWidth) {
+                return '';
+            }
             let textWidth = ctx.measureText(text).width;
             if (textWidth > maxWidth && textWidth > ellipsisWidth) {
                 while (textWidth + ellipsisWidth > maxWidth && text.length > 1) {
