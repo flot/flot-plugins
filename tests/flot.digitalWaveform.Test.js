@@ -543,16 +543,16 @@ describe('A digital waveform', function() {
             [[0.5, 1], [1.5, 1], [2.5, 0]]
         ];
         let plot = $.plot(placeholder, data, options);
-        let ctx = setupCanvasToSpyOn(plot);
+        let ctx = setupCanvasToSpyOn(plot, 100);
 
         spyOn(ctx, 'fillText').and.callThrough();
 
         plot.draw();
 
         expect(ctx.fillText.calls.allArgs()).toEqual([
-            [jasmine.any(String), 0.75, 2.5],
-            [jasmine.any(String), 1.75, 2.5],
-            [jasmine.any(String), 3, 2.5]
+            [jasmine.any(String), 75, 250],
+            [jasmine.any(String), 175, 250],
+            [jasmine.any(String), 300, 250]
         ]);
     });
 
@@ -565,17 +565,19 @@ describe('A digital waveform', function() {
             [[0.5, 1], [1.5, 1], [2.5, 0]]
         ];
         let plot = $.plot(placeholder, data, options);
-        let ctx = setupCanvasToSpyOn(plot);
+        let ctx = setupCanvasToSpyOn(plot, 100);
 
         spyOn(ctx, 'fillText').and.callThrough();
 
         plot.draw();
 
-        expect(ctx.fillText.calls.allArgs()).toEqual([
-            [jasmine.any(String), 0.525, 2.5],
-            [jasmine.any(String), 1.025, 2.5],
-            [jasmine.any(String), 2.525, 2.5]
-        ]);
+        const args = ctx.fillText.calls.allArgs();
+        expect(args[0][1]).toBeCloseTo(52.5);
+        expect(args[0][2]).toBeCloseTo(250);
+        expect(args[1][1]).toBeCloseTo(102.5);
+        expect(args[1][2]).toBeCloseTo(250);
+        expect(args[2][1]).toBeCloseTo(252.5);
+        expect(args[2][2]).toBeCloseTo(250);
     });
 
     it('should draw bus labels right aligned', function() {
@@ -587,27 +589,28 @@ describe('A digital waveform', function() {
             [[0.5, 1], [1.5, 1], [2.5, 0]]
         ];
         let plot = $.plot(placeholder, data, options);
-        let ctx = setupCanvasToSpyOn(plot);
+        let ctx = setupCanvasToSpyOn(plot, 100);
 
         spyOn(ctx, 'fillText').and.callThrough();
 
         plot.draw();
 
         expect(ctx.fillText.calls.allArgs()).toEqual([
-            [jasmine.any(String), 0.975, 2.5],
-            [jasmine.any(String), 2.475, 2.5],
-            [jasmine.any(String), 3.475, 2.5]
+            [jasmine.any(String), 97.5, 250],
+            [jasmine.any(String), 247.5, 250],
+            [jasmine.any(String), 347.5, 250]
         ]);
     });
 
     it('should truncate bus labels when they do not fit between bus value transitions', function() {
         options.buses = [{}];
         let data = [
+            { data: [0, 1, 1, 0], flatdata: true },
             { data: [0, 0, 0, 1], flatdata: true },
-            { data: [0, 1, 1, 0], flatdata: true }
+            { data: [0, 0, 0, 1], flatdata: true }
         ];
         let plot = $.plot(placeholder, data, options);
-        let ctx = setupCanvasToSpyOn(plot);
+        let ctx = setupCanvasToSpyOn(plot, 25);
 
         spyOn(ctx, 'fillText').and.callThrough();
 
@@ -615,9 +618,26 @@ describe('A digital waveform', function() {
 
         expect(ctx.fillText.calls.allArgs()).toEqual([
             ['0...', jasmine.any(Number), jasmine.any(Number)],
-            ['1...', jasmine.any(Number), jasmine.any(Number)],
-            ['0...', jasmine.any(Number), jasmine.any(Number)]
+            ['001', jasmine.any(Number), jasmine.any(Number)],
+            ['1...', jasmine.any(Number), jasmine.any(Number)]
         ]);
+    });
+
+    it('should not draw bus labels when the available space is to small', function() {
+        options.buses = [{}];
+        let data = [
+            { data: [0, 1, 1, 0], flatdata: true },
+            { data: [0, 0, 0, 1], flatdata: true },
+            { data: [0, 0, 0, 1], flatdata: true }
+        ];
+        let plot = $.plot(placeholder, data, options);
+        let ctx = setupCanvasToSpyOn(plot, 1);
+
+        spyOn(ctx, 'fillText').and.callThrough();
+
+        plot.draw();
+
+        expect(ctx.fillText).not.toHaveBeenCalled();
     });
 
     it('should format bus labels with provided label formatter', function() {
@@ -684,10 +704,10 @@ describe('A digital waveform', function() {
         ]);
     });
 
-    function setupCanvasToSpyOn(plot) {
+    function setupCanvasToSpyOn(plot, f) {
         let axes = plot.getAxes();
-        axes.xaxis.p2c = (p) => p;
-        axes.yaxis.p2c = (p) => p;
+        axes.xaxis.p2c = (p) => p * (f ? f : 1);
+        axes.yaxis.p2c = (p) => p * (f ? f : 1);
         return plot.getCanvas().getContext('2d');
     }
 

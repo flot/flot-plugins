@@ -709,11 +709,11 @@ THE SOFTWARE.
 
         _getFittingText(ctx, text, maxWidth) {
             const ellipsisWidth = ctx.measureText(BUS_LABEL_ELLIPSIS).width;
-            const minWidth = ctx.measureText(text.substring(0, 1)).width + ellipsisWidth;
+            let textWidth = ctx.measureText(text).width;
+            const minWidth = Math.min(ctx.measureText(text.substring(0, 1)).width + ellipsisWidth, textWidth);
             if (minWidth > maxWidth) {
                 return '';
             }
-            let textWidth = ctx.measureText(text).width;
             if (textWidth > maxWidth && textWidth > ellipsisWidth) {
                 while (textWidth + ellipsisWidth > maxWidth && text.length > 1) {
                     text = text.substring(0, text.length - 1);
