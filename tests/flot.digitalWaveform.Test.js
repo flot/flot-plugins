@@ -657,7 +657,7 @@ describe('A digital waveform', function() {
                 { data: [0, 1, 1, 255, 254], flatdata: true }
             ];
             let plot = $.plot(placeholder, data, options);
-            let ctx = setupCanvasToSpyOn(plot);
+            let ctx = setupCanvasToSpyOn(plot, 100);
             let dwg = plot.getDigitalWaveform();
 
             spyOn(dwg, '_drawText').and.callThrough();
@@ -689,7 +689,7 @@ describe('A digital waveform', function() {
             { data: [0, 1, 1, 1, 1, 0, 1], flatdata: true }
         ];
         let plot = $.plot(placeholder, data, options);
-        let ctx = setupCanvasToSpyOn(plot);
+        let ctx = setupCanvasToSpyOn(plot, 100);
 
         spyOn(ctx, 'rect').and.callThrough();
         spyOn(ctx, 'clip').and.callThrough();
@@ -698,9 +698,9 @@ describe('A digital waveform', function() {
 
         expect(ctx.clip).toHaveBeenCalledTimes(3);
         expect(ctx.rect.calls.allArgs()).toEqual([
-            [2, 1.5, 2.5, -1],
-            [2, 1.5, 2.5, -1],
-            [2, 1.5, 2.5, -1]
+            [200, 150, 250, -100],
+            [200, 150, 250, -100],
+            [200, 150, 250, -100]
         ]);
     });
 

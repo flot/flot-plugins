@@ -625,6 +625,15 @@ THE SOFTWARE.
                 return;
             }
 
+            const y1c = axes.yaxis.p2c(y1);
+            const y2c = axes.yaxis.p2c(y2);
+            const maxHeight = Math.abs(y2c - y1c);
+            const fontSize = parseInt(plot.getPlaceholder().css('font-size'));
+            if (fontSize > maxHeight) {
+                return;
+            }
+
+
             ctx.save();
             this._clipCanvasToAxes(ctx, axes.xaxis, axes.yaxis);
             ctx.font = plot.getPlaceholder().css('font');
@@ -641,8 +650,6 @@ THE SOFTWARE.
                     break;
             }
 
-            const y1c = axes.yaxis.p2c(y1);
-            const y2c = axes.yaxis.p2c(y2);
             const y = (y1c + y2c) / 2;
             for (let i = 0, x1 = null; i < bus.samples.length; i++) {
                 const value = bus.values[i];
