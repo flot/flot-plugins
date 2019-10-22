@@ -398,7 +398,11 @@ THE SOFTWARE.
                     offsetAbove = 0;
                 }
                 
-                this.axis.options.offset = { below: offsetBelow, above: offsetAbove };
+                if (offsetBelow === 0 && offsetAbove === 0) {
+                    this.axis.options.offset = {};
+                } else {
+                    this.axis.options.offset = { below: offsetBelow, above: offsetAbove };
+                }
 
                 this._plot.setupGrid(true);
                 this._plot.draw();

@@ -35,7 +35,10 @@ describe('A digital waveform', function() {
     beforeEach(function() {
         jasmine.addMatchers(customMatchers);
 
-        placeholder = setFixtures('<div id="test-container" style="width: 300px; height: 150px" />');
+        const fixture = setFixtures('<div id="demo-container" style="width: 800px;height: 600px">').find('#demo-container').get(0);
+        placeholder = $('<div id="placeholder" style="width: 100%;height: 100%">');
+        placeholder.appendTo(fixture);
+
         options = {
             grid: { show: false },
             series: {
@@ -702,6 +705,26 @@ describe('A digital waveform', function() {
             [200, 150, 250, -100],
             [200, 150, 250, -100]
         ]);
+    });
+
+    it('should zoom in when to much data is about to be displayed', function() {
+        let data = [];
+        for (let i = 0; i < 64; i++) {
+            let signal = []
+            for (let i = 0; i < 50; i++) {
+                signal.push(i % 2);
+            }
+            data.push(signal);
+        }
+        options.series.flatdata = true;
+        let plot = $.plot(placeholder, data, options);
+
+        let xaxis = plot.getXAxes()[0];
+        expect(xaxis.options.offset.below).toBe(0);
+        expect(xaxis.options.offset.above).toBeCloseTo(-18);
+        let yaxis = plot.getYAxes()[0];
+        expect(yaxis.options.offset.below).toBeCloseTo(40);
+        expect(yaxis.options.offset.above).toBe(0)
     });
 
     function setupCanvasToSpyOn(plot, f) {
