@@ -659,15 +659,16 @@ THE SOFTWARE.
             const y1c = axes.yaxis.p2c(y1);
             const y2c = axes.yaxis.p2c(y2);
             const maxHeight = Math.abs(y2c - y1c);
-            const fontSize = parseInt(plot.getPlaceholder().css('font-size'));
-            if (fontSize > maxHeight) {
+            const fontSize = plot.getPlaceholder().css('font-size');
+            if (parseInt(fontSize) > maxHeight) {
                 return;
             }
 
 
             ctx.save();
             this._clipCanvasToAxes(ctx, axes.xaxis, axes.yaxis);
-            ctx.font = plot.getPlaceholder().css('font');
+            const fontFamily = plot.getPlaceholder().css('font-family');
+            ctx.font = `${fontSize} ${fontFamily}`;
             ctx.textBaseline = 'middle';
             switch (bus.labelPosition) {
                 case 'center':
