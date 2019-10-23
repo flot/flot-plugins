@@ -101,32 +101,34 @@ THE SOFTWARE.
                     var ymin = Number.POSITIVE_INFINITY;
                     var xmin = Number.POSITIVE_INFINITY;
                     var x, y;
-                    for (var i = 0; i < dataLen; i++) {
-                        if (isArrayOfObject) {
-                            x = sData[0][i].x;
-                            y = sData[0][i].y;
-                        } else if (isObjectOfArray) {
-                            x = sData[0].x[i];
-                            y = sData[0].y[i];
-                        } else if (isArrayOfArray) {
-                            x = sData[0][i][0];
-                            y = sData[0][i][1];
-                        }
-                        
-                        if (x > xmax) {
-                            xmax = x;
-                        }
+                    for (var j = 0; j < sData.length; j++) {
+                        for (var i = 0; i < dataLen; i++) {
+                            if (isArrayOfObject) {
+                                x = sData[j][i].x;
+                                y = sData[j][i].y;
+                            } else if (isObjectOfArray) {
+                                x = sData[j].x[i];
+                                y = sData[j].y[i];
+                            } else if (isArrayOfArray) {
+                                x = sData[j][i][0];
+                                y = sData[j][i][1];
+                            }
+                            
+                            if (x > xmax) {
+                                xmax = x;
+                            }
 
-                        if (y > ymax) {
-                            ymax = y;
-                        }
+                            if (y > ymax) {
+                                ymax = y;
+                            }
 
-                        if (x < xmin) {
-                            xmin = x;
-                        }
+                            if (x < xmin) {
+                                xmin = x;
+                            }
 
-                        if (y < ymin) {
-                            ymin = y;
+                            if (y < ymin) {
+                                ymin = y;
+                            }
                         }
                     }
 
@@ -490,42 +492,44 @@ THE SOFTWARE.
                 var plotOffset = plot.getPlotOffset();
                 ctx.save();
                 ctx.translate(plotOffset.left, plotOffset.top);
-                for (var i = 0; i < dataLen; i++) {
-                    var x, y, color, shape, size;
-                    if (isArrayOfObject) {
-                        x = series.data[0][i].x;
-                        y = series.data[0][i].y;
-                        color = lookupColor(series.data[0][i].color);
-                        shape = lookupShape(series.data[0][i].shape);
-                        size = lookupSize(series.data[0][i].size);
-                    } else if (isObjectOfArray) {
-                        x = series.data[0].x[i];
-                        y = series.data[0].y[i];
-                        color = lookupColor(series.data[0].color ? series.data[0].color[i] : undefined);
-                        shape = lookupShape(series.data[0].shape ? series.data[0].shape[i] : undefined);
-                        size = lookupSize(series.data[0].size ? series.data[0].size[i] : undefined);
-                    } else if (isArrayOfArray) {
-                        x = series.data[0][i][0];
-                        y = series.data[0][i][1];
-                        color = lookupColor(series.data[0][i][2]);
-                        shape = lookupShape(series.data[0][i][3]);
-                        size = lookupSize(series.data[0][i][4]);
-                    }
+                for (var j = 0; j < series.data.length; j++) {
+                    for (var i = 0; i < dataLen; i++) {
+                        var x, y, color, shape, size;
+                        if (isArrayOfObject) {
+                            x = series.data[j][i].x;
+                            y = series.data[j][i].y;
+                            color = lookupColor(series.data[j][i].color);
+                            shape = lookupShape(series.data[j][i].shape);
+                            size = lookupSize(series.data[j][i].size);
+                        } else if (isObjectOfArray) {
+                            x = series.data[j].x[i];
+                            y = series.data[j].y[i];
+                            color = lookupColor(series.data[j].color ? series.data[j].color[i] : undefined);
+                            shape = lookupShape(series.data[j].shape ? series.data[j].shape[i] : undefined);
+                            size = lookupSize(series.data[j].size ? series.data[j].size[i] : undefined);
+                        } else if (isArrayOfArray) {
+                            x = series.data[j][i][0];
+                            y = series.data[j][i][1];
+                            color = lookupColor(series.data[j][i][2]);
+                            shape = lookupShape(series.data[j][i][3]);
+                            size = lookupSize(series.data[j][i][4]);
+                        }
 
-                    if (color.toLowerCase() === 'transparent' ||
-                        shape.toLowerCase() === 'none' ||
-                        size === 0 ||
-                        (!opt.series.scattergraph.drawLines && decimate(series, x, y, color, shape, size, buffer))) {
-                        continue;
-                    }
+                        if (color.toLowerCase() === 'transparent' ||
+                            shape.toLowerCase() === 'none' ||
+                            size === 0 ||
+                            (!opt.series.scattergraph.drawLines && decimate(series, x, y, color, shape, size, buffer))) {
+                            continue;
+                        }
 
-                    drawPoint(ctx, x, y, series.xaxis, series.yaxis, 0, 0, color, shape, size, opt.series.scattergraph.lineWidth, opt.series.scattergraph.filled);
-                    if (i > 0 && opt.series.scattergraph.drawLines) {
-                        drawLine(ctx, series.xaxis, series.yaxis, lastX, lastY, x, y, series.color);
-                    }
+                        drawPoint(ctx, x, y, series.xaxis, series.yaxis, 0, 0, color, shape, size, opt.series.scattergraph.lineWidth, opt.series.scattergraph.filled);
+                        if (i > 0 && opt.series.scattergraph.drawLines) {
+                            drawLine(ctx, series.xaxis, series.yaxis, lastX, lastY, x, y, series.color);
+                        }
 
-                    lastX = x;
-                    lastY = y;
+                        lastX = x;
+                        lastY = y;
+                    }
                 }
 
                 ctx.restore();
