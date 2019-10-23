@@ -36,7 +36,7 @@ describe('A digital waveform', function() {
         jasmine.addMatchers(customMatchers);
 
         const fixture = setFixtures('<div id="demo-container" style="width: 800px;height: 600px">').find('#demo-container').get(0);
-        placeholder = $('<div id="placeholder" style="width: 100%;height: 100%;font: 14px sans-serif">');
+        placeholder = $('<div id="placeholder" style="width: 100%;height: 100%;font: 12px sans-serif">');
         placeholder.appendTo(fixture);
 
         options = {
@@ -609,7 +609,7 @@ describe('A digital waveform', function() {
         options.buses = [{}];
         let data = [
             { data: [0, 1, 1, 0], flatdata: true },
-            { data: [0, 0, 0, 1], flatdata: true },
+            { data: [0, 0, 0, 0], flatdata: true },
             { data: [0, 0, 0, 1], flatdata: true }
         ];
         let plot = $.plot(placeholder, data, options);
