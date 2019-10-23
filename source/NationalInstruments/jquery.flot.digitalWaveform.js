@@ -206,6 +206,7 @@ THE SOFTWARE.
         }
 
         constructor(plot, options) {
+            this._measuredTexts = new Map();
             this._initialize(options);
             this._processOptions(options);
             this._createHooks(plot);
@@ -747,20 +748,29 @@ THE SOFTWARE.
         }
 
         _getFittingText(ctx, text, maxWidth) {
-            const ellipsisWidth = ctx.measureText(BUS_LABEL_ELLIPSIS).width;
-            let textWidth = ctx.measureText(text).width;
-            const minWidth = Math.min(ctx.measureText(text.substring(0, 1)).width + ellipsisWidth, textWidth);
+            const ellipsisWidth = this._measureText(ctx, BUS_LABEL_ELLIPSIS);
+            let textWidth = this._measureText(ctx, text);
+            const minWidth = Math.min(this._measureText(ctx, text.substring(0, 1)) + ellipsisWidth, textWidth);
             if (minWidth > maxWidth) {
                 return '';
             }
             if (textWidth > maxWidth && textWidth > ellipsisWidth) {
                 while (textWidth + ellipsisWidth > maxWidth && text.length > 1) {
                     text = text.substring(0, text.length - 1);
-                    textWidth = ctx.measureText(text).width
+                    textWidth = this._measureText(ctx, text)
                 }
                 text = text + BUS_LABEL_ELLIPSIS;
             }
             return text;
+        }
+
+        _measureText(ctx, text) {
+            let width = this._measuredTexts.get(text);
+            if (width === undefined) {
+                width = ctx.measureText(text).width;
+                this._measuredTexts.set(text, width);
+            }
+            return width;
         }
 
         _calculateTopBoundary(index) {
