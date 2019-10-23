@@ -718,6 +718,37 @@ describe("Cursors interaction", function () {
         expect(xAxes[0].max).toEqual(xMax);
     });
 
+    it('should not deselect the cursor on mouseMove that occurs after dragStart but before dragEnd', function () {
+        plot = $.plot("#placeholder", [sampledata], {
+            cursors: [
+                {
+                    name: 'Blue cursor',
+                    color: 'blue',
+                    position: { relativeX: 0.5, relativeY: 0.6 },
+                    show: true
+                }
+            ]
+        });
+
+        var plotOffset = plot.getPlotOffset();
+        var cursorX = plotOffset.left + plot.width() * 0.5;
+        var cursorY = plotOffset.top + plot.height() * 0.6;
+
+        var options = { mouseX: cursorX,
+            mouseY: cursorY };
+
+        jasmine.clock().tick(20);
+        var eventHolder = plot.getEventHolder();
+        $('.flot-overlay').simulate("flotdragstart", options);
+        jasmine.clock().tick(20);
+        simulate.mouseMove(eventHolder, cursorX, cursorY);
+        jasmine.clock().tick(20);
+
+        var cursor = plot.getCursors()[0];
+        expect(cursor.selected).toBe(true);
+        $('.flot-overlay').simulate("flotdragend", options);
+    });
+
     describe('Mouse pointer', function () {
         it('should change the mouse pointer on mouse over the cursor manipulator', function () {
             plot = $.plot("#placeholder", [sampledata], {
