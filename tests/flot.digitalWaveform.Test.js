@@ -35,7 +35,10 @@ describe('A digital waveform', function() {
     beforeEach(function() {
         jasmine.addMatchers(customMatchers);
 
-        placeholder = setFixtures('<div id="test-container" style="width: 300px; height: 150px" />');
+        const fixture = setFixtures('<div id="demo-container" style="width: 800px;height: 600px">').find('#demo-container').get(0);
+        placeholder = $('<div id="placeholder" style="width: 100%;height: 100%;font: 12px sans-serif">');
+        placeholder.appendTo(fixture);
+
         options = {
             grid: { show: false },
             series: {
@@ -103,8 +106,8 @@ describe('A digital waveform', function() {
         let plot = $.plot(placeholder, data, options);
 
         let axes = plot.getAxes();
-        expect(axes.yaxis.datamin).toBeCloseTo(0.1);
-        expect(axes.yaxis.datamax).toBeCloseTo(6.9);
+        expect(axes.yaxis.datamin).toBeCloseTo(0);
+        expect(axes.yaxis.datamax).toBeCloseTo(7);
     });
 
     it('should increment data max of x-axis by last step size of signal', function() {
@@ -543,16 +546,16 @@ describe('A digital waveform', function() {
             [[0.5, 1], [1.5, 1], [2.5, 0]]
         ];
         let plot = $.plot(placeholder, data, options);
-        let ctx = setupCanvasToSpyOn(plot);
+        let ctx = setupCanvasToSpyOn(plot, 100);
 
         spyOn(ctx, 'fillText').and.callThrough();
 
         plot.draw();
 
         expect(ctx.fillText.calls.allArgs()).toEqual([
-            [jasmine.any(String), 0.75, 2.5],
-            [jasmine.any(String), 1.75, 2.5],
-            [jasmine.any(String), 3, 2.5]
+            [jasmine.any(String), 75, 250],
+            [jasmine.any(String), 175, 250],
+            [jasmine.any(String), 300, 250]
         ]);
     });
 
@@ -565,17 +568,19 @@ describe('A digital waveform', function() {
             [[0.5, 1], [1.5, 1], [2.5, 0]]
         ];
         let plot = $.plot(placeholder, data, options);
-        let ctx = setupCanvasToSpyOn(plot);
+        let ctx = setupCanvasToSpyOn(plot, 100);
 
         spyOn(ctx, 'fillText').and.callThrough();
 
         plot.draw();
 
-        expect(ctx.fillText.calls.allArgs()).toEqual([
-            [jasmine.any(String), 0.525, 2.5],
-            [jasmine.any(String), 1.025, 2.5],
-            [jasmine.any(String), 2.525, 2.5]
-        ]);
+        const args = ctx.fillText.calls.allArgs();
+        expect(args[0][1]).toBeCloseTo(52.5);
+        expect(args[0][2]).toBeCloseTo(250);
+        expect(args[1][1]).toBeCloseTo(102.5);
+        expect(args[1][2]).toBeCloseTo(250);
+        expect(args[2][1]).toBeCloseTo(252.5);
+        expect(args[2][2]).toBeCloseTo(250);
     });
 
     it('should draw bus labels right aligned', function() {
@@ -587,27 +592,28 @@ describe('A digital waveform', function() {
             [[0.5, 1], [1.5, 1], [2.5, 0]]
         ];
         let plot = $.plot(placeholder, data, options);
-        let ctx = setupCanvasToSpyOn(plot);
+        let ctx = setupCanvasToSpyOn(plot, 100);
 
         spyOn(ctx, 'fillText').and.callThrough();
 
         plot.draw();
 
         expect(ctx.fillText.calls.allArgs()).toEqual([
-            [jasmine.any(String), 0.975, 2.5],
-            [jasmine.any(String), 2.475, 2.5],
-            [jasmine.any(String), 3.475, 2.5]
+            [jasmine.any(String), 97.5, 250],
+            [jasmine.any(String), 247.5, 250],
+            [jasmine.any(String), 347.5, 250]
         ]);
     });
 
     it('should truncate bus labels when they do not fit between bus value transitions', function() {
         options.buses = [{}];
         let data = [
-            { data: [0, 0, 0, 1], flatdata: true },
-            { data: [0, 1, 1, 0], flatdata: true }
+            { data: [0, 1, 1, 0], flatdata: true },
+            { data: [0, 0, 0, 0], flatdata: true },
+            { data: [0, 0, 0, 1], flatdata: true }
         ];
         let plot = $.plot(placeholder, data, options);
-        let ctx = setupCanvasToSpyOn(plot);
+        let ctx = setupCanvasToSpyOn(plot, 25);
 
         spyOn(ctx, 'fillText').and.callThrough();
 
@@ -615,9 +621,26 @@ describe('A digital waveform', function() {
 
         expect(ctx.fillText.calls.allArgs()).toEqual([
             ['0...', jasmine.any(Number), jasmine.any(Number)],
-            ['1...', jasmine.any(Number), jasmine.any(Number)],
-            ['0...', jasmine.any(Number), jasmine.any(Number)]
+            ['001', jasmine.any(Number), jasmine.any(Number)],
+            ['1...', jasmine.any(Number), jasmine.any(Number)]
         ]);
+    });
+
+    it('should not draw bus labels when the available space is to small', function() {
+        options.buses = [{}];
+        let data = [
+            { data: [0, 1, 1, 0], flatdata: true },
+            { data: [0, 0, 0, 1], flatdata: true },
+            { data: [0, 0, 0, 1], flatdata: true }
+        ];
+        let plot = $.plot(placeholder, data, options);
+        let ctx = setupCanvasToSpyOn(plot, 1);
+
+        spyOn(ctx, 'fillText').and.callThrough();
+
+        plot.draw();
+
+        expect(ctx.fillText).not.toHaveBeenCalled();
     });
 
     it('should format bus labels with provided label formatter', function() {
@@ -637,7 +660,7 @@ describe('A digital waveform', function() {
                 { data: [0, 1, 1, 255, 254], flatdata: true }
             ];
             let plot = $.plot(placeholder, data, options);
-            let ctx = setupCanvasToSpyOn(plot);
+            let ctx = setupCanvasToSpyOn(plot, 100);
             let dwg = plot.getDigitalWaveform();
 
             spyOn(dwg, '_drawText').and.callThrough();
@@ -669,7 +692,7 @@ describe('A digital waveform', function() {
             { data: [0, 1, 1, 1, 1, 0, 1], flatdata: true }
         ];
         let plot = $.plot(placeholder, data, options);
-        let ctx = setupCanvasToSpyOn(plot);
+        let ctx = setupCanvasToSpyOn(plot, 100);
 
         spyOn(ctx, 'rect').and.callThrough();
         spyOn(ctx, 'clip').and.callThrough();
@@ -678,16 +701,36 @@ describe('A digital waveform', function() {
 
         expect(ctx.clip).toHaveBeenCalledTimes(3);
         expect(ctx.rect.calls.allArgs()).toEqual([
-            [2, 1.5, 2.5, -1],
-            [2, 1.5, 2.5, -1],
-            [2, 1.5, 2.5, -1]
+            [200, 150, 250, -100],
+            [200, 150, 250, -100],
+            [200, 150, 250, -100]
         ]);
     });
 
-    function setupCanvasToSpyOn(plot) {
+    it('should zoom in when to much data is about to be displayed', function() {
+        let data = [];
+        for (let i = 0; i < 64; i++) {
+            let signal = []
+            for (let i = 0; i < 50; i++) {
+                signal.push(i % 2);
+            }
+            data.push(signal);
+        }
+        options.series.flatdata = true;
+        let plot = $.plot(placeholder, data, options);
+
+        let xaxis = plot.getXAxes()[0];
+        expect(xaxis.options.offset.below).toBe(0);
+        expect(xaxis.options.offset.above).toBeCloseTo(-18);
+        let yaxis = plot.getYAxes()[0];
+        expect(yaxis.options.offset.below).toBeCloseTo(40);
+        expect(yaxis.options.offset.above).toBe(0)
+    });
+
+    function setupCanvasToSpyOn(plot, f) {
         let axes = plot.getAxes();
-        axes.xaxis.p2c = (p) => p;
-        axes.yaxis.p2c = (p) => p;
+        axes.xaxis.p2c = (p) => p * (f ? f : 1);
+        axes.yaxis.p2c = (p) => p * (f ? f : 1);
         return plot.getCanvas().getContext('2d');
     }
 

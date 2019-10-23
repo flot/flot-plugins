@@ -20,6 +20,8 @@ THE SOFTWARE.
 (function ($) {
     'use strict';
 
+    const SIGNAL_MIN_WIDTH = 25;
+    const SIGNAL_MIN_HEIGHT = 25;
     const SIGNAL_HEIGHT = 0.8;
     const SIGNAL_OFFSET = 1;
     const BUS_CROSS_DISTANCE = 0.1;
@@ -204,6 +206,7 @@ THE SOFTWARE.
         }
 
         constructor(plot, options) {
+            this._measuredTexts = new Map();
             this._initialize(options);
             this._processOptions(options);
             this._createHooks(plot);
@@ -238,8 +241,8 @@ THE SOFTWARE.
             plot.hooks.adjustSeriesDataRange.push((plot, series, range) => {
                 this._adjustSeriesDataRange(plot, series, range);
             });
-            plot.hooks.setRange.push((plot, axis) => {
-                this._setRange(plot, axis)
+            plot.hooks.setRange.push((plot, axis, autoScale) => {
+                this._setRange(plot, axis, autoScale)
             });
             plot.hooks.draw.push((plot, ctx) => {
                 this._draw(plot, ctx)
@@ -260,6 +263,7 @@ THE SOFTWARE.
 
         _expandCollapseBus(plot, bus, expand) {
             bus.collapsed = !expand;
+            plot.getAxes().yaxis.options.offset = { above: 0, below: 0 };
             this._initializeSignalAndBusPositions(plot);
         }
 
@@ -434,18 +438,47 @@ THE SOFTWARE.
             }
         }
 
-        _setRange(plot, axis) {
+        _setRange(plot, axis, autoScale) {
+            const adjustAxisOffset = (axis, autoScale) => {
+                return autoScale && axis.options.offset && axis.options.offset.below === 0 && axis.options.offset.above === 0;
+            }
+            
             this._lazyInitialize(plot);
             switch (axis.direction) {
+                case 'x':
+                    if (adjustAxisOffset(axis, autoScale)) {
+                        const signals = plot.getData().filter(series => series.digitalWaveform.signal.visible);
+                        const signalLength = Math.max(...signals.map(signal => signal.datapoints.points.length / signal.datapoints.pointsize))
+                        const buses = plot.getOptions().buses.filter(bus => bus.visible);
+                        const busLength = Math.max(...buses.map(bus => bus.samples.length));
+                        const maxLength = Math.max(signalLength, busLength);
+                        const plotOffset = plot.getPlotOffset();
+                        const plotWidth = plot.getPlaceholder().width() - plotOffset.left - plotOffset.right;
+                        if (maxLength > 0 && plotWidth / maxLength < SIGNAL_MIN_WIDTH) {
+                            axis.options.offset = { below: 0, above: plotWidth / SIGNAL_MIN_WIDTH - axis.datamax };
+                        }
+                    }
+                    break;
                 case 'y':
-                    let signals = plot.getData().filter(series => series.digitalWaveform.signal.visible);
-                    let buses = plot.getOptions().buses.filter(bus => bus.visible);
-                    let boundaries = signals.map(series => series.digitalWaveform.signal.bottom)
+                    const signals = plot.getData().filter(series => series.digitalWaveform.signal.visible);
+                    const buses = plot.getOptions().buses.filter(bus => bus.visible);
+                    const boundaries = signals.map(series => series.digitalWaveform.signal.bottom)
                         .concat(signals.map(series => series.digitalWaveform.signal.top))
                         .concat(buses.map(bus => bus.bottom))
                         .concat(buses.map(bus => bus.top));
-                    axis.datamin = Math.min(...boundaries);
-                    axis.datamax = Math.max(...boundaries);
+                    axis.datamin = Math.floor(Math.min(...boundaries));
+                    axis.datamax = Math.ceil(Math.max(...boundaries));
+
+                    if (adjustAxisOffset(axis, autoScale)) {
+                        const signalCount = signals.length;
+                        const busCount = buses.length;
+                        const totalCount = signalCount + busCount;
+                        const plotOffset = plot.getPlotOffset();
+                        const plotHeight = plot.getPlaceholder().height() - plotOffset.top - plotOffset.bottom;
+                        if (totalCount > 0 && plotHeight / totalCount < SIGNAL_MIN_HEIGHT) {
+                            axis.options.offset = { below: totalCount - plotHeight / SIGNAL_MIN_HEIGHT, above: 0 };
+                        }
+                    }
                     break;
             }
         }
@@ -624,9 +657,19 @@ THE SOFTWARE.
                 return;
             }
 
+            const y1c = axes.yaxis.p2c(y1);
+            const y2c = axes.yaxis.p2c(y2);
+            const maxHeight = Math.abs(y2c - y1c);
+            const fontSize = plot.getPlaceholder().css('font-size');
+            if (parseInt(fontSize) > maxHeight) {
+                return;
+            }
+
+
             ctx.save();
             this._clipCanvasToAxes(ctx, axes.xaxis, axes.yaxis);
-            ctx.font = plot.getPlaceholder().css('font');
+            const fontFamily = plot.getPlaceholder().css('font-family');
+            ctx.font = `${fontSize} ${fontFamily}`;
             ctx.textBaseline = 'middle';
             switch (bus.labelPosition) {
                 case 'center':
@@ -640,8 +683,6 @@ THE SOFTWARE.
                     break;
             }
 
-            const y1c = axes.yaxis.p2c(y1);
-            const y2c = axes.yaxis.p2c(y2);
             const y = (y1c + y2c) / 2;
             for (let i = 0, x1 = null; i < bus.samples.length; i++) {
                 const value = bus.values[i];
@@ -701,20 +742,35 @@ THE SOFTWARE.
 
         _drawText(ctx, x, y, text, maxWidth) {
             const fittingText = this._getFittingText(ctx, text, maxWidth);
-            ctx.fillText(fittingText, x, y);
+            if (fittingText.length) {
+                ctx.fillText(fittingText, x, y);
+            }
         }
 
         _getFittingText(ctx, text, maxWidth) {
-            const ellipsisWidth = ctx.measureText(BUS_LABEL_ELLIPSIS).width;
-            let textWidth = ctx.measureText(text).width;
+            const ellipsisWidth = this._measureText(ctx, BUS_LABEL_ELLIPSIS);
+            let textWidth = this._measureText(ctx, text);
+            const minWidth = Math.min(this._measureText(ctx, text.substring(0, 1)) + ellipsisWidth, textWidth);
+            if (minWidth > maxWidth) {
+                return '';
+            }
             if (textWidth > maxWidth && textWidth > ellipsisWidth) {
                 while (textWidth + ellipsisWidth > maxWidth && text.length > 1) {
                     text = text.substring(0, text.length - 1);
-                    textWidth = ctx.measureText(text).width
+                    textWidth = this._measureText(ctx, text)
                 }
                 text = text + BUS_LABEL_ELLIPSIS;
             }
             return text;
+        }
+
+        _measureText(ctx, text) {
+            let width = this._measuredTexts.get(text);
+            if (width === undefined) {
+                width = ctx.measureText(text).width;
+                this._measuredTexts.set(text, width);
+            }
+            return width;
         }
 
         _calculateTopBoundary(index) {
