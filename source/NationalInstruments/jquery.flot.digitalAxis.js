@@ -20,6 +20,9 @@ THE SOFTWARE.
 (function ($) {
     'use strict';
 
+    const ELEMENT_ID = 'flot-digital-axis';
+    let initialize;
+    
     function getDigitalAxis(plot) {
         let isDigitalAxis = (axis) => axis.options.type === 'digital';
         return plot.getYAxes().filter(axis => isDigitalAxis(axis))[0];
@@ -47,6 +50,7 @@ THE SOFTWARE.
     }
 
     function processDatapoints(plot, series, datapoints) {
+        initialize = true;
         if (series.digitalWaveform.show && !series.label) {
             let data = plot.getData();
             series.label = `Signal ${data.indexOf(series) + 1}`;
@@ -54,44 +58,46 @@ THE SOFTWARE.
     }
     
     function processOffset(plot, offset) {
-        let placeholder = plot.getPlaceholder();
         let digitalAxis = getDigitalAxis(plot);
-        if (digitalAxis.options.width === 'automatic') {
-            let data = plot.getData();
-            let buses = plot.getOptions().buses;
-            let maxWidth = 0;
-            let getElementWidth = (element) => {
-                element.css('visibility', 'hidden');
-                placeholder.append(element);
-                let elementWidth = element.outerWidth();
-                element.remove();
-                return elementWidth;
-            };
-
-            data.forEach(series => {
-                if (series.digitalWaveform.signal.visible) {
-                    let assignedToBus = buses[series.digitalWaveform.signal.bus] !== undefined;
-                    let signalElement = createSignalTreeItem(0, 0, series.label, digitalAxis.options.signalSymbol, assignedToBus);
-                    let elementWidth = getElementWidth(signalElement);
+        if (initialize || digitalAxis.options.elementWidth === undefined) {
+            if (digitalAxis.options.width === 'automatic') {
+                let placeholder = plot.getPlaceholder();
+                let data = plot.getData();
+                let buses = plot.getOptions().buses;
+                let maxWidth = 0;
+                let getElementWidth = (element) => {
+                    element.css('visibility', 'hidden');
+                    placeholder.append(element);
+                    let elementWidth = element.outerWidth();
+                    element.remove();
+                    return elementWidth;
+                };
+    
+                data.forEach(series => {
+                    if (series.digitalWaveform.signal.visible) {
+                        let assignedToBus = buses[series.digitalWaveform.signal.bus] !== undefined;
+                        let signalElement = createSignalTreeItem(0, 0, series.label, digitalAxis.options.signalSymbol, assignedToBus);
+                        let elementWidth = getElementWidth(signalElement);
+                        maxWidth = Math.max(maxWidth, elementWidth);
+                    }
+                });
+    
+                buses.forEach(bus => {
+                    let busElement = createBusTreeItem(0, 0, bus.label, digitalAxis.options.busSymbolCollapsed, false);
+                    let elementWidth = getElementWidth(busElement);
                     maxWidth = Math.max(maxWidth, elementWidth);
+                });
+    
+                if (maxWidth > 0) {
+                    let relativeMaxWidth = (maxWidth + 10) / placeholder.width();
+                    let axisWidth = Math.min(relativeMaxWidth, 0.5);
+                    digitalAxis.options.elementWidth = placeholder.width() * axisWidth;
+                } else {
+                    digitalAxis.options.elementWidth = 0;
                 }
-            });
-
-            buses.forEach(bus => {
-                let busElement = createBusTreeItem(0, 0, bus.label, digitalAxis.options.busSymbolCollapsed, false);
-                let elementWidth = getElementWidth(busElement);
-                maxWidth = Math.max(maxWidth, elementWidth);
-            });
-
-            if (maxWidth > 0) {
-                let relativeMaxWidth = (maxWidth + 10) / placeholder.width();
-                let axisWidth = Math.min(relativeMaxWidth, 0.5);
-                digitalAxis.options.elementWidth = placeholder.width() * axisWidth;
             } else {
-                digitalAxis.options.elementWidth = 0;
+                digitalAxis.options.elementWidth = digitalAxis.options.width;
             }
-        } else {
-            digitalAxis.options.elementWidth = digitalAxis.options.width;
         }
 
         offset.left += digitalAxis.options.elementWidth
@@ -99,20 +105,64 @@ THE SOFTWARE.
 
     function draw(plot, ctx) {
         let placeholder = plot.getPlaceholder();
-        let tree = createTree(plot);
-        placeholder.append(tree);
+        let tree = placeholder.find(`#${ELEMENT_ID}`);
+        if (initialize) {
+            if (tree.length) {
+                tree[0].remove();
+            }
+            tree = createTree(plot);
+            placeholder.append(tree);
+            initialize = false;
+        } else {
+            if (tree.length) {
+                positionTree(plot, tree);
+            }
+        }
     }
 
-    function createTree(plot) {
-        let placeholder = plot.getPlaceholder();
-        let id = 'flot-digital-axis';
-        let tree = placeholder.find(`#${id}`);
-        if (tree.length === 0) {
-            tree = $(`<div id="${id}"></div>`);
-        } else {
-            tree.empty();
+    function positionTree(plot, tree) {
+        let plotOffset = plot.getPlotOffset();
+        tree.css({
+            'top': plotOffset.top,
+            'bottom': plotOffset.bottom
+        });
+
+        let digitalAxis = getDigitalAxis(plot);
+        let buses = plot.getOptions().buses;
+        let busElements = tree.find('.flot-digital-axis-bus');
+        for (let i = 0; i < busElements.length; i++) {
+            let busElement = $(busElements[i]);
+            let label = busElement.find('span').text();
+            let bus = buses.find(bus => bus.label === label);
+            if (bus) {
+                let y1 = digitalAxis.p2c(bus.top);
+                let y2 = digitalAxis.p2c(bus.bottom);
+                busElement.css({
+                    'top': y1,
+                    'height': y2 - y1
+                });
+            }
         }
 
+        let data = plot.getData();
+        let signalElements = tree.find('.flot-digital-axis-signal');
+        for (let i = 0; i < signalElements.length; i++) {
+            let signalElement = $(signalElements[i]);
+            let label = signalElement.find('span').text();
+            let series = data.find(series => series.label === label);
+            if (series) {
+                let y1 = digitalAxis.p2c(series.digitalWaveform.signal.top);
+                let y2 = digitalAxis.p2c(series.digitalWaveform.signal.bottom);
+                signalElement.css({
+                    'top': y1,
+                    'height': y2 - y1
+                });
+            }
+        }
+    }
+    
+    function createTree(plot) {
+        const tree = $(`<div id="${ELEMENT_ID}"></div>`);
         let digitalAxis = getDigitalAxis(plot);
         let plotOffset = plot.getPlotOffset();
         tree.css({
@@ -131,6 +181,7 @@ THE SOFTWARE.
                 let signals = data.filter(series => series.digitalWaveform.signal.bus === index);
                 let expanded = signals.some(series => series.digitalWaveform.signal.visible);
                 let onShowHideSignals = () => {
+                    initialize = true;
                     expanded ? plot.collapseBus(bus) : plot.expandBus(bus);
                     plot.setupGrid(true);
                     plot.draw();
