@@ -129,6 +129,24 @@ describe('A scatter graph', function () {
         expect(ctx.moveTo).toHaveBeenCalled();
         expect(ctx.arc).toHaveBeenCalled();
     });
+    it('should draw points for multiple series', function () {
+        var plot = $.plot(placeholder, [[]], options);
+
+        series.data = [{x: [0,1,2,3,4,5], y: [1,2,3,4,5,6]}, {x: [10,11,12,13,14,15], y: [11,12,13,14,15,16]}];
+
+        spyOn(ctx, 'moveTo').and.callThrough();
+        spyOn(ctx, 'arc').and.callThrough();
+
+        plot.hooks.processRawData.forEach(function (hook) {
+            hook(plot, {points: [], xaxis: {options: {}}, yaxis: {options: {}}}, series.data, {points: []});
+        });
+        plot.hooks.drawSeries.forEach(function (hook) {
+            hook(plot, ctx, series);
+        });
+
+        expect(ctx.moveTo).toHaveBeenCalled();
+        expect(ctx.arc).toHaveBeenCalled();
+    });
     it('should draw points with colors for arrays of objects containing colors when lookup tables are not set', function () {
         var plot = $.plot(placeholder, [[]], options);
 
