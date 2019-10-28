@@ -484,7 +484,7 @@ THE SOFTWARE.
             */
             function drawSeries (plot, ctx, series) {
                 var lastX, lastY;
-                if (!series.data || !Array.isArray(series.data) || series.data.length === 0) {
+                if (!series.data || !Array.isArray(series.data) || series.data.length === 0 || (series.scattergraph && !series.scattergraph.show)) {
                     return;
                 }
 
