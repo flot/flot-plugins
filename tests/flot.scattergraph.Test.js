@@ -132,7 +132,7 @@ describe('A scatter graph', function () {
     it('should draw points for multiple series', function () {
         var plot = $.plot(placeholder, [[]], options);
 
-        series.data = [{x: [0,1,2,3,4,5], y: [1,2,3,4,5,6]}, {x: [10,11,12,13,14,15], y: [11,12,13,14,15,16]}];
+        series.data = [{x: [0,1,2,3,4,5], y: [1,2,3,4,5,6]}];
 
         spyOn(ctx, 'moveTo').and.callThrough();
         spyOn(ctx, 'arc').and.callThrough();
@@ -144,8 +144,22 @@ describe('A scatter graph', function () {
             hook(plot, ctx, series);
         });
 
-        expect(ctx.moveTo).toHaveBeenCalled();
-        expect(ctx.arc).toHaveBeenCalled();
+        expect(ctx.moveTo.calls.count()).toEqual(6);
+        expect(ctx.arc.calls.count()).toEqual(6);
+
+        var plot = $.plot(placeholder, [[]], options);
+
+        series.data = [{x: [0,1,2,3,4,5], y: [1,2,3,4,5,6]}, {x: [10,11,12,13,14,15], y: [11,12,13,14,15,16]}];
+
+        plot.hooks.processRawData.forEach(function (hook) {
+            hook(plot, {points: [], xaxis: {options: {}}, yaxis: {options: {}}}, series.data, {points: []});
+        });
+        plot.hooks.drawSeries.forEach(function (hook) {
+            hook(plot, ctx, series);
+        });
+
+        expect(ctx.moveTo.calls.count()).toEqual(18);
+        expect(ctx.arc.calls.count()).toEqual(18);
     });
     it('should not draw points for multiple series when show is false', function () {
         var plot = $.plot(placeholder, [[]], options);
