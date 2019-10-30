@@ -96,6 +96,7 @@ THE SOFTWARE.
                         return;
                     }
 
+                    
                     var xmax = Number.NEGATIVE_INFINITY;
                     var ymax = Number.NEGATIVE_INFINITY;
                     var ymin = Number.POSITIVE_INFINITY;
@@ -113,32 +114,12 @@ THE SOFTWARE.
                                 x = sData[j][i][0];
                                 y = sData[j][i][1];
                             }
-                            
-                            if (x > xmax) {
-                                xmax = x;
-                            }
 
-                            if (y > ymax) {
-                                ymax = y;
-                            }
-
-                            if (x < xmin) {
-                                xmin = x;
-                            }
-
-                            if (y < ymin) {
-                                ymin = y;
-                            }
+                            sDatapoints.points.push(x, y);
                         }
                     }
 
                     sDatapoints.pointsize = 2;
-
-                    // push two data points, one with xmin, ymin, the other one with xmax, ymax
-                    // so the autoscale algorithms can determine the draw size.
-                    sDatapoints.points.length = 0;
-                    sDatapoints.points.push(xmin, ymin);
-                    sDatapoints.points.push(xmax, ymax);
                     sDatapoints.format = [
                         {x: true, y: false, number: true, computeRange: true},
                         {x: false, y: true, number: true, computeRange: true}
@@ -484,7 +465,7 @@ THE SOFTWARE.
             */
             function drawSeries (plot, ctx, series) {
                 var lastX, lastY;
-                if (!series.data || !Array.isArray(series.data) || series.data.length === 0) {
+                if (!series.data || !Array.isArray(series.data) || series.data.length === 0 || (series.scattergraph && !series.scattergraph.show)) {
                     return;
                 }
 
