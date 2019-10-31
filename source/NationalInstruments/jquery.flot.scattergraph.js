@@ -102,6 +102,7 @@ THE SOFTWARE.
                     var ymin = Number.POSITIVE_INFINITY;
                     var xmin = Number.POSITIVE_INFINITY;
                     var x, y;
+                    sDatapoints.points = [];
                     for (var j = 0; j < sData.length; j++) {
                         for (var i = 0; i < dataLen; i++) {
                             if (isArrayOfObject) {
