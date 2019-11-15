@@ -524,5 +524,13 @@ describe('A scatter graph', function () {
             hook(plot, 2, 3, [series], 0, 1, undefined, items);
         });
         expect(items.length).toEqual(2);
+        let index = series.data[0].findIndex((i) => {
+            return i.x == items[0].datapoint[0] && i.y === items[0].datapoint[1];
+        });
+        expect(index).toEqual(1);
+        index = series.data[0].findIndex((i) => {
+            return i.x == items[1].datapoint[0] && i.y === items[1].datapoint[1];
+        });
+        expect(index).toEqual(2);
     });
 });

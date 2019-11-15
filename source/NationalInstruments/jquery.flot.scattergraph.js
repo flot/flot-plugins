@@ -538,9 +538,15 @@ THE SOFTWARE.
                         var deltaX = px - canvasX;
                         var py = series[seriesIndex].yaxis.p2c(y);
                         var deltaY = py - canvasY;
-                        var distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+                        var distance;
+                        if (computeDistance) {
+                            distance = computeDistance(deltaX, deltaY);
+                        } else {
+                            distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+                        }
+
                         if (distance < radius) {
-                            items.push({ // return 1st value in 2nd series
+                            items.push({
                                 datapoint: series[seriesIndex].datapoints.points.slice(i * ps, (i + 1) * ps),
                                 dataIndex: i,
                                 series: series[seriesIndex],
