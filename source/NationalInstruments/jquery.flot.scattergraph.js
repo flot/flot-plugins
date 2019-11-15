@@ -531,7 +531,7 @@ THE SOFTWARE.
                             y = series[seriesIndex].data[j].y[i];
                         } else if (isArrayOfArray) {
                             x = series[seriesIndex].data[j][i][0];
-                            y = series.data[j][i][1];
+                            y = series[seriesIndex].data[j][i][1];
                         }
 
                         var px = series[seriesIndex].xaxis.p2c(x);
