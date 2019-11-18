@@ -167,6 +167,7 @@ THE SOFTWARE.
 
                     plot.hooks.drawSeries.push(drawSeries);
                     plot.hooks.processRawData.push(processRawData);
+                    plot.hooks.findNearbyItems.push(findNearbyItems);
 
                     opt = options;
                 }
@@ -515,6 +516,46 @@ THE SOFTWARE.
                 }
 
                 ctx.restore();
+            };
+
+            function findNearbyItems (plot, canvasX, canvasY, series, seriesIndex, radius, computeDistance, items) {
+                var ps = series[seriesIndex].datapoints.pointsize;
+                for (var j = 0; j < series[seriesIndex].data.length; j++) {
+                    for (var i = 0; i < dataLen; i++) {
+                        var x, y;
+                        if (isArrayOfObject) {
+                            x = series[seriesIndex].data[j][i].x;
+                            y = series[seriesIndex].data[j][i].y;
+                        } else if (isObjectOfArray) {
+                            x = series[seriesIndex].data[j].x[i];
+                            y = series[seriesIndex].data[j].y[i];
+                        } else if (isArrayOfArray) {
+                            x = series[seriesIndex].data[j][i][0];
+                            y = series[seriesIndex].data[j][i][1];
+                        }
+
+                        var px = series[seriesIndex].xaxis.p2c(x);
+                        var deltaX = px - canvasX;
+                        var py = series[seriesIndex].yaxis.p2c(y);
+                        var deltaY = py - canvasY;
+                        var distance;
+                        if (computeDistance) {
+                            distance = computeDistance(deltaX, deltaY);
+                        } else {
+                            distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+                        }
+
+                        if (distance < radius) {
+                            items.push({
+                                datapoint: series[seriesIndex].datapoints.points.slice(i * ps, (i + 1) * ps),
+                                dataIndex: i,
+                                series: series[seriesIndex],
+                                seriesIndex: seriesIndex,
+                                distance: distance
+                            });
+                        }
+                    }
+                }
             };
         };
     };

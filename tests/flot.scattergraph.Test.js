@@ -511,4 +511,26 @@ describe('A scatter graph', function () {
         expect(usageObj.sizeLookupFunc).toHaveBeenCalledWith(5);
         expect(usageObj.sizeLookupFunc).toHaveBeenCalledWith(6);
     });
+    it('should find nearby items', () => {
+        var items = [];
+        var plot = $.plot(placeholder, [[]], options);
+
+        series.data = [[{x: 1, y: 2, color: 1, shape: 1, size: 2}, {x: 2, y: 3, color: 2, shape: 2, size: 3}, {x: 2.3, y: 3.3, color: 2, shape: 2, size: 3}, {x: 3, y: 4, color: 3, shape: 3, size: 4}, {x: 4, y: 5, color: 4, shape: 4, size: 5}, {x: 5, y: 6, color: 5, shape: 5, size: 6}]];
+        series.datapoints =  {};
+        plot.hooks.processRawData.forEach(function (hook) {
+            hook(plot, {points: [], xaxis: {options: {}}, yaxis: {options: {}}}, series.data, series.datapoints);
+        });
+        plot.hooks.findNearbyItems.forEach(function (hook) {
+            hook(plot, 2, 3, [series], 0, 1, undefined, items);
+        });
+        expect(items.length).toEqual(2);
+        let index = series.data[0].findIndex((i) => {
+            return i.x == items[0].datapoint[0] && i.y === items[0].datapoint[1];
+        });
+        expect(index).toEqual(1);
+        index = series.data[0].findIndex((i) => {
+            return i.x == items[1].datapoint[0] && i.y === items[1].datapoint[1];
+        });
+        expect(index).toEqual(2);
+    });
 });
