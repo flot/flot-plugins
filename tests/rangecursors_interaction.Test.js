@@ -537,7 +537,7 @@ describe("Cursors interaction", function () {
 
         jasmine.clock().tick(20);
         var cursor = plot.getRangeCursors()[0];
-        expect(cursor.xstart).toBeCloseTo(plot.width() * 0.5 - 13);
+        expect(cursor.xstart).toBeCloseTo(plot.width() * 0.5 - 13, -1);
         expect(cursor.xend).toBeCloseTo(plot.width() * 0.6);
     });
 

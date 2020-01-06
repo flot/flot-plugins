@@ -213,10 +213,10 @@ describe('A scrollbar', function() {
             plot = $.plot(placeholder, data, options);
             
             let container = placeholder.find('.flot-scrollbar-vertical');
-            expect(container.offset().left).toBe(placeholder.offset().left);
-            expect(container.offset().top).toBe(placeholder.offset().top + plot.getPlotOffset().top);
-            expect(container.height()).toBe(plot.height());
-            expect(container.outerWidth()).toBe(18);
+            expect(container.offset().left).toBeCloseTo(placeholder.offset().left);
+            expect(container.offset().top).toBeCloseTo(placeholder.offset().top + plot.getPlotOffset().top);
+            expect(container.height()).toBeCloseTo(plot.height());
+            expect(container.outerWidth()).toBeCloseTo(18);
         });
 
         it('should be positioned according to axis min/max', function() {
