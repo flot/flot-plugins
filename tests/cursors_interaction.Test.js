@@ -284,7 +284,7 @@ describe("Cursors interaction", function () {
         $('.flot-overlay').simulate("flotdrag", options);
 
         var cursor = plot.getCursors()[0];
-        expect(cursor.x).toBeCloseTo(plot.width() * 0.5);
+        expect(cursor.x).toBeCloseTo(plot.width() * 0.5, -1);
         expect(cursor.y).toBe(0);
     });
 
@@ -312,7 +312,7 @@ describe("Cursors interaction", function () {
         $('.flot-overlay').simulate("flotdrag", options);
 
         var cursor = plot.getCursors()[0];
-        expect(cursor.x).toBeCloseTo(plot.width() * 0.5);
+        expect(cursor.x).toBeCloseTo(plot.width() * 0.5, -1);
         expect(cursor.y).toBe(plot.height());
     });
 
@@ -529,7 +529,7 @@ describe("Cursors interaction", function () {
         jasmine.clock().tick(20);
 
         var cursor = plot.getCursors()[0];
-        expect(cursor.x).toBeCloseTo(cursorX + dragX - plotOffset.left);
+        expect(cursor.x).toBeCloseTo(cursorX + dragX - plotOffset.left, -1);
     });
 
     it('should be possible to drag cursors with the mouse from the horizontal line if the cursor is positioned relative to axes', function () {

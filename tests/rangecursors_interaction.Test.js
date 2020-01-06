@@ -593,7 +593,7 @@ describe("Cursors interaction", function () {
         jasmine.clock().tick(20);
 
         var cursor = plot.getRangeCursors()[0];
-        expect(cursor.xstart).toBeCloseTo(dragX, 0);
+        expect(cursor.xstart).toBeCloseTo(dragX, -1);
     });
 
     it('should be possible to drag cursors with the mouse from the horizontal line if the cursor is positioned relative to axes', function () {

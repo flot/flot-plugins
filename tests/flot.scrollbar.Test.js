@@ -213,7 +213,7 @@ describe('A scrollbar', function() {
             plot = $.plot(placeholder, data, options);
             
             let container = placeholder.find('.flot-scrollbar-vertical');
-            expect(container.offset().left).toBeCloseTo(placeholder.offset().left);
+            expect(container.offset().left).toBeCloseTo(placeholder.offset().left, -1);
             expect(container.offset().top).toBeCloseTo(placeholder.offset().top + plot.getPlotOffset().top);
             expect(container.height()).toBeCloseTo(plot.height());
             expect(container.outerWidth()).toBeCloseTo(18);
