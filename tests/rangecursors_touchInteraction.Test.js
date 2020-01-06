@@ -314,7 +314,7 @@ describe("Touch cursors interaction", function () {
 
         var cursor = plot.getRangeCursors()[0];
         expect(cursor.ystart).toBe(0);
-        expect(cursor.yend).toBeCloseTo(plot.height() * 0.1, 0.01);
+        expect(cursor.yend).toBeCloseTo(plot.height() * 0.1, 2);
     });
     it('should be constrained on the top side by the chart margin when touch dragging and orientation is box', function () {
         plot = $.plot("#placeholder", [sampledata], {
@@ -382,7 +382,7 @@ describe("Touch cursors interaction", function () {
 
         var cursor = plot.getRangeCursors()[0];
         expect(cursor.ystart).toBeCloseTo(plot.height() * 0.9, 0.01);
-        expect(cursor.yend).toBeCloseTo(plot.height(), 0.001);
+        expect(cursor.yend).toBeCloseTo(plot.height(), 3);
     });
 
     it('should not pan the plot behind the cursors on cursor drag', function () {
