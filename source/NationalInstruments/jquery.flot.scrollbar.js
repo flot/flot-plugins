@@ -445,7 +445,7 @@ THE SOFTWARE.
 
         _render() {
             const className = this.direction === Direction.Horizontal ? 'flot-scrollbar-horizontal' : 'flot-scrollbar-vertical';
-            this._outerContainer = $('.' + className);
+            this._outerContainer = this._plot.getPlaceholder().find('.' + className);
             if (!this._outerContainer.length) {
                 this._outerContainer = this._createElement(className).appendTo(this._plot.getPlaceholder());
             }
