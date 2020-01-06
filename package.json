@@ -1,6 +1,6 @@
 {
   "name": "flot-plugins",
-  "version": "3.4.0",
+  "version": "3.5.0",
   "description": "A collection of plug-ins for flot charts",
   "main": "index.js",
   "directories": {
@@ -34,6 +34,7 @@
     "files-exist": "^1.1.0",
     "gulp": "^4.0.0",
     "gulp-babel": "^8.0.0",
+    "gulp-uglify": "^3.0.2",
     "jasmine-core": "^2.5.2",
     "jquery-simulate": "^1.0.2",
     "karma": "^4.1.0",

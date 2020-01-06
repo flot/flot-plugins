@@ -56,7 +56,6 @@ describe('A scrollbar', function() {
             expect(container.width()).toBe(plot.width());
             expect(container.outerHeight()).toBe(18);
         });
-
         it('should be positioned according to axis min/max', function() {
             options.xaxis = {
                 offset: { below: 1, above: -1 }
@@ -65,8 +64,8 @@ describe('A scrollbar', function() {
             
             let container = placeholder.find('.flot-scrollbar-container');
             let scrollbar = container.find('.flot-scrollbar');
-            expect(scrollbar.offset().left - container.offset().left).toBeCloseTo(container.width() / 3);
-            expect(scrollbar.width()).toBeCloseTo(container.width() / 3);
+            expect(scrollbar.offset().left - container.offset().left).toBeCloseTo(container.width() / 3, 1);
+            expect(scrollbar.width()).toBeCloseTo(container.width() / 3, 1);
         });
 
         it('should zoom in on left handle drag', function() {
@@ -214,10 +213,10 @@ describe('A scrollbar', function() {
             plot = $.plot(placeholder, data, options);
             
             let container = placeholder.find('.flot-scrollbar-vertical');
-            expect(container.offset().left).toBe(placeholder.offset().left);
-            expect(container.offset().top).toBe(placeholder.offset().top + plot.getPlotOffset().top);
-            expect(container.height()).toBe(plot.height());
-            expect(container.outerWidth()).toBe(18);
+            expect(container.offset().left).toBeCloseTo(placeholder.offset().left, -1);
+            expect(container.offset().top).toBeCloseTo(placeholder.offset().top + plot.getPlotOffset().top);
+            expect(container.height()).toBeCloseTo(plot.height());
+            expect(container.outerWidth()).toBeCloseTo(18);
         });
 
         it('should be positioned according to axis min/max', function() {
@@ -228,8 +227,8 @@ describe('A scrollbar', function() {
             
             let container = placeholder.find('.flot-scrollbar-container');
             let scrollbar = container.find('.flot-scrollbar');
-            expect(scrollbar.offset().top - container.offset().top).toBeCloseTo(container.height() / 3);
-            expect(scrollbar.height()).toBeCloseTo(container.height() / 3);
+            expect(scrollbar.offset().top - container.offset().top).toBeCloseTo(container.height() / 3, 1);
+            expect(scrollbar.height()).toBeCloseTo(container.height() / 3, 1);
         });
 
         it('should zoom in on below handle drag', function() {
