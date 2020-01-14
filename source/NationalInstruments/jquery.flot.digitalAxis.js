@@ -22,6 +22,7 @@ THE SOFTWARE.
 
     const ELEMENT_ID = 'flot-digital-axis';
     let initialize;
+    let symbolElements = [];
     
     function getDigitalAxis(plot) {
         let isDigitalAxis = (axis) => axis.options.type === 'digital';
@@ -30,6 +31,7 @@ THE SOFTWARE.
 
     function init(plot) {
         plot.hooks.processOptions.push(processOptions);
+        plot.hooks.shutdown.push(shutdown);
     }
 
     function processOptions(plot, options) {
@@ -47,6 +49,10 @@ THE SOFTWARE.
                 }
             }
         }
+    }
+
+    function shutdown(plot, eventHolder) {
+        clearSymbolElements();
     }
 
     function processDatapoints(plot, series, datapoints) {
@@ -103,11 +109,20 @@ THE SOFTWARE.
         offset.left += digitalAxis.options.elementWidth
     }
 
+    function clearSymbolElements() {
+        for (let i = 0; i < symbolElements.length; i++) {
+            $(symbolElements[i]).off();
+        }
+
+        symbolElements = [];
+    }
+
     function draw(plot, ctx) {
         let placeholder = plot.getPlaceholder();
         let tree = placeholder.find(`#${ELEMENT_ID}`);
         if (initialize) {
             if (tree.length) {
+                clearSymbolElements();
                 tree[0].remove();
             }
             tree = createTree(plot);
@@ -224,6 +239,7 @@ THE SOFTWARE.
             'cursor': 'pointer'
         });
         symbolElement.click(onShowHideSignals);
+        symbolElements.push(symbolElement);
         symbolElement.appendTo(container);
         createTreeItemLabel(label).appendTo(container);
         return container;
