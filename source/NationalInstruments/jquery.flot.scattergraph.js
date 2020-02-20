@@ -476,6 +476,13 @@ THE SOFTWARE.
                 ctx.save();
                 ctx.translate(plotOffset.left, plotOffset.top);
                 for (var j = 0; j < series.data.length; j++) {
+                    if (isObjectOfArray) {
+                        dataLen = series.data[j].x.length;
+                    } else if (isArrayOfArray) {
+                        dataLen = series.data[j][0].length;
+                    } else if (isArrayOfObject) {
+                        dataLen = series.data[j].length;
+                    }
                     for (var i = 0; i < dataLen; i++) {
                         var x, y, color, shape, size;
                         if (isArrayOfObject) {
