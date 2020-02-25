@@ -149,7 +149,7 @@ describe('A scatter graph', function () {
 
         var plot = $.plot(placeholder, [[]], options);
 
-        series.data = [{x: [0,1,2,3,4,5], y: [1,2,3,4,5,6]}, {x: [10,11,12,13,14,15], y: [11,12,13,14,15,16]}];
+        series.data = [{x: [0,1,2,3,4,5,6], y: [1,2,3,4,5,6,7]}, {x: [10,11,12,13,14,15], y: [11,12,13,14,15,16]}];
 
         plot.hooks.processRawData.forEach(function (hook) {
             hook(plot, {points: [], xaxis: {options: {}}, yaxis: {options: {}}}, series.data, {points: []});
@@ -158,8 +158,8 @@ describe('A scatter graph', function () {
             hook(plot, ctx, series);
         });
 
-        expect(ctx.moveTo.calls.count()).toEqual(18);
-        expect(ctx.arc.calls.count()).toEqual(18);
+        expect(ctx.moveTo.calls.count()).toEqual(19);
+        expect(ctx.arc.calls.count()).toEqual(19);
     });
     it('should not draw points for multiple series when show is false', function () {
         var plot = $.plot(placeholder, [[]], options);
