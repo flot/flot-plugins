@@ -30,20 +30,18 @@ describe('Flot annotations', function () {
     });
 
     it('should show annotations', function () {
-        let bg = '#009900';
-        let bc = '#FF0000';
-        let font = '12pt';
-        let color =  '#440056';
         plot = $.plot(placeholder, [ d1, d2, d3 ], {
             series: {
                 lines: { show: true },
                 points: { show: true, symbol: 'square' },
-                annotations: {
+                annotations: [{
                     show: true,
-                    content: [
-                        {x: 0.5, y: 0.5, label: 'hello world2\nnewline', arrowDirection: 'n', showArrow: true}
-                    ]
-                }
+                    x: 0.5,
+                    y: 0.5,
+                    label: 'hello world2<br>newline',
+                    arrowDirection: 'n',
+                    showArrow: true
+                }]
             }
         });
         ctx = placeholder.find('.flot-overlay')[0].getContext('2d');
@@ -55,20 +53,18 @@ describe('Flot annotations', function () {
         expect(spy2).toHaveBeenCalled();
     });
     it('should not show annotations when show is false', function () {
-        let bg = '#009900';
-        let bc = '#FF0000';
-        let font = '12pt';
-        let color =  '#440056';
         plot = $.plot(placeholder, [ d1, d2, d3 ], {
             series: {
                 lines: { show: true },
                 points: { show: true, symbol: 'square' },
-                annotations: {
+                annotations: [{
                     show: false,
-                    content: [
-                        {x: 0.5, y: 0.5, label: 'hello world', arrowDirection: 'n', showArrow: true}
-                    ]
-                }
+                    x: 0.5,
+                    y: 0.5,
+                    label: 'hello world',
+                    arrowDirection: 'n',
+                    showArrow: true
+                }]
             }
         });
         ctx = placeholder.find('.flot-overlay')[0].getContext('2d');
@@ -89,14 +85,16 @@ describe('Flot annotations', function () {
             series: {
                 lines: { show: true },
                 points: { show: true, symbol: 'square' },
-                annotations: {
+                annotations: [{
                     show: true,
                     location: 'relative',
-                    content: [
-                        {x: 0.5, y: 0.5, label: 'hello world', arrowDirection: 'n', showArrow: true}
-                    ],
+                    x: 0.5,
+                    y: 0.5,
+                    label: 'hello world',
+                    arrowDirection: 'n',
+                    showArrow: true,
                     contentFormatter: formatter,
-                }
+                }]
             }
         });
         ctx = placeholder.find('.flot-overlay')[0].getContext('2d');
@@ -109,13 +107,15 @@ describe('Flot annotations', function () {
             series: {
                 lines: { show: true },
                 points: { show: true, symbol: 'square' },
-                annotations: {
+                annotations: [{
                     show: true,
                     location: 'relative',
-                    content: [
-                        {x: 0.5, y: 0.5, label: 'hello world2<br>newline', arrowDirection: 'n', showArrow: true}
-                    ]
-                }
+                    x: 0.5,
+                    y: 0.5,
+                    label: 'hello world2<br>newline',
+                    arrowDirection: 'n',
+                    showArrow: true
+                }]
             }
         });
         ctx = placeholder.find('.flot-overlay')[0].getContext('2d');

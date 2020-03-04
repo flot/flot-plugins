@@ -10,27 +10,23 @@ The plugin supports these options:
 ```javascript
     annotations: [
         {
-                    show: false,
-                    location: 'relative',
-                    content: [
-                        {
-                            x: 0,
-                            y: 0,
-                            label: '',
-                            showArrow: false,
-                            arrowDirection: ''
-                        }
-                    ],
-                    contentFormatter: c => c,
-                    borderColor: '#000000',
-                    borderThickness: 1,
-                    backgroundColor: '#ffffff',
-                    font: '',
-                    color: '#000000',
-                    textAlign: 'left',
-                    arrowLength: 20,
-                    arrowWidth: 5,
-                    padding: 5
+            show: false,
+            location: 'relative',
+            x: 0,
+            y: 0,
+            label: '',
+            showArrow: false,
+            arrowDirection: ''
+            contentFormatter: c => c,
+            borderColor: '#000000',
+            borderThickness: 1,
+            backgroundColor: '#ffffff',
+            font: '',
+            color: '#000000',
+            textAlign: 'left',
+            arrowLength: 20,
+            arrowWidth: 5,
+            padding: 5
         },
     ]
 ```
@@ -39,19 +35,17 @@ The plugin supports these options:
 
 **location** how to interpret the x, y of the content items. 'relative' means in the coordinate space 0-1 and 'absolute' means in domain coordinates
 
-**content** An array of content for annotations.
+**x** The x position of an annotation
 
-**x** The x position of a content item
+**y** The y position of an annotation
 
-**y** The y position of a content item
-
-**label** The text content of the item (may contain newlines)
+**label** The text content of the annotation (may contain newlines represented as <br>)
 
 **showArrow** Show an arrow from the x, y coordinate to the text. The text will be offset by the arrow length and arrowDirection
 
 **arrowDirection** The direction from x, y to the label , values are compass directiond '', 'n', 's', 'e', 'w', 'ne', 'nw', 'se','sw', if the value is empty then the arrow will default based on which quadrant of the graph x & y are. 
 
-**contentFormatter** A function to format the content
+**contentFormatter** A function to format the annotation
 
 **borderColor** The color of the border
 
@@ -76,8 +70,21 @@ The plugin supports these options:
 Public Methods and events
 -------------------------
 
+The plugin adds some public methods to the plot:
 
-The plugin adds no public methods to the plot:
+* plot.getAnnotations()
+
+    Returns a list containing all the annotations
+
+* plot.addAnnotation( options )
+
+    creates a new annotation with the parameters specified in options.
+
+* plot.removeAnnotation(annotationToRemove)
+
+    remove the specified annotation from the plot. annotationToRemove is an annotation
+    reference to one of the annotations obtained with getAnnotations()
+
 
 How to use
 ----------
@@ -87,13 +94,15 @@ var myFlot = $.plot( $("#graph"), ...,
 {
     ...
     series: [
-            annotations: {
+            annotations: [
+            {
                 show: true,
                 location: 'relative',
-                content: [
-                    {x: 0.5, y: 0.5, label: 'hello world2\nnewline', arrowDirection: 'n', showArrow: true},
-                    {x: 0.5, y: 0.5, label: 'hello world2\nnewline', arrowDirection: 's', showArrow: true}
-                ],
+                x: 0.5,
+                y: 0.5,
+                label: 'hello world2<br>newline',
+                arrowDirection: 'n',
+                showArrow: true,
                 contentFormatter: c => c,
                 borderColor: '#FF0000',
                 borderThickness: 1,
@@ -104,6 +113,7 @@ var myFlot = $.plot( $("#graph"), ...,
                 textAlign: 'center',
                 arrowLength: 50,
             }
+        ]
     ]
     ...
 });

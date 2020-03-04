@@ -58,7 +58,7 @@ gulp.task('build_charting2', function () {
             presets: ['@babel/env']
         }))
         .pipe(concat('jquery.flot.plugins.js'))
-        // .pipe(uglify())
+        .pipe(uglify())
         .pipe(maps.write('./'))
         .pipe(gulp.dest('dist/es5/NationalInstruments'));
 });
@@ -81,7 +81,7 @@ gulp.task('build_charting_es6', function () {
     return gulp.src(filesExist(src2, { exceptionMessage: 'Missing file'}))
         .pipe(maps.init())
         .pipe(concat('jquery.flot.plugins.min.js'))
-        // .pipe(uglify({ecma: 6}))
+        .pipe(uglify({ecma: 6}))
         .pipe(maps.write('./'))
         .pipe(gulp.dest('dist/es6_minified/NationalInstruments'));
 });

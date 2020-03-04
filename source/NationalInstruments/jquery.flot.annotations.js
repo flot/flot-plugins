@@ -25,39 +25,47 @@ THE SOFTWARE.
     'use strict';
 
     class Annotations {
-        static get defaultOptions() {
+        static get defaultOptions () {
+            return [];
+        }
+
+        static get defaultAnnotationOptions () {
             return {
-                series: {
-                    annotations: {
-                        show: false,
-                        location: 'relative', // how the location is interpreted - relative or absolute
-                        content: [], // an array of objects, each object is the content of a separate annotation see below
-                         /*{
-                            x: 0, // x position of annotation
-                            y: 0, // y position of annotation
-                            label: '', // string content of annotation (may contain newlines)
-                            showArrow: false, // show an arror pointing to location
-                            arrowDirection: '', // direction of arrow, values are compass directiond '', 'n', 's', 'e', 'w', 'ne', 'nw', 'se','sw', 
-                                                // if the value is empty then the arrow will default based on which quadrant of the graph x & y are
-                        }*/
-                        contentFormatter: c => c, // a format function for the content
-                        borderColor: '#000000', // border color
-                        borderThickness: 1, // border thickness in pixels
-                        backgroundColor: '#ffffff', // background color
-                        font: '', // font for text
-                        color: '#000000', // text color
-                        textAlign: 'left', // text alignment 'left', 'center', 'right'
-                        arrowLength: 20, // length of callout arrow
-                        arrowWidth: 5, // width of callout arrow where it meets the box
-                        padding: 5 // padding for text inside box
-                    }
-                }
+                show: false,
+                location: 'relative', // how the location is interpreted - relative or absolute
+                x: 0, // x position of annotation
+                y: 0, // y position of annotation
+                label: '', // string content of annotation (may contain newlines)
+                showArrow: false, // show an arror pointing to location
+                arrowDirection: '', // direction of arrow, values are compass directiond '', 'n', 's', 'e', 'w', 'ne', 'nw', 'se','sw', 
+                                    // if the value is empty then the arrow will default based on which quadrant of the graph x & y are
+                contentFormatter: c => c, // a format function for the content
+                borderColor: '#000000', // border color
+                borderThickness: 1, // border thickness in pixels
+                backgroundColor: '#ffffff', // background color
+                font: '', // font for text
+                color: '#000000', // text color
+                textAlign: 'left', // text alignment 'left', 'center', 'right'
+                arrowLength: 20, // length of callout arrow
+                arrowWidth: 5, // width of callout arrow where it meets the box
+                padding: 5 // padding for text inside box
             }
         }
 
         constructor(plot, options) {
+            this._plot = plot;
+            this._annotations = [];
             this._processOptions(options);
             this._createHooks(plot);
+        }
+
+        _createAnnotation (options) {
+            let destination = Annotations.defaultAnnotationOptions;
+            Object.keys(options).forEach(function (key) {
+                destination[key] = options[key];
+            });
+    
+            return destination;
         }
 
         _createHooks(plot) {
@@ -67,33 +75,56 @@ THE SOFTWARE.
         }
 
         _processOptions(options) {
-            $.extend(true, options, this.defaultOptions);
-            this._options = options.series.annotations;
-            this._options.font = options.series.annotations.font || (options.series.xaxis ? options.series.xaxis.font : undefined) || '9pt san-serif';
+            options.series.annotations.forEach((options) => {
+                this.addAnnotation(options, false);
+            });
+        }
+
+        addAnnotation (options, redraw) {
+            var currentAnnotation = this._createAnnotation(options);
+            this._annotations.push(currentAnnotation);
+            if (redraw !== false) {
+                this._plot.triggerRedrawOverlay();
+            }
+        }
+
+        removeAnnotation (annotation, redraw) {
+            const index = this._annotations.indexOf(annotation);
+            if (index !== -1) {
+                this._annotations.splice(index, 1);
+            }
+
+            if (redraw !== false) {
+                this._plot.triggerRedrawOverlay();
+            }
+        }
+
+        getAnnotations () {
+            return this,_annotations;
         }
 
         _drawOverlay(plot, ctx) {
             const series = plot.getData();
-            if (!this._options.show) {
-                return;
-            }
-
-            this._lineHeight = this.lineHeight(plot);
+            this._lineHeight = this._getLineHeight(plot);
             const plotOffset = plot.getPlotOffset();
             ctx.save();
             ctx.translate(plotOffset.left, plotOffset.top);
-            for (let i = 0; i < this._options.content.length; i++) {
-                let formattedText = this._options.contentFormatter(this._options.content[i].label);
-                let offset = this.calcOffset(plot, ctx, this._options, this._options.content[i]);
-                let bounds = this._drawBox(plot, ctx, this._options, this._options.content[i], formattedText, offset);
-                this._drawArrow(plot, ctx, this._options, this._options.content[i], offset);
-                this._drawContent(plot, ctx, this._options, formattedText, bounds);
+            for (let i = 0; i < this._annotations.length; i++) {
+                if (!this._annotations[i].show) {
+                    continue;
+                }
+
+                let formattedText = this._annotations[i].contentFormatter(this._annotations[i].label);
+                let offset = this._calcOffset(plot, ctx, this._annotations[i]);
+                let bounds = this._drawBox(plot, ctx, this._annotations[i], formattedText, offset);
+                this._drawArrow(plot, ctx, this._annotations[i], offset);
+                this._drawContent(plot, ctx, this._annotations[i], formattedText, bounds);
             }
 
             ctx.restore();
         }
 
-        defaultArrowDirection (plot, x, y) {
+        _defaultArrowDirection (plot, x, y) {
             let arrowDirn;
             let relX = x / plot.width();
             let relY = y / plot.height();
@@ -110,94 +141,72 @@ THE SOFTWARE.
             return arrowDirn;
         }
 
-        calcOffset(plot, ctx, annotations, content) {
+        _calcOffset(plot, ctx, annotation) {
             let offset = {x: 0, y: 0};
-            if (!content.showArrow) {
+            if (!annotation.showArrow) {
                 return offset;
             }
 
-            let x = content.x;
-            let y = content.y;
+            let x = annotation.x;
+            let y = annotation.y;
             let xaxis = plot.getXAxes()[0];
             let yaxis = plot.getYAxes()[0];
-            let arrowDirn = content.arrowDirection;
-            if (annotations.location === 'absolute') {
-                x = xaxis.p2c(content.x);
-                y = yaxis.p2c(content.y);
+            let arrowDirn = annotation.arrowDirection;
+            if (annotation.location === 'absolute') {
+                x = xaxis.p2c(annotation.x);
+                y = yaxis.p2c(annotation.y);
             } else {
-                x = content.x * plot.width();
-                y =content.y * plot.height();
+                x = annotation.x * plot.width();
+                y = annotation.y * plot.height();
             }
 
             if (arrowDirn === '') {
-                arrowDirn = this.defaultArrowDirection(plot, x, y);
+                arrowDirn = this._defaultArrowDirection(plot, x, y);
             }
 
-            let al = annotations.arrowLength;
-            switch (arrowDirn) {
-                case 'n':
-                    offset.x = 0;
-                    offset.y = -al;
-                    break;
-                case 's':
-                    offset.x = 0;
-                    offset.y = al;
-                    break;
-                case 'e':
-                    offset.x = -al;
-                    offset.y = 0;
-                   break;
-                case 'w':
-                    offset.x = al;
-                    offset.y = 0;
-                    break;
-                case 'ne':
-                    offset.x = al;
-                    offset.y = -al;
-                    break;
-                case 'nw':
-                    offset.x = -al;
-                    offset.y = -al;
-                    break;
-                case 'se':
-                    offset.x = al;
-                    offset.y = al;
-                    break;
-                case 'sw':
-                    offset.x = -al;
-                    offset.y = al;
-                    break;
+            let al = annotation.arrowLength;
+            if (arrowDirn.includes('n')) {
+                offset.y = -al;
+            }
+            if (arrowDirn.includes('s')) {
+                offset.y = al;
+            }
+            if (arrowDirn.includes('e')) {
+                offset.x = -al;
+            }
+            if (arrowDirn.includes('w')) {
+                offset.x = al;
             }
 
             return offset;
         }
 
 
-        _drawArrow(plot, ctx, annotations, content, offset) {
-            if (!content.showArrow) {
+        _drawArrow(plot, ctx, annotation, offset) {
+            if (!annotation.showArrow) {
                 return;
             }
 
             let edge1;
             let edge2;
-            let arrowDirn = content.arrowDirection;
-            let x = content.x;
-            let y = content.y;
+            let arrowDirn = annotation.arrowDirection;
+            let x = annotation.x;
+            let y = annotation.y;
             let xaxis = plot.getXAxes()[0];
             let yaxis = plot.getYAxes()[0];
-            if (annotations.location === 'absolute') {
-                x = xaxis.p2c(content.x);
-                y = yaxis.p2c(content.y);
+            if (annotation.location === 'absolute') {
+                x = xaxis.p2c(annotation.x);
+                y = yaxis.p2c(annotation.y);
             } else {
-                x = content.x * plot.width();
-                y = content.y * plot.height();
+                x = annotation.x * plot.width();
+                y = annotation.y * plot.height();
             }
 
             if (arrowDirn === '') {
-                arrowDirn = this.defaultArrowDirection(plot, x, y);
+                arrowDirn = this._defaultArrowDirection(plot, x, y);
             }
 
-            let aw = annotations.arrowWidth;
+            let aw = annotation.arrowWidth;
             switch (arrowDirn) {
                 case 'n':
                     edge1 = {x: offset.x + aw, y: offset.y - 1};
@@ -234,7 +243,7 @@ THE SOFTWARE.
             }
 
             ctx.save();
-            ctx.fillStyle = annotations.backgroundColor;
+            ctx.fillStyle = annotation.backgroundColor;
             ctx.beginPath();
             ctx.moveTo(x, y);
             ctx.lineTo(x + edge1.x, y + edge1.y);
@@ -242,8 +251,8 @@ THE SOFTWARE.
             ctx.fill();
             ctx.restore();
             ctx.save();
-            ctx.strokeStyle = annotations.borderColor;
-            ctx.lineWidth = annotations.borderThickness;
+            ctx.strokeStyle = annotation.borderColor;
+            ctx.lineWidth = annotation.borderThickness;
             ctx.beginPath();
             ctx.moveTo(x + edge1.x, y + edge1.y);
             ctx.lineTo(x, y);
@@ -255,11 +264,11 @@ THE SOFTWARE.
             ctx.restore();
         }
 
-        lineCount (str) {
+        _lineCount (str) {
             return str.split('<br>').length;
         } 
 
-        lineWidth (ctx, str) {
+        _lineWidth (ctx, str) {
             let lines = str.split('<br>');
             let longest = {width: 0};
             for (let i = 0; i < lines.length; i++) {
@@ -272,37 +281,37 @@ THE SOFTWARE.
             return longest;
         }
 
-        lineHeight (plot) {
+        _getLineHeight (plot) {
             let surface = plot.getSurface();
             let styles = window.getComputedStyle(surface.element);
             let lineHeight = parseFloat(styles['lineHeight']);
             return lineHeight;
         }
 
-        _drawBox (plot, ctx, annotations, content, formattedText, offset) {
-            let x = content.x;
-            let y = content.y;
+        _drawBox (plot, ctx, annotation, formattedText, offset) {
+            let x = annotation.x;
+            let y = annotation.y;
             let xaxis = plot.getXAxes()[0];
             let yaxis = plot.getYAxes()[0];
-            let arrowDirn = content.arrowDirection;
-            let lineCount = this.lineCount(formattedText);
-            if (annotations.location === 'absolute') {
-                x = xaxis.p2c(content.x);
-                y = yaxis.p2c(content.y);
+            let arrowDirn = annotation.arrowDirection;
+            let lineCount = this._lineCount(formattedText);
+            if (annotation.location === 'absolute') {
+                x = xaxis.p2c(annotation.x);
+                y = yaxis.p2c(annotation.y);
             } else {
-                x = content.x * plot.width();
-                y =content.y * plot.height();
+                x = annotation.x * plot.width();
+                y = annotation.y * plot.height();
             }
 
-            let padding = annotations.padding;
+            let padding = annotation.padding;
             x += offset.x;
             y += offset.y;
-            let size = this.lineWidth(ctx, formattedText);
+            let size = this._lineWidth(ctx, formattedText);
             let width = size.width + 2 * padding;
             let height = lineCount * this._lineHeight + 2 * padding;
 
             if (arrowDirn === '') {
-                arrowDirn = this.defaultArrowDirection(plot, x, y);
+                arrowDirn = this._defaultArrowDirection(plot, x, y);
             }
 
             switch (arrowDirn) {
@@ -335,9 +344,9 @@ THE SOFTWARE.
             }
 
             ctx.save();
-            ctx.strokeStyle = annotations.borderColor;
-            ctx.fillStyle = annotations.backgroundColor;
-            ctx.lineWidth = annotations.borderThickness;
+            ctx.strokeStyle = annotation.borderColor;
+            ctx.fillStyle = annotation.backgroundColor;
+            ctx.lineWidth = annotation.borderThickness;
             ctx.beginPath();
             ctx.fillRect(x, y, width, height);
             ctx.strokeRect(x, y, width, height);
@@ -346,18 +355,18 @@ THE SOFTWARE.
             return {x: x, y: y, width: width, height: height};
         }
 
-        _drawContent (plot, ctx, annotations, formattedText, bounds) {
+        _drawContent (plot, ctx, annotation, formattedText, bounds) {
             let lines = formattedText.split('<br>');
-            let padding = annotations.padding;
+            let padding = annotation.padding;
             ctx.save();
-            ctx.font = annotations.font;
-            ctx.fillStyle = annotations.color;
-            ctx.textAlign = annotations.textAlign;
+            ctx.font = annotation.font;
+            ctx.fillStyle = annotation.color;
+            ctx.textAlign = annotation.textAlign;
             let top = bounds.y + padding;
             let left = bounds.x + padding;
-            if (annotations.textAlign === 'right') {
+            if (annotation.textAlign === 'right') {
                 left += bounds.width - 2 * padding;
-            } else if (annotations.textAlign === 'center') {
+            } else if (annotation.textAlign === 'center') {
                 left += bounds.width / 2 - padding;
             }
 
@@ -375,13 +384,21 @@ THE SOFTWARE.
         let annotations;
 
         plot.hooks.processOptions.push((plot, options) => {
-            if (options.series.annotations && options.series.annotations.show) {
+            if (options.series.annotations) {
                 annotations = new Annotations(plot, options);
             }
         });
 
-        plot.getAnnotations = function() {
-            return annotations;
+        plot.getAnnotations = function () {
+            return annotations.getAnnotations();
+        }
+
+        plot.addAnnotation = function (options) {
+            annotations.addAnnotation(options, true);
+        }
+
+        plot.removeAnnotation = function (options) {
+            annotations.removeAnnotation(options, true);
         }
     }
 

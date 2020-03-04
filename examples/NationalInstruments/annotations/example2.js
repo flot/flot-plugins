@@ -18,16 +18,14 @@ $(function () {
         series: {
             lines: { show: true },
             points: { show: true },
-            annotations: {
+            annotations:[{
                 show: true,
                 location: 'absolute',
-                content: [
-                    {x: 4, y: 8, label: 'hello world1', showArrow: false},
-                    {x: 0, y: 12, label: 'hello world2', showArrow: false},
-                    {x: 11, y: 3, label: 'hello world3', showArrow: false},
-                    {x: 12, y: 6.5, label: 'hello world4', showArrow: false},
-                ],
-            }
+                x: 4,
+                y: 8,
+                label: 'hello world2',
+                showArrow: false,
+            }]
         }
     });
 

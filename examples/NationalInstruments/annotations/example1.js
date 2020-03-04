@@ -18,19 +18,14 @@ $(function () {
         series: {
             lines: { show: true },
             points: { show: true },
-            annotations: {
+            annotations: [{
                 show: true,
                 location: 'relative',
-                content: [
-                    {x: 0.5, y: 0.5, label: 'hello world2<br>newline', arrowDirection: 'n', showArrow: true},
-                    {x: 0.5, y: 0.5, label: 'hello world2<br>newline', arrowDirection: 's', showArrow: true},
-                    {x: 0.5, y: 0.5, label: 'hello world3<br>newline', arrowDirection: 'e', showArrow: true},
-                    {x: 0.5, y: 0.5, label: 'hello world4<br>newline', arrowDirection: 'w', showArrow: true},
-                    {x: 0.5, y: 0.5, label: 'hello world5<br>newline', arrowDirection: 'ne', showArrow: true},
-                    {x: 0.5, y: 0.5, label: 'hello world6<br>newline', arrowDirection: 'nw', showArrow: true},
-                    {x: 0.5, y: 0.5, label: 'hello world7<br>newline', arrowDirection: 'sw', showArrow: true},
-                    {x: 0.5, y: 0.5, label: 'hello world8<br>newline', arrowDirection: 'se', showArrow: true}
-                ],
+                x: 0.5,
+                y: 0.5,
+                label: 'hello world2<br>newline',
+                arrowDirection: 'n',
+                showArrow: true,
                 contentFormatter: c => c,
                 borderColor: '#FF0000',
                 borderThickness: 1,
@@ -40,7 +35,7 @@ $(function () {
                 textAlign: 'center',
                 arrowLength: 50,
                 arrowWidth: 5
-            }
+            }]
         }
     });
 
