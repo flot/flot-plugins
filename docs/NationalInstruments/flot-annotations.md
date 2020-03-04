@@ -8,7 +8,7 @@ Options
 The plugin supports these options:
 
 ```javascript
-    highlights: [
+    annotations: [
         {
                     show: false,
                     location: 'relative',
@@ -45,11 +45,11 @@ The plugin supports these options:
 
 **y** The y position of a content item
 
-**label** The text contain of the item (may contain newlines)
+**label** The text content of the item (may contain newlines)
 
 **showArrow** Show an arrow from the x, y coordinate to the text. The text will be offset by the arrow length and arrowDirection
 
-**arrowDirection** The direction from x, y to the label , values are compass directiond '', 'n', 's', 'e', 'w', 'ne', 'nw', 'se','sw', if the value is empty then the arrow will default based on which quadrant of the graph x & y are
+**arrowDirection** The direction from x, y to the label , values are compass directiond '', 'n', 's', 'e', 'w', 'ne', 'nw', 'se','sw', if the value is empty then the arrow will default based on which quadrant of the graph x & y are. 
 
 **contentFormatter** A function to format the content
 

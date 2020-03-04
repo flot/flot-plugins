@@ -22,24 +22,24 @@ $(function () {
                 show: true,
                 location: 'relative',
                 content: [
-                    {x: 0.5, y: 0.5, label: 'hello world2\nnewline', arrowDirection: 'n', showArrow: true},
-                    {x: 0.5, y: 0.5, label: 'hello world2\nnewline', arrowDirection: 's', showArrow: true},
-                    {x: 0.5, y: 0.5, label: 'hello world3\nnewline', arrowDirection: 'e', showArrow: true},
-                    {x: 0.5, y: 0.5, label: 'hello world4\nnewline', arrowDirection: 'w', showArrow: true},
-                    {x: 0.5, y: 0.5, label: 'hello world5\nnewline', arrowDirection: 'ne', showArrow: true},
-                    {x: 0.5, y: 0.5, label: 'hello world6\nnewline', arrowDirection: 'nw', showArrow: true},
-                    {x: 0.5, y: 0.5, label: 'hello world7\nnewline', arrowDirection: 'sw', showArrow: true},
-                    {x: 0.5, y: 0.5, label: 'hello world8\nnewline', arrowDirection: 'se', showArrow: true}
+                    {x: 0.5, y: 0.5, label: 'hello world2<br>newline', arrowDirection: 'n', showArrow: true},
+                    {x: 0.5, y: 0.5, label: 'hello world2<br>newline', arrowDirection: 's', showArrow: true},
+                    {x: 0.5, y: 0.5, label: 'hello world3<br>newline', arrowDirection: 'e', showArrow: true},
+                    {x: 0.5, y: 0.5, label: 'hello world4<br>newline', arrowDirection: 'w', showArrow: true},
+                    {x: 0.5, y: 0.5, label: 'hello world5<br>newline', arrowDirection: 'ne', showArrow: true},
+                    {x: 0.5, y: 0.5, label: 'hello world6<br>newline', arrowDirection: 'nw', showArrow: true},
+                    {x: 0.5, y: 0.5, label: 'hello world7<br>newline', arrowDirection: 'sw', showArrow: true},
+                    {x: 0.5, y: 0.5, label: 'hello world8<br>newline', arrowDirection: 'se', showArrow: true}
                 ],
                 contentFormatter: c => c,
                 borderColor: '#FF0000',
                 borderThickness: 1,
                 backgroundColor: '#009900',
-                lineWidth: 2,
                 font: '12pt',
                 color: '#440056',
                 textAlign: 'center',
                 arrowLength: 50,
+                arrowWidth: 5
             }
         }
     });

@@ -16,7 +16,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-/* Flot plugin for adding axis handle to the graph
+/* Flot plugin for adding annotations to the graph
 */
 
 /*global jQuery*/
@@ -69,7 +69,7 @@ THE SOFTWARE.
         _processOptions(options) {
             $.extend(true, options, this.defaultOptions);
             this._options = options.series.annotations;
-            this._options.font = options.series.annotations.font || series.xaxis.font || '9pt san-serif';
+            this._options.font = options.series.annotations.font || (options.series.xaxis ? options.series.xaxis.font : undefined) || '9pt san-serif';
         }
 
         _drawOverlay(plot, ctx) {
@@ -256,11 +256,11 @@ THE SOFTWARE.
         }
 
         lineCount (str) {
-            return str.split(/\r\n|\r|\n/).length;
+            return str.split('<br>').length;
         } 
 
         lineWidth (ctx, str) {
-            let lines = str.split(/\r\n|\r|\n/);
+            let lines = str.split('<br>');
             let longest = {width: 0};
             for (let i = 0; i < lines.length; i++) {
                 let size = ctx.measureText(lines[i]);
@@ -347,7 +347,7 @@ THE SOFTWARE.
         }
 
         _drawContent (plot, ctx, annotations, formattedText, bounds) {
-            let lines = formattedText.split(/\r\n|\r|\n/);
+            let lines = formattedText.split('<br>');
             let padding = annotations.padding;
             ctx.save();
             ctx.font = annotations.font;
