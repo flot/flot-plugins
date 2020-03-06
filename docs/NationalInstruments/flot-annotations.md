@@ -65,6 +65,10 @@ The plugin supports these options:
 
 **padding** The padding of the text inside the box
 
+**defaultxaxis** The 1 based index of the x axis which the absolute coordinates are relative to
+
+**defaultyaxis** The 1 based index of the y axis which the absolute coordinates are relative to
+
 ```
 
 Public Methods and events
@@ -85,6 +89,10 @@ The plugin adds some public methods to the plot:
     remove the specified annotation from the plot. annotationToRemove is an annotation
     reference to one of the annotations obtained with getAnnotations()
 
+* plot.hitTest(x, y)
+
+    Tests which annotations contain the relative coordinates passed in
+    Returns an array of indices of the annotations matched
 
 How to use
 ----------
@@ -112,6 +120,8 @@ var myFlot = $.plot( $("#graph"), ...,
                 color: '#440056',
                 textAlign: 'center',
                 arrowLength: 50,
+                defaultxaxis: 1,
+                defaultyaxis: 1
             }
         ]
     ]
