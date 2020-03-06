@@ -37,8 +37,8 @@ THE SOFTWARE.
                 y: 0, // y position of annotation
                 label: '', // string content of annotation (may contain newlines)
                 showArrow: false, // show an arror pointing to location
-                arrowDirection: '', // direction of arrow, values are compass directiond '', 'n', 's', 'e', 'w', 'ne', 'nw', 'se','sw', 
-                                    // if the value is empty then the arrow will default based on which quadrant of the graph x & y are
+                arrowDirection: '', // direction of arrow, values are compass directiond '', 'n', 's', 'e', 'w', 'ne', 'nw', 'se','sw',
+                // if the value is empty then the arrow will default based on which quadrant of the graph x & y are
                 contentFormatter: c => c, // a format function for the content
                 borderColor: '#000000', // border color
                 borderThickness: 1, // border thickness in pixels
@@ -64,7 +64,7 @@ THE SOFTWARE.
             Object.keys(options).forEach(function (key) {
                 destination[key] = options[key];
             });
-    
+
             return destination;
         }
 
@@ -116,7 +116,6 @@ THE SOFTWARE.
         }
 
         _drawOverlay(plot, ctx) {
-            const series = plot.getData();
             this._lineHeight = this._getLineHeight(plot);
             const plotOffset = plot.getPlotOffset();
             ctx.save();
@@ -193,7 +192,6 @@ THE SOFTWARE.
             return offset;
         }
 
-
         _drawArrow(plot, ctx, annotation, offset) {
             if (!annotation.showArrow) {
                 return;
@@ -231,7 +229,7 @@ THE SOFTWARE.
                 case 'e':
                     edge1 = {y: offset.y + aw, x: offset.x};
                     edge2 = {y: offset.y - aw, x: offset.x};
-                   break;
+                    break;
                 case 'w':
                     edge1 = {y: offset.y + aw, x: offset.x};
                     edge2 = {y: offset.y - aw, x: offset.x};
@@ -250,7 +248,7 @@ THE SOFTWARE.
                     break;
                 case 'sw':
                     edge1 = {x: offset.x - aw, y: offset.y};
-                    edge2 = {x: offset.x, y: offset.y  + aw};
+                    edge2 = {x: offset.x, y: offset.y + aw};
                     break;
             }
 
@@ -278,7 +276,7 @@ THE SOFTWARE.
 
         _lineCount (str) {
             return str.split('<br>').length;
-        } 
+        }
 
         _lineWidth (ctx, str) {
             let lines = str.split('<br>');
@@ -384,7 +382,7 @@ THE SOFTWARE.
 
             for (let i = 0; i < lines.length; i++) {
                 let size = ctx.measureText(lines[i]);
-                ctx.fillText(lines[i], left, top+ (size.actualBoundingBoxAscent + size.actualBoundingBoxDescent));
+                ctx.fillText(lines[i], left, top + (size.actualBoundingBoxAscent + size.actualBoundingBoxDescent));
                 top = top + this._lineHeight;
             }
 
