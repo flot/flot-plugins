@@ -102,7 +102,7 @@ describe('Flot annotations', function () {
         jasmine.clock().tick(20);
         expect(formatterCalled).toEqual(true);
     });
-    it('should draw multi-line tex', function () {
+    it('should draw multi-line text', function () {
         plot = $.plot(placeholder, [ d1, d2, d3 ], {
             series: {
                 lines: { show: true },
@@ -123,5 +123,84 @@ describe('Flot annotations', function () {
         plot.triggerRedrawOverlay();
         jasmine.clock().tick(20);
         expect(spy1).toHaveBeenCalledTimes(2);
+    });
+    it('should add an annotation using the public api', function () {
+        plot = $.plot(placeholder, [ d1, d2, d3 ], {
+            series: {
+                lines: { show: true },
+                points: { show: true, symbol: 'square' },
+            }
+        });
+        plot.addAnnotation({
+            show: true,
+            location: 'relative',
+            x: 0.5,
+            y: 0.5,
+            label: 'hello world2<br>newline',
+            arrowDirection: 'n',
+            showArrow: true
+        });
+        ctx = placeholder.find('.flot-overlay')[0].getContext('2d');
+        var spy1 = spyOn(ctx, 'fillText').and.callThrough();
+        plot.triggerRedrawOverlay();
+        jasmine.clock().tick(20);
+        expect(spy1).toHaveBeenCalledTimes(2);
+    });
+    it('should remove an annotation using the public api', function () {
+        plot = $.plot(placeholder, [ d1, d2, d3 ], {
+            series: {
+                lines: { show: true },
+                points: { show: true, symbol: 'square' },
+                annotations: [{
+                    show: true,
+                    location: 'relative',
+                    x: 0.5,
+                    y: 0.5,
+                    label: 'hello world2<br>newline',
+                    arrowDirection: 'n',
+                    showArrow: true
+                }]
+            }
+        });
+        plot.removeAnnotation({
+            show: true,
+            location: 'relative',
+            x: 0.5,
+            y: 0.5,
+            label: 'hello world2<br>newline',
+            arrowDirection: 'n',
+            showArrow: true
+        });
+        ctx = placeholder.find('.flot-overlay')[0].getContext('2d');
+        var spy1 = spyOn(ctx, 'fillText').and.callThrough();
+        plot.triggerRedrawOverlay();
+        jasmine.clock().tick(20);
+        expect(spy1).not.toHaveBeenCalled();
+    });
+    it('should return an annotation using the public api', function () {
+        let annotation = {
+            show: true,
+            location: 'relative',
+            x: 0.5,
+            y: 0.5,
+            label: 'hello world2<br>newline',
+            arrowDirection: 'n',
+            showArrow: true
+        };
+        plot = $.plot(placeholder, [ d1, d2, d3 ], {
+            series: {
+                lines: { show: true },
+                points: { show: true, symbol: 'square' },
+                annotations: [annotation]
+            }
+        });
+        let annotations = plot.getAnnotations();
+        let match = true;
+        Object.keys(annotation).forEach((k) => {
+            if (annotation[k] !== annotations[0][k]) {
+                match = false;
+            }
+        });
+        expect(match).toEqual(true);
     });
 });

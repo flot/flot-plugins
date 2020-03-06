@@ -75,9 +75,11 @@ THE SOFTWARE.
         }
 
         _processOptions(options) {
-            options.series.annotations.forEach((options) => {
-                this.addAnnotation(options, false);
-            });
+            if (options.series && options.series.annotations) {
+                options.series.annotations.forEach((options) => {
+                    this.addAnnotation(options, false);
+                });
+            }
         }
 
         addAnnotation (options, redraw) {
@@ -89,7 +91,17 @@ THE SOFTWARE.
         }
 
         removeAnnotation (annotation, redraw) {
-            const index = this._annotations.indexOf(annotation);
+            const index = this._annotations.findIndex((a) => {
+                let found = true;
+                Object.keys(annotation).forEach((k) => {
+                    if (a[k] !== annotation[k]) {
+                        found = false;
+                    }
+                });
+
+                return found;
+            });
+
             if (index !== -1) {
                 this._annotations.splice(index, 1);
             }
@@ -100,7 +112,7 @@ THE SOFTWARE.
         }
 
         getAnnotations () {
-            return this,_annotations;
+            return this._annotations;
         }
 
         _drawOverlay(plot, ctx) {
@@ -394,10 +406,18 @@ THE SOFTWARE.
         }
 
         plot.addAnnotation = function (options) {
+            if (!annotations) {
+                annotations = new Annotations(this, options);
+            }
+
             annotations.addAnnotation(options, true);
         }
 
         plot.removeAnnotation = function (options) {
+            if (!annotations) {
+                return;
+            }
+
             annotations.removeAnnotation(options, true);
         }
     }
