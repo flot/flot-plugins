@@ -288,4 +288,42 @@ describe('Flot annotations', function () {
         expect(annotations.length).toEqual(1);
         expect(annotations[0]).toEqual(0);
     });
+    fit('should return the bounds of an annotation using the public api', function () {
+        let annotation1 = {
+            show: true,
+            location: 'absolute',
+            x: 4,
+            y: 8,
+            label: 'hello world2<br>newline',
+            arrowDirection: 'n',
+            showArrow: false
+        };
+        let annotation2 = {
+            show: true,
+            location: 'absolute',
+            x: 7,
+            y: 12,
+            label: 'hello world2<br>newline',
+            arrowDirection: 'n',
+            showArrow: false
+        };
+        plot = $.plot(placeholder, [ d1, d2, d3 ], {
+            series: {
+                lines: { show: true },
+                points: { show: true, symbol: 'square' },
+                annotations: [annotation1, annotation2]
+            }
+        });
+        jasmine.clock().tick(20);
+        var pos1 = plot.p2c({
+            x1: 4,
+            y1: 8
+        });
+
+        var x1 = pos1.left / plot.width();
+        var y1 = pos1.top / plot.height();
+        let bounds = plot.getBounds(0);
+        expect(bounds.x).toEqual(x1 -bounds.width / 2);
+        expect(bounds.y).toEqual(y1 - bounds.height);
+    });
 });

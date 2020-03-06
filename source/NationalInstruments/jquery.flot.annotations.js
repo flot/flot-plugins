@@ -130,7 +130,7 @@ THE SOFTWARE.
 
                 let formattedText = this._annotations[i].contentFormatter(this._annotations[i].label);
                 let offset = this._calcOffset(plot, ctx, this._annotations[i]);
-                let bounds = this._getBox(plot, ctx, this._annotations[i], formattedText, offset);
+                let bounds = this._calcBounds(plot, ctx, this._annotations[i], formattedText, offset);
                 if (absX >= bounds.x &&
                     absX <= (bounds.x + bounds.width) &&
                     absY >= bounds.y &&
@@ -140,6 +140,23 @@ THE SOFTWARE.
             }
 
             return found;
+        }
+
+        getBounds (plot, index) {
+            if (index < 0 || index > this._annotations.length - 1) {
+                return;
+            }
+
+            let annotation = this._annotations[index];
+            let formattedText = annotation.contentFormatter(annotation.label);
+            var ctx = plot.getCanvas().getContext("2d");
+            let offset = this._calcOffset(plot, ctx, annotation);
+            let bounds = this._calcBounds(plot, ctx, annotation, formattedText, offset);
+            bounds.x = bounds.x / plot.width();
+            bounds.y = bounds.y / plot.height();
+            bounds.width = bounds.width / plot.width();
+            bounds.height = bounds.height / plot.height();
+            return bounds;
         }
 
         _drawOverlay(plot, ctx) {
@@ -334,7 +351,7 @@ THE SOFTWARE.
             return lineHeight;
         }
 
-        _getBox (plot, ctx, annotation, formattedText, offset) {
+        _calcBounds (plot, ctx, annotation, formattedText, offset) {
             let zeroBasedIndex = annotation.defaultxaxis - 1;
             let x = annotation.x;
             let y = annotation.y;
@@ -394,7 +411,7 @@ THE SOFTWARE.
         }
 
         _drawBox (plot, ctx, annotation, formattedText, offset) {
-            let box = this._getBox(plot, ctx, annotation, formattedText, offset)
+            let box = this._calcBounds(plot, ctx, annotation, formattedText, offset)
             ctx.save();
             ctx.strokeStyle = annotation.borderColor;
             ctx.fillStyle = annotation.backgroundColor;
@@ -466,6 +483,14 @@ THE SOFTWARE.
             }
 
             return annotations.hitTest(this, x, y);
+        }
+
+        plot.getBounds = function (index) {
+            if (!annotations || !annotations.getAnnotations().length) {
+                return;
+            }
+
+            return annotations.getBounds(this, index);
         }
     }
 
