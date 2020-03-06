@@ -323,7 +323,7 @@ describe('Flot annotations', function () {
         var x1 = pos1.left / plot.width();
         var y1 = pos1.top / plot.height();
         let bounds = plot.getBounds(0);
-        expect(bounds.x).toEqual(x1 -bounds.width / 2);
-        expect(bounds.y).toEqual(y1 - bounds.height);
+        expect(bounds.x).toBeCloseTo(x1 -bounds.width / 2, 4);
+        expect(bounds.y).toBeCloseTo(y1 - bounds.height, 4);
     });
 });
