@@ -127,7 +127,7 @@ describe('Flot annotations', function () {
         jasmine.clock().tick(20);
         expect(spy1).toHaveBeenCalledTimes(2);
     });
-    fit('should be possible to position the annotation relative to any of the axes when having multiple ones', function () {
+    it('should be possible to position the annotation relative to any of the axes when having multiple ones', function () {
         plot = $.plot(placeholder, [
             { data: d2, xaxis: 1, yaxis: 1 },
             { data: d3, xaxis: 2, yaxis: 2 }
