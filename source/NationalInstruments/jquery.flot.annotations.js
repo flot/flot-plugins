@@ -77,8 +77,8 @@ THE SOFTWARE.
         }
 
         _processOptions(options) {
-            if (options.series && options.series.annotations) {
-                options.series.annotations.forEach((options) => {
+            if (options && options.annotations) {
+                options.annotations.forEach((options) => {
                     this.addAnnotation(options, false);
                 });
             }
@@ -452,7 +452,7 @@ THE SOFTWARE.
         let annotations;
 
         plot.hooks.processOptions.push((plot, options) => {
-            if (options.series.annotations) {
+            if (options.annotations) {
                 annotations = new Annotations(plot, options);
             }
         });
@@ -477,7 +477,7 @@ THE SOFTWARE.
             annotations.removeAnnotation(options, true);
         }
 
-        plot.hitTest = function (x, y) {
+        plot.hitTestAnnotations = function (x, y) {
             if (!annotations || !annotations.getAnnotations().length) {
                 return [];
             }
@@ -485,7 +485,7 @@ THE SOFTWARE.
             return annotations.hitTest(this, x, y);
         }
 
-        plot.getBounds = function (index) {
+        plot.getAnnotationBounds = function (index) {
             if (!annotations || !annotations.getAnnotations().length) {
                 return;
             }
