@@ -12,3 +12,4 @@ Owner: National Instruments
  - [Digital Waveform graph](flot-digital-waveform.md)
  - [Highlights](flot-highlights.md)
  - [Scrollbar](flot-scrollbar.md)
+ - [Annotations](flot-annotations.md)

@@ -17,6 +17,7 @@ before_script:
 - sudo chmod 4755 /opt/google/chrome/chrome-sandbox
 - npm install
 script:
+- npm run eslint
 - npm test
 - npm run build
 before_deploy:
