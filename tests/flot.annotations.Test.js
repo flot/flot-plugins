@@ -142,8 +142,8 @@ describe('Flot annotations', function () {
                     label: 'hello world2<br>newline',
                     arrowDirection: 'n',
                     showArrow: true,
-                    defaultxaxis: 2,
-                    defaultyaxis: 2
+                    xaxis: 2,
+                    yaxis: 2
                 }
             ],
             xaxes: [

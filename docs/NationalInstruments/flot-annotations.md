@@ -27,8 +27,8 @@ The plugin supports these options:
             arrowLength: 20,
             arrowWidth: 5,
             padding: 5,
-            defaultxaxis: 1,
-            defaultyaxis: 1
+            xaxis: 1,
+            yaxis: 1
         },
     ]
 ```
@@ -67,9 +67,9 @@ The plugin supports these options:
 
 **padding** The padding of the text inside the box
 
-**defaultxaxis** The 1 based index of the x axis which the absolute coordinates are relative to
+**xaxis** The 1 based index of the x axis which the absolute coordinates are relative to
 
-**defaultyaxis** The 1 based index of the y axis which the absolute coordinates are relative to
+**yaxis** The 1 based index of the y axis which the absolute coordinates are relative to
 
 ```
 
@@ -126,8 +126,8 @@ var myFlot = $.plot( $("#graph"), ...,
                 color: '#440056',
                 textAlign: 'center',
                 arrowLength: 50,
-                defaultxaxis: 1,
-                defaultyaxis: 1
+                xaxis: 1,
+                yaxis: 1
             }
         ]
     ]

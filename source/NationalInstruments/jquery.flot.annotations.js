@@ -49,8 +49,8 @@ THE SOFTWARE.
                 arrowLength: 20, // length of callout arrow
                 arrowWidth: 5, // width of callout arrow where it meets the box
                 padding: 5, // padding for text inside box
-                defaultxaxis: 1, // the x axis to use for absolute coordinates
-                defaultyaxis: 1 // the y axis to use for absolute coordinates
+                xaxis: 1, // the x axis to use for absolute coordinates
+                yaxis: 1 // the y axis to use for absolute coordinates
             }
         }
 
@@ -197,7 +197,8 @@ THE SOFTWARE.
         }
 
         _calcOffset(plot, ctx, annotation) {
-            let zeroBasedIndex = annotation.defaultxaxis - 1;
+            let zeroBasedXIndex = annotation.xaxis - 1;
+            let zeroBasedYIndex = annotation.yaxis - 1;
             let offset = {x: 0, y: 0};
             if (!annotation.showArrow) {
                 return offset;
@@ -205,8 +206,8 @@ THE SOFTWARE.
 
             let x = annotation.x;
             let y = annotation.y;
-            let xaxis = plot.getXAxes()[zeroBasedIndex];
-            let yaxis = plot.getYAxes()[zeroBasedIndex];
+            let xaxis = plot.getXAxes()[zeroBasedXIndex];
+            let yaxis = plot.getYAxes()[zeroBasedYIndex];
             let arrowDirn = annotation.arrowDirection;
             if (annotation.location === 'absolute') {
                 x = xaxis.p2c(annotation.x);
@@ -238,7 +239,8 @@ THE SOFTWARE.
         }
 
         _drawArrow(plot, ctx, annotation, offset) {
-            let zeroBasedIndex = annotation.defaultxaxis - 1;
+            let zeroBasedXIndex = annotation.xaxis - 1;
+            let zeroBasedYIndex = annotation.yaxis - 1;
             if (!annotation.showArrow) {
                 return;
             }
@@ -248,8 +250,8 @@ THE SOFTWARE.
             let arrowDirn = annotation.arrowDirection;
             let x = annotation.x;
             let y = annotation.y;
-            let xaxis = plot.getXAxes()[zeroBasedIndex];
-            let yaxis = plot.getYAxes()[zeroBasedIndex];
+            let xaxis = plot.getXAxes()[zeroBasedXIndex];
+            let yaxis = plot.getYAxes()[zeroBasedYIndex];
             if (annotation.location === 'absolute') {
                 x = xaxis.p2c(annotation.x);
                 y = yaxis.p2c(annotation.y);
@@ -352,11 +354,12 @@ THE SOFTWARE.
         }
 
         _calcBounds (plot, ctx, annotation, formattedText, offset) {
-            let zeroBasedIndex = annotation.defaultxaxis - 1;
+            let zeroBasedXIndex = annotation.xaxis - 1;
+            let zeroBasedYIndex = annotation.yaxis - 1;
             let x = annotation.x;
             let y = annotation.y;
-            let xaxis = plot.getXAxes()[zeroBasedIndex];
-            let yaxis = plot.getYAxes()[zeroBasedIndex];
+            let xaxis = plot.getXAxes()[zeroBasedXIndex];
+            let yaxis = plot.getYAxes()[zeroBasedYIndex];
             let arrowDirn = annotation.arrowDirection;
             let lineCount = this._lineCount(formattedText);
             if (annotation.location === 'absolute') {
