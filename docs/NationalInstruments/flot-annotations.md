@@ -26,7 +26,9 @@ The plugin supports these options:
             textAlign: 'left',
             arrowLength: 20,
             arrowWidth: 5,
-            padding: 5
+            padding: 5,
+            defaultxaxis: 1,
+            defaultyaxis: 1
         },
     ]
 ```
