@@ -127,7 +127,7 @@ describe('Flot annotations', function () {
         jasmine.clock().tick(20);
         expect(spy1).toHaveBeenCalledTimes(2);
     });
-    it('should be possible to position the annotation relative to any of the axes when having multiple ones', function () {
+    fit('should be possible to position the annotation relative to any of the axes when having multiple ones', function () {
         plot = $.plot(placeholder, [
             { data: d2, xaxis: 1, yaxis: 1 },
             { data: d3, xaxis: 2, yaxis: 2 }
@@ -137,38 +137,65 @@ describe('Flot annotations', function () {
                 {
                     show: true,
                     location: 'absolute',
-                    x: 7,
-                    y: 12,
+                    x: 5,
+                    y: 5,
                     label: 'hello world2<br>newline',
                     arrowDirection: 'n',
-                    showArrow: true,
+                    showArrow: false,
+                    xaxis: 1,
+                    yaxis: 1
+                },
+                {
+                    show: true,
+                    location: 'absolute',
+                    x: 15,
+                    y: 15,
+                    label: 'hello world2<br>newline',
+                    arrowDirection: 'n',
+                    showArrow: false,
                     xaxis: 2,
                     yaxis: 2
                 }
             ],
             xaxes: [
-                { position: 'bottom' },
-                { position: 'top' }
+                { position: 'bottom', minimum: 0, maximum: 10 },
+                { position: 'top', minimum: 10, maximum: 20 }
             ],
             yaxes: [
-                { position: 'left' },
-                { position: 'right' }
+                { position: 'left', minimum: 0, maximum: 10 },
+                { position: 'right', minimum: 10, maximum: 20 }
             ]
         });
 
         jasmine.clock().tick(20);
 
         var pos1 = plot.p2c({
-            x2: 7,
-            y2: 12
+            x1: 5,
+            y1: 5
+        });
+
+        var pos2 = plot.p2c({
+            x2: 15,
+            y2: 15
         });
 
         var expectedX1 = pos1.left;
         var expectedY1 = pos1.top;
+        var expectedX2 = pos2.left;
+        var expectedY2 = pos2.top;
+        ctx = placeholder.find('.flot-overlay')[0].getContext('2d');
         var spy1 = spyOn(ctx, 'fillRect').and.callThrough();
         plot.triggerRedrawOverlay();
         jasmine.clock().tick(20);
-        expect(spy1).not.toHaveBeenCalledWith(expectedX1, expectedY1, jasmine.any(Number), jasmine.any(Number));
+        let bounds = plot.getAnnotationBounds(0);
+        expectedX1 = expectedX1 - (bounds.width  * plot.width()) / 2;
+        expectedY1 = expectedY1 - (bounds.height * plot.height());
+        bounds = plot.getAnnotationBounds(1);
+        expectedX2 = expectedX2 - (bounds.width  * plot.width()) / 2;
+        expectedY2 = expectedY2 - (bounds.height * plot.height());
+        expect(spy1).toHaveBeenCalledTimes(2);
+        expect(spy1).toHaveBeenCalledWith(expectedX1, expectedY1, jasmine.any(Number), jasmine.any(Number));
+        expect(spy1).toHaveBeenCalledWith(expectedX2, expectedY2, jasmine.any(Number), jasmine.any(Number));
     });
     it('should add an annotation using the public api', function () {
         plot = $.plot(placeholder, [ d1, d2, d3 ], {
@@ -285,6 +312,7 @@ describe('Flot annotations', function () {
         var x1 = pos1.left / plot.width();
         var y1 = pos1.top / plot.height();
         let annotations = plot.hitTestAnnotations(x1, y1);
+        // the hit test found one annotation at index 0 in the list
         expect(annotations.length).toEqual(1);
         expect(annotations[0]).toEqual(0);
     });
