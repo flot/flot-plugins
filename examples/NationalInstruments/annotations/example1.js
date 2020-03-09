@@ -17,26 +17,26 @@ $(function () {
     $.plot("#placeholder", [ d1, d2, d3 ], {
         series: {
             lines: { show: true },
-            points: { show: true },
-            annotations: [{
-                show: true,
-                location: 'relative',
-                x: 0.5,
-                y: 0.5,
-                label: 'hello world2<br>newline',
-                arrowDirection: 'n',
-                showArrow: true,
-                contentFormatter: c => c,
-                borderColor: '#FF0000',
-                borderThickness: 1,
-                backgroundColor: '#009900',
-                font: '12pt',
-                color: '#440056',
-                textAlign: 'center',
-                arrowLength: 50,
-                arrowWidth: 5
-            }]
-        }
+            points: { show: true }
+        },
+        annotations: [{
+            show: true,
+            location: 'relative',
+            x: 0.5,
+            y: 0.5,
+            label: 'hello world2<br>newline',
+            arrowDirection: 'n',
+            showArrow: true,
+            contentFormatter: c => c,
+            borderColor: '#FF0000',
+            borderThickness: 1,
+            backgroundColor: '#009900',
+            font: '12pt',
+            color: '#440056',
+            textAlign: 'center',
+            arrowLength: 50,
+            arrowWidth: 5
+        }]
     });
 
     // Add the Flot version string to the footer

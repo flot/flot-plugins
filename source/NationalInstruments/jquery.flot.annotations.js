@@ -149,6 +149,7 @@ THE SOFTWARE.
 
             let annotation = this._annotations[index];
             let formattedText = annotation.contentFormatter(annotation.label);
+            this._lineHeight = this._getLineHeight(plot);
             var ctx = plot.getCanvas().getContext("2d");
             let offset = this._calcOffset(plot, ctx, annotation);
             let bounds = this._calcBounds(plot, ctx, annotation, formattedText, offset);
