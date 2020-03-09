@@ -48,7 +48,9 @@ THE SOFTWARE.
                 textAlign: 'left', // text alignment 'left', 'center', 'right'
                 arrowLength: 20, // length of callout arrow
                 arrowWidth: 5, // width of callout arrow where it meets the box
-                padding: 5 // padding for text inside box
+                padding: 5, // padding for text inside box
+                xaxis: 1, // the x axis to use for absolute coordinates
+                yaxis: 1 // the y axis to use for absolute coordinates
             }
         }
 
@@ -75,8 +77,8 @@ THE SOFTWARE.
         }
 
         _processOptions(options) {
-            if (options.series && options.series.annotations) {
-                options.series.annotations.forEach((options) => {
+            if (options && options.annotations) {
+                options.annotations.forEach((options) => {
                     this.addAnnotation(options, false);
                 });
             }
@@ -113,6 +115,48 @@ THE SOFTWARE.
 
         getAnnotations () {
             return this._annotations;
+        }
+
+        hitTest (plot, x, y) {
+            let found = [];
+            let absX = x * plot.width();
+            let absY = y * plot.height();
+            this._lineHeight = this._getLineHeight(plot);
+            var ctx = plot.getCanvas().getContext("2d");
+            for (let i = 0; i < this._annotations.length; i++) {
+                if (!this._annotations[i].show) {
+                    continue;
+                }
+
+                let formattedText = this._annotations[i].contentFormatter(this._annotations[i].label);
+                let offset = this._calcOffset(plot, ctx, this._annotations[i]);
+                let bounds = this._calcBounds(plot, ctx, this._annotations[i], formattedText, offset);
+                if (absX >= bounds.x &&
+                    absX <= (bounds.x + bounds.width) &&
+                    absY >= bounds.y &&
+                    absY <= (bounds.y + bounds.height)) {
+                    found.push(i);
+                }
+            }
+
+            return found;
+        }
+
+        getBounds (plot, index) {
+            if (index < 0 || index > this._annotations.length - 1) {
+                return;
+            }
+
+            let annotation = this._annotations[index];
+            let formattedText = annotation.contentFormatter(annotation.label);
+            var ctx = plot.getCanvas().getContext("2d");
+            let offset = this._calcOffset(plot, ctx, annotation);
+            let bounds = this._calcBounds(plot, ctx, annotation, formattedText, offset);
+            bounds.x = bounds.x / plot.width();
+            bounds.y = bounds.y / plot.height();
+            bounds.width = bounds.width / plot.width();
+            bounds.height = bounds.height / plot.height();
+            return bounds;
         }
 
         _drawOverlay(plot, ctx) {
@@ -153,6 +197,8 @@ THE SOFTWARE.
         }
 
         _calcOffset(plot, ctx, annotation) {
+            let zeroBasedXIndex = annotation.xaxis - 1;
+            let zeroBasedYIndex = annotation.yaxis - 1;
             let offset = {x: 0, y: 0};
             if (!annotation.showArrow) {
                 return offset;
@@ -160,8 +206,8 @@ THE SOFTWARE.
 
             let x = annotation.x;
             let y = annotation.y;
-            let xaxis = plot.getXAxes()[0];
-            let yaxis = plot.getYAxes()[0];
+            let xaxis = plot.getXAxes()[zeroBasedXIndex];
+            let yaxis = plot.getYAxes()[zeroBasedYIndex];
             let arrowDirn = annotation.arrowDirection;
             if (annotation.location === 'absolute') {
                 x = xaxis.p2c(annotation.x);
@@ -193,6 +239,8 @@ THE SOFTWARE.
         }
 
         _drawArrow(plot, ctx, annotation, offset) {
+            let zeroBasedXIndex = annotation.xaxis - 1;
+            let zeroBasedYIndex = annotation.yaxis - 1;
             if (!annotation.showArrow) {
                 return;
             }
@@ -202,8 +250,8 @@ THE SOFTWARE.
             let arrowDirn = annotation.arrowDirection;
             let x = annotation.x;
             let y = annotation.y;
-            let xaxis = plot.getXAxes()[0];
-            let yaxis = plot.getYAxes()[0];
+            let xaxis = plot.getXAxes()[zeroBasedXIndex];
+            let yaxis = plot.getYAxes()[zeroBasedYIndex];
             if (annotation.location === 'absolute') {
                 x = xaxis.p2c(annotation.x);
                 y = yaxis.p2c(annotation.y);
@@ -294,15 +342,24 @@ THE SOFTWARE.
         _getLineHeight (plot) {
             let surface = plot.getSurface();
             let styles = window.getComputedStyle(surface.element);
-            let lineHeight = parseFloat(styles['lineHeight']);
+            let lineHeight = styles['lineHeight'];
+            if (lineHeight === 'normal') {
+                // when lineHeight is "normal" a multiplier of 1.2 is used by most browsers - https://developer.mozilla.org/en-US/docs/Web/CSS/line-height
+                lineHeight = 1.2 * parseFloat(styles['fontSize']);
+            } else {
+                lineHeight = parseFloat(styles['lineHeight']);
+            }
+
             return lineHeight;
         }
 
-        _drawBox (plot, ctx, annotation, formattedText, offset) {
+        _calcBounds (plot, ctx, annotation, formattedText, offset) {
+            let zeroBasedXIndex = annotation.xaxis - 1;
+            let zeroBasedYIndex = annotation.yaxis - 1;
             let x = annotation.x;
             let y = annotation.y;
-            let xaxis = plot.getXAxes()[0];
-            let yaxis = plot.getYAxes()[0];
+            let xaxis = plot.getXAxes()[zeroBasedXIndex];
+            let yaxis = plot.getYAxes()[zeroBasedYIndex];
             let arrowDirn = annotation.arrowDirection;
             let lineCount = this._lineCount(formattedText);
             if (annotation.location === 'absolute') {
@@ -353,16 +410,20 @@ THE SOFTWARE.
                     break;
             }
 
+            return {x: x, y: y, width: width, height: height};
+        }
+
+        _drawBox (plot, ctx, annotation, formattedText, offset) {
+            let box = this._calcBounds(plot, ctx, annotation, formattedText, offset)
             ctx.save();
             ctx.strokeStyle = annotation.borderColor;
             ctx.fillStyle = annotation.backgroundColor;
             ctx.lineWidth = annotation.borderThickness;
             ctx.beginPath();
-            ctx.fillRect(x, y, width, height);
-            ctx.strokeRect(x, y, width, height);
+            ctx.fillRect(box.x, box.y, box.width, box.height);
+            ctx.strokeRect(box.x, box.y, box.width, box.height);
             ctx.restore();
-
-            return {x: x, y: y, width: width, height: height};
+            return box;
         }
 
         _drawContent (plot, ctx, annotation, formattedText, bounds) {
@@ -394,7 +455,7 @@ THE SOFTWARE.
         let annotations;
 
         plot.hooks.processOptions.push((plot, options) => {
-            if (options.series.annotations) {
+            if (options.annotations) {
                 annotations = new Annotations(plot, options);
             }
         });
@@ -417,6 +478,22 @@ THE SOFTWARE.
             }
 
             annotations.removeAnnotation(options, true);
+        }
+
+        plot.hitTestAnnotations = function (x, y) {
+            if (!annotations || !annotations.getAnnotations().length) {
+                return [];
+            }
+
+            return annotations.hitTest(this, x, y);
+        }
+
+        plot.getAnnotationBounds = function (index) {
+            if (!annotations || !annotations.getAnnotations().length) {
+                return;
+            }
+
+            return annotations.getBounds(this, index);
         }
     }
 

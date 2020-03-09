@@ -17,7 +17,10 @@ describe('Flot annotations', function () {
     var placeholder;
     var ctx;
     beforeEach(function () {
-        placeholder = setFixtures('<div id="test-container" style="width: 200px;height: 100px;border-style: solid;border-width: 1px"></div>')
+        var fixture = setFixtures('<div id="demo-container" style="width: 800px;height: 600px">').find('#demo-container').get(0);
+
+        placeholder = $('<div id="placeholder" style="width: 100%;height: 100%">');
+        placeholder.appendTo(fixture);
         jasmine.clock().install();
     });
 
@@ -33,16 +36,16 @@ describe('Flot annotations', function () {
         plot = $.plot(placeholder, [ d1, d2, d3 ], {
             series: {
                 lines: { show: true },
-                points: { show: true, symbol: 'square' },
-                annotations: [{
-                    show: true,
-                    x: 0.5,
-                    y: 0.5,
-                    label: 'hello world2<br>newline',
-                    arrowDirection: 'n',
-                    showArrow: true
-                }]
-            }
+                points: { show: true, symbol: 'square' }
+            },
+            annotations: [{
+                show: true,
+                x: 0.5,
+                y: 0.5,
+                label: 'hello world2<br>newline',
+                arrowDirection: 'n',
+                showArrow: true
+            }]
         });
         ctx = placeholder.find('.flot-overlay')[0].getContext('2d');
         var spy1 = spyOn(ctx, 'moveTo').and.callThrough();
@@ -56,16 +59,16 @@ describe('Flot annotations', function () {
         plot = $.plot(placeholder, [ d1, d2, d3 ], {
             series: {
                 lines: { show: true },
-                points: { show: true, symbol: 'square' },
-                annotations: [{
-                    show: false,
-                    x: 0.5,
-                    y: 0.5,
-                    label: 'hello world',
-                    arrowDirection: 'n',
-                    showArrow: true
-                }]
-            }
+                points: { show: true, symbol: 'square' }
+            },
+            annotations: [{
+                show: false,
+                x: 0.5,
+                y: 0.5,
+                label: 'hello world',
+                arrowDirection: 'n',
+                showArrow: true
+            }]
         });
         ctx = placeholder.find('.flot-overlay')[0].getContext('2d');
         var spy1 = spyOn(ctx, 'moveTo').and.callThrough();
@@ -84,18 +87,18 @@ describe('Flot annotations', function () {
         plot = $.plot(placeholder, [ d1, d2, d3 ], {
             series: {
                 lines: { show: true },
-                points: { show: true, symbol: 'square' },
-                annotations: [{
-                    show: true,
-                    location: 'relative',
-                    x: 0.5,
-                    y: 0.5,
-                    label: 'hello world',
-                    arrowDirection: 'n',
-                    showArrow: true,
-                    contentFormatter: formatter,
-                }]
-            }
+                points: { show: true, symbol: 'square' }
+            },
+            annotations: [{
+                show: true,
+                location: 'relative',
+                x: 0.5,
+                y: 0.5,
+                label: 'hello world',
+                arrowDirection: 'n',
+                showArrow: true,
+                contentFormatter: formatter,
+            }]
         });
         ctx = placeholder.find('.flot-overlay')[0].getContext('2d');
         plot.triggerRedrawOverlay();
@@ -106,23 +109,93 @@ describe('Flot annotations', function () {
         plot = $.plot(placeholder, [ d1, d2, d3 ], {
             series: {
                 lines: { show: true },
-                points: { show: true, symbol: 'square' },
-                annotations: [{
-                    show: true,
-                    location: 'relative',
-                    x: 0.5,
-                    y: 0.5,
-                    label: 'hello world2<br>newline',
-                    arrowDirection: 'n',
-                    showArrow: true
-                }]
-            }
+                points: { show: true, symbol: 'square' }
+            },
+            annotations: [{
+                show: true,
+                location: 'relative',
+                x: 0.5,
+                y: 0.5,
+                label: 'hello world2<br>newline',
+                arrowDirection: 'n',
+                showArrow: true
+            }]
         });
         ctx = placeholder.find('.flot-overlay')[0].getContext('2d');
         var spy1 = spyOn(ctx, 'fillText').and.callThrough();
         plot.triggerRedrawOverlay();
         jasmine.clock().tick(20);
         expect(spy1).toHaveBeenCalledTimes(2);
+    });
+    it('should be possible to position the annotation relative to any of the axes when having multiple ones', function () {
+        plot = $.plot(placeholder, [
+            { data: d2, xaxis: 1, yaxis: 1 },
+            { data: d3, xaxis: 2, yaxis: 2 }
+        ],
+        {
+            annotations: [
+                {
+                    show: true,
+                    location: 'absolute',
+                    x: 5,
+                    y: 5,
+                    label: 'hello world2<br>newline',
+                    arrowDirection: 'n',
+                    showArrow: false,
+                    xaxis: 1,
+                    yaxis: 1
+                },
+                {
+                    show: true,
+                    location: 'absolute',
+                    x: 15,
+                    y: 15,
+                    label: 'hello world2<br>newline',
+                    arrowDirection: 'n',
+                    showArrow: false,
+                    xaxis: 2,
+                    yaxis: 2
+                }
+            ],
+            xaxes: [
+                { position: 'bottom', minimum: 0, maximum: 10 },
+                { position: 'top', minimum: 10, maximum: 20 }
+            ],
+            yaxes: [
+                { position: 'left', minimum: 0, maximum: 10 },
+                { position: 'right', minimum: 10, maximum: 20 }
+            ]
+        });
+
+        jasmine.clock().tick(20);
+
+        var pos1 = plot.p2c({
+            x1: 5,
+            y1: 5
+        });
+
+        var pos2 = plot.p2c({
+            x2: 15,
+            y2: 15
+        });
+
+        var expectedX1 = pos1.left;
+        var expectedY1 = pos1.top;
+        var expectedX2 = pos2.left;
+        var expectedY2 = pos2.top;
+        ctx = placeholder.find('.flot-overlay')[0].getContext('2d');
+        var spy1 = spyOn(ctx, 'fillRect').and.callThrough();
+        plot.triggerRedrawOverlay();
+        jasmine.clock().tick(20);
+        let bounds = plot.getAnnotationBounds(0);
+        expectedX1 = expectedX1 - (bounds.width  * plot.width()) / 2;
+        expectedY1 = expectedY1 - (bounds.height * plot.height());
+        bounds = plot.getAnnotationBounds(1);
+        expectedX2 = expectedX2 - (bounds.width  * plot.width()) / 2;
+        expectedY2 = expectedY2 - (bounds.height * plot.height());
+        expect(spy1).toHaveBeenCalledTimes(2);
+        expect(spy1).toHaveBeenCalledWith(expectedX1, expectedY1, jasmine.any(Number), jasmine.any(Number));
+        expect(spy1).toHaveBeenCalledWith(expectedX2, expectedY2, jasmine.any(Number), jasmine.any(Number));
     });
     it('should add an annotation using the public api', function () {
         plot = $.plot(placeholder, [ d1, d2, d3 ], {
@@ -150,17 +223,17 @@ describe('Flot annotations', function () {
         plot = $.plot(placeholder, [ d1, d2, d3 ], {
             series: {
                 lines: { show: true },
-                points: { show: true, symbol: 'square' },
-                annotations: [{
-                    show: true,
-                    location: 'relative',
-                    x: 0.5,
-                    y: 0.5,
-                    label: 'hello world2<br>newline',
-                    arrowDirection: 'n',
-                    showArrow: true
-                }]
-            }
+                points: { show: true, symbol: 'square' }
+            },
+            annotations: [{
+                show: true,
+                location: 'relative',
+                x: 0.5,
+                y: 0.5,
+                label: 'hello world2<br>newline',
+                arrowDirection: 'n',
+                showArrow: true
+            }]
         });
         plot.removeAnnotation({
             show: true,
@@ -190,10 +263,11 @@ describe('Flot annotations', function () {
         plot = $.plot(placeholder, [ d1, d2, d3 ], {
             series: {
                 lines: { show: true },
-                points: { show: true, symbol: 'square' },
-                annotations: [annotation]
-            }
+                points: { show: true, symbol: 'square' }
+            },
+            annotations: [annotation]
         });
+        jasmine.clock().tick(20);
         let annotations = plot.getAnnotations();
         let match = true;
         Object.keys(annotation).forEach((k) => {
@@ -202,5 +276,82 @@ describe('Flot annotations', function () {
             }
         });
         expect(match).toEqual(true);
+    });
+    it('should hit test an annotation using the public api', function () {
+        let annotation1 = {
+            show: true,
+            location: 'absolute',
+            x: 4,
+            y: 8,
+            label: 'hello world2<br>newline',
+            arrowDirection: 'n',
+            showArrow: true
+        };
+        let annotation2 = {
+            show: true,
+            location: 'absolute',
+            x: 7,
+            y: 12,
+            label: 'hello world2<br>newline',
+            arrowDirection: 'n',
+            showArrow: true
+        };
+        plot = $.plot(placeholder, [ d1, d2, d3 ], {
+            series: {
+                lines: { show: true },
+                points: { show: true, symbol: 'square' }
+            },
+            annotations: [annotation1, annotation2]
+        });
+        jasmine.clock().tick(20);
+        var pos1 = plot.p2c({
+            x1: 4,
+            y1: 9
+        });
+
+        var x1 = pos1.left / plot.width();
+        var y1 = pos1.top / plot.height();
+        let annotations = plot.hitTestAnnotations(x1, y1);
+        // the hit test found one annotation at index 0 in the list
+        expect(annotations.length).toEqual(1);
+        expect(annotations[0]).toEqual(0);
+    });
+    it('should return the bounds of an annotation using the public api', function () {
+        let annotation1 = {
+            show: true,
+            location: 'absolute',
+            x: 4,
+            y: 8,
+            label: 'hello world2<br>newline',
+            arrowDirection: 'n',
+            showArrow: false
+        };
+        let annotation2 = {
+            show: true,
+            location: 'absolute',
+            x: 7,
+            y: 12,
+            label: 'hello world2<br>newline',
+            arrowDirection: 'n',
+            showArrow: false
+        };
+        plot = $.plot(placeholder, [ d1, d2, d3 ], {
+            series: {
+                lines: { show: true },
+                points: { show: true, symbol: 'square' }
+            },
+            annotations: [annotation1, annotation2]
+        });
+        jasmine.clock().tick(20);
+        var pos1 = plot.p2c({
+            x1: 4,
+            y1: 8
+        });
+
+        var x1 = pos1.left / plot.width();
+        var y1 = pos1.top / plot.height();
+        let bounds = plot.getAnnotationBounds(0);
+        expect(bounds.x).toBeCloseTo(x1 -bounds.width / 2, 4);
+        expect(bounds.y).toBeCloseTo(y1 - bounds.height, 4);
     });
 });
