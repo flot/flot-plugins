@@ -71,8 +71,6 @@ The plugin supports these options:
 
 **yaxis** The 1 based index of the y axis which the absolute coordinates are relative to
 
-```
-
 Public Methods and events
 -------------------------
 
@@ -108,28 +106,26 @@ How to use
 var myFlot = $.plot( $("#graph"), ...,
 {
     ...
-    series: [
-            annotations: [
-            {
-                show: true,
-                location: 'relative',
-                x: 0.5,
-                y: 0.5,
-                label: 'hello world2<br>newline',
-                arrowDirection: 'n',
-                showArrow: true,
-                contentFormatter: c => c,
-                borderColor: '#FF0000',
-                borderThickness: 1,
-                backgroundColor: '#009900',
-                font: '12pt',
-                color: '#440056',
-                textAlign: 'center',
-                arrowLength: 50,
-                xaxis: 1,
-                yaxis: 1
-            }
-        ]
+        annotations: [
+        {
+            show: true,
+            location: 'relative',
+            x: 0.5,
+            y: 0.5,
+            label: 'hello world2<br>newline',
+            arrowDirection: 'n',
+            showArrow: true,
+            contentFormatter: c => c,
+            borderColor: '#FF0000',
+            borderThickness: 1,
+            backgroundColor: '#009900',
+            font: '12pt',
+            color: '#440056',
+            textAlign: 'center',
+            arrowLength: 50,
+            xaxis: 1,
+            yaxis: 1
+        }
     ]
     ...
 });

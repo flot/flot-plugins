@@ -17,16 +17,16 @@ $(function () {
     $.plot("#placeholder", [ d1, d2, d3 ], {
         series: {
             lines: { show: true },
-            points: { show: true },
-            annotations:[{
-                show: true,
-                location: 'absolute',
-                x: 4,
-                y: 8,
-                label: 'hello world2',
-                showArrow: false,
-            }]
-        }
+            points: { show: true }
+        },
+        annotations:[{
+            show: true,
+            location: 'absolute',
+            x: 4,
+            y: 8,
+            label: 'hello world2',
+            showArrow: false,
+        }]
     });
 
     // Add the Flot version string to the footer
