@@ -354,4 +354,48 @@ describe('Flot annotations', function () {
         expect(bounds.x).toBeCloseTo(x1 -bounds.width / 2, 4);
         expect(bounds.y).toBeCloseTo(y1 - bounds.height, 4);
     });
+    it('should draw the annotation in the correct place according to arrow direction', function () {
+        let directions = ['n', 's', 'e', 'w', 'ne', 'nw', 'se', 'sw'];
+        let arrowLength = 50;
+        let offsets = [[0, -1, -0.5, -1], [0, 1, -0.5, 0], [1, 0, 0, -0.5], [-1, 0, -1, -0.5], [1, -1, 0, -1], [-1, -1, -1, -1], [1, 1, 0, 0], [-1, 1, -1, 0]];
+        let annotation1 = {
+            show: true,
+            location: 'absolute',
+            x: 4,
+            y: 8,
+            label: 'hello world2<br>newline',
+            showArrow: true,
+            arrowLength: arrowLength
+        };
+        let annotations = [];
+        for (let i = 0; i < directions.length; i++) {
+            let annotation = {...annotation1};
+            annotation.arrowDirection = directions[i];
+            annotations.push(annotation);
+        }
+        plot = $.plot(placeholder, [ d1, d2, d3 ], {
+            series: {
+                lines: { show: true },
+                points: { show: true, symbol: 'square' }
+            },
+            annotations: annotations
+        });
+        jasmine.clock().tick(20);
+        var pos1 = plot.p2c({
+            x1: 4,
+            y1: 8
+        });
+
+        for (let i = 0; i < directions.length; i++) {
+            let x1 = pos1.left / plot.width();
+            let y1 = pos1.top / plot.height();
+            let bounds = plot.getAnnotationBounds(i);
+            x1 = x1 + (offsets[i][0] * arrowLength) / plot.width();
+            y1 = y1 + (offsets[i][1] * arrowLength) / plot.height();
+            x1 = x1 + (offsets[i][2] * bounds.width);
+            y1 = y1 + (offsets[i][3] * bounds.height);
+            expect(bounds.x).toBeCloseTo(x1, 4);
+            expect(bounds.y).toBeCloseTo(y1, 4);
+        }
+    });
 });

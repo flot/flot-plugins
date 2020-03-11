@@ -128,6 +128,7 @@ THE SOFTWARE.
                     continue;
                 }
 
+                ctx.font = this._annotations[i].font;
                 let formattedText = this._annotations[i].contentFormatter(this._annotations[i].label);
                 let offset = this._calcOffset(plot, ctx, this._annotations[i]);
                 let bounds = this._calcBounds(plot, ctx, this._annotations[i], formattedText, offset);
@@ -151,6 +152,7 @@ THE SOFTWARE.
             let formattedText = annotation.contentFormatter(annotation.label);
             this._lineHeight = this._getLineHeight(plot);
             var ctx = plot.getCanvas().getContext("2d");
+            ctx.font = annotation.font;
             let offset = this._calcOffset(plot, ctx, annotation);
             let bounds = this._calcBounds(plot, ctx, annotation, formattedText, offset);
             bounds.x = bounds.x / plot.width();
@@ -170,6 +172,7 @@ THE SOFTWARE.
                     continue;
                 }
 
+                ctx.font = this._annotations[i].font;
                 let formattedText = this._annotations[i].contentFormatter(this._annotations[i].label);
                 let offset = this._calcOffset(plot, ctx, this._annotations[i]);
                 let bounds = this._drawBox(plot, ctx, this._annotations[i], formattedText, offset);
@@ -230,10 +233,10 @@ THE SOFTWARE.
                 offset.y = al;
             }
             if (arrowDirn.includes('e')) {
-                offset.x = -al;
+                offset.x = al;
             }
             if (arrowDirn.includes('w')) {
-                offset.x = al;
+                offset.x = -al;
             }
 
             return offset;
@@ -391,10 +394,10 @@ THE SOFTWARE.
                     x = x - width / 2;
                     break;
                 case 'e':
-                    x = x - width;
                     y = y - height / 2;
                     break;
                 case 'w':
+                    x = x - width;
                     y = y - height / 2;
                     break;
                 case 'ne':
@@ -431,7 +434,6 @@ THE SOFTWARE.
             let lines = formattedText.split('<br>');
             let padding = annotation.padding;
             ctx.save();
-            ctx.font = annotation.font;
             ctx.fillStyle = annotation.color;
             ctx.textAlign = annotation.textAlign;
             let top = bounds.y + padding;
