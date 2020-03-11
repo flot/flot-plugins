@@ -394,10 +394,10 @@ THE SOFTWARE.
                     x = x - width / 2;
                     break;
                 case 'e':
-                    x = x - width;
                     y = y - height / 2;
                     break;
                 case 'w':
+                    x = x - width;
                     y = y - height / 2;
                     break;
                 case 'ne':
