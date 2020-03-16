@@ -436,7 +436,8 @@ THE SOFTWARE.
             ctx.save();
             ctx.fillStyle = annotation.color;
             ctx.textAlign = annotation.textAlign;
-            let top = bounds.y + padding;
+            let size = ctx.measureText(lines[0]);
+            let top = bounds.y + padding + size.actualBoundingBoxAscent + size.actualBoundingBoxDescent;
             let left = bounds.x + padding;
             if (annotation.textAlign === 'right') {
                 left += bounds.width - 2 * padding;
@@ -445,8 +446,7 @@ THE SOFTWARE.
             }
 
             for (let i = 0; i < lines.length; i++) {
-                let size = ctx.measureText(lines[i]);
-                ctx.fillText(lines[i], left, top + (size.actualBoundingBoxAscent + size.actualBoundingBoxDescent));
+                ctx.fillText(lines[i], left, top);
                 top = top + this._lineHeight;
             }
 
