@@ -533,7 +533,7 @@ describe('A scatter graph', function () {
         });
         expect(index).toEqual(2);
     });
-    it('should clip points on axis min and max', function() {
+    fit('should clip points on axis min and max', function() {
         var plot = $.plot(placeholder, [[]], options);
 
         series.data = [[{x: 1, y: 2}, {x: 2, y: 3}, {x: 3, y: 4}, {x: 4, y: 5}, {x: 5, y: 6}]];
@@ -544,11 +544,15 @@ describe('A scatter graph', function () {
         plot.hooks.processRawData.forEach(function (hook) {
             hook(plot, {points: [], xaxis: {options: {}}, yaxis: {options: {}}}, series.data, {points: []});
         });
+        let xmin = series.xaxis.p2c(series.xaxis.min),
+        xmax = series.xaxis.p2c(series.xaxis.max),
+        ymin = series.yaxis.p2c(series.yaxis.min),
+        ymax = series.yaxis.p2c(series.yaxis.max);
         plot.hooks.drawSeries.forEach(function (hook) {
             hook(plot, ctx, series);
         });
 
-        expect(ctx.rect).toHaveBeenCalled();
+        expect(ctx.rect).toHaveBeenCalledWith(xmin, ymax, xmax - xmin, ymin - ymax);
         expect(ctx.clip).toHaveBeenCalled();
     });
 });
