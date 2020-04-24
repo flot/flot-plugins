@@ -466,8 +466,7 @@ THE SOFTWARE.
                     ymin = yaxis.p2c(yaxis.min),
                     ymax = yaxis.p2c(yaxis.max);
                 ctx.beginPath();
-                ctx.fillStyle = 'blue';
-                ctx.fillRect(xmin, ymax, xmax - xmin, ymin - ymax);
+                ctx.rect(xmin, ymax, xmax - xmin, ymin - ymax);
                 ctx.clip();
             }
 
