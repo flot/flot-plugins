@@ -460,6 +460,16 @@ THE SOFTWARE.
                 return found;
             }
 
+            function clipCanvasToAxes(ctx, xaxis, yaxis) {
+                let xmin = xaxis.p2c(xaxis.min),
+                    xmax = xaxis.p2c(xaxis.max),
+                    ymin = yaxis.p2c(yaxis.min),
+                    ymax = yaxis.p2c(yaxis.max);
+                ctx.beginPath();
+                ctx.rect(xmin, ymax, xmax - xmin, ymin - ymax);
+                ctx.clip();
+            }
+
             /**
             **drawSeries(plot, ctx, serie)**
 
@@ -475,6 +485,7 @@ THE SOFTWARE.
                 var plotOffset = plot.getPlotOffset();
                 ctx.save();
                 ctx.translate(plotOffset.left, plotOffset.top);
+                clipCanvasToAxes(ctx, series.xaxis, series.yaxis);
                 for (var j = 0; j < series.data.length; j++) {
                     if (isObjectOfArray) {
                         dataLen = series.data[j].x.length;
