@@ -18,7 +18,7 @@ THE SOFTWARE.
 */
 /* history buffer data structure for charting, supporting numeric and waveform data
 */
-/*globals CBuffer, SegmentTree, module*/
+/*globals  module*/
 
 /**
 # HistoryBuffer
@@ -97,7 +97,7 @@ The common charting operations performed on a history buffer are
         }
 
         if (type === 'numeric') {
-            var callbacks = this.hb.callbacks;
+            let callbacks = this.hb.callbacks;
             this.hb.callbacks = undefined;
             this.hb = new HistoryBufferNumeric(this.capacity, this.width);
             callbacks.forEach((callback, key) => {
@@ -109,7 +109,7 @@ The common charting operations performed on a history buffer are
         }
 
         if (type === 'analogWaveform') {
-            var callbacks = this.hb.callbacks;
+            let callbacks = this.hb.callbacks;
             this.hb.callbacks = undefined;
             this.hb = new HistoryBufferWaveform(this.capacity, this.width);
             callbacks.forEach((callback, key) => {
@@ -215,7 +215,7 @@ The common charting operations performed on a history buffer are
         },
         set: function(count) {
             this.hb.count = count;
-        },
+        }
     });
 
     Object.defineProperty(HistoryBuffer.prototype, 'capacity', {

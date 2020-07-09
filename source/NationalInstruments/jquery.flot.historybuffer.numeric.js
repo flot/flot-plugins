@@ -217,7 +217,7 @@ The common charting operations performed on a history buffer are
         }
     };
 
-    /* returns the current width of History Buffer */ 
+    /* returns the current width of History Buffer */
     HistoryBufferNumeric.prototype.getWidth = function () {
         return this.width;
     };
@@ -244,7 +244,6 @@ The common charting operations performed on a history buffer are
         if (this.callOnChange) {
             this.callOnChange();
         }
-
     };
 
     /** **startIndex()** - returns the index of the oldest element in the buffer*/
@@ -363,26 +362,26 @@ The common charting operations performed on a history buffer are
     /** **rangeX( index)** - returns the range of the data in the buffer*/
     HistoryBufferNumeric.prototype.rangeX = function (index) {
         var start = this.startIndex(),
-            end = this.lastIndex()-1;
+            end = this.lastIndex() - 1;
 
         if (end === start - 1) {
             return {};
         }
 
         return { xmin: start,
-                 xmax: end,
-                 deltamin: 1
-               };
+            xmax: end,
+            deltamin: 1
+        };
     };
 
     /** **rangeY(start, end, index)** - returns the range of the data
     in a given interval of the buffer*/
     HistoryBufferNumeric.prototype.rangeY = function (start, end, index) {
-        if (start === null || start === undefined){
+        if (start === null || start === undefined) {
             start = this.startIndex();
         }
-        if (end === null || end === undefined){
-            end = this.lastIndex()-1;
+        if (end === null || end === undefined) {
+            end = this.lastIndex() - 1;
         }
         if (index === null || index === undefined) {
             index = 0;
@@ -425,11 +424,11 @@ The common charting operations performed on a history buffer are
             count: this.count
         };
 
-        if(this.width === 1) {
+        if (this.width === 1) {
             serializedHb['data'] = this.buffer.toArray();
         } else {
             for (var i = 0; i < this.width; i++) {
-                    serializedHb['data'].push(this.buffers[i].toArray());
+                serializedHb['data'].push(this.buffers[i].toArray());
             }
         }
 

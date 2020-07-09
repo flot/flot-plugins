@@ -42,7 +42,7 @@ THE SOFTWARE.
 
             var points = datapoints.points;
 
-            for (var i = 0; i < data.length; i+=2) {
+            for (var i = 0; i < data.length; i += 2) {
                 points[i] = indexMap ? indexMap[data[i]] : data[i];
                 points[i + 1] = data[i + 1];
             }
@@ -69,7 +69,6 @@ THE SOFTWARE.
         result[3] = 1;
         result[5] = 2;
 
-
         return result;
     }
 
@@ -83,15 +82,15 @@ THE SOFTWARE.
 
         var index = series.index;
         if (index < historyBuffer.width) {
-            var data = series.historyBuffer.query(start, end, step, index);
+            data = series.historyBuffer.query(start, end, step, index);
         } else {
             data = [];
         }
 
         var points = datapoints.points;
-        for (var i = 0; i < data.length; i+=2) {
+        for (var i = 0; i < data.length; i += 2) {
             points[i] = indexMap ? indexMap[data[i]] : data[i];
-            points[i+1] = data[i+1];
+            points[i + 1] = data[i + 1];
         }
 
         points.length = data.length;
@@ -112,7 +111,7 @@ THE SOFTWARE.
                 dataSeries[i].datapoints = undefined;
             } else {
                 dataSeries[i] = {
-                    data: [],
+                    data: []
                 };
             }
         }
@@ -128,9 +127,8 @@ THE SOFTWARE.
     }
 
     function setYAxisRange(plot, yaxis) {
-        if (yaxis.direction !== 'y' || yaxis.options.autoScale === "none")
-            return;
-        var i, j, k, points, pointsLength, xmin, xmax, range, index,
+        if (yaxis.direction !== 'y' || yaxis.options.autoScale === "none") { return; }
+        var j, xmin, xmax, range, index,
             dataSeries = plot.getData(),
             yseries = dataSeries
                 .filter(function(series) {
@@ -139,10 +137,10 @@ THE SOFTWARE.
             yseriesLength = yseries.length;
         for (j = 0; j < yseriesLength; j++) {
             index = yseries[j].index;
-            xmin =  yseries[j].xaxis.min ? yseries[j].xaxis.min : yseries[j].xaxis.options.min;
-            xmax =  yseries[j].xaxis.max ? yseries[j].xaxis.max : yseries[j].xaxis.options.max;
+            xmin = yseries[j].xaxis.min ? yseries[j].xaxis.min : yseries[j].xaxis.options.min;
+            xmax = yseries[j].xaxis.max ? yseries[j].xaxis.max : yseries[j].xaxis.options.max;
             if (j < yseries[j].historyBuffer.width) {
-                range =  yseries[j].historyBuffer.rangeY(xmin, xmax, index);
+                range = yseries[j].historyBuffer.rangeY(xmin, xmax, index);
                 if (j === 0) {
                     yaxis.datamin = range.ymin;
                     yaxis.datamax = range.ymax;

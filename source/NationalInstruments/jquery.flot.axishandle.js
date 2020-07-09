@@ -467,13 +467,13 @@ THE SOFTWARE.
             const plotOffset = plot.getPlotOffset();
             if (isXAxisHandle(handle)) {
                 const thumbCy = handle.location === 'near'
-                ? height - plotOffset.bottom + handle.radius
-                : plotOffset.top - handle.radius;
+                    ? height - plotOffset.bottom + handle.radius
+                    : plotOffset.top - handle.radius;
                 $.thumb.updateComputedYPosition(handle.thumb, thumbCy)
             } else {
                 const thumbCx = handle.location === 'near'
-                ? plotOffset.left - handle.radius
-                : width - plotOffset.right + handle.radius;
+                    ? plotOffset.left - handle.radius
+                    : width - plotOffset.right + handle.radius;
                 $.thumb.updateComputedXPosition(handle.thumb, thumbCx)
             }
         }

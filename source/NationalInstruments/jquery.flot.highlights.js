@@ -36,7 +36,7 @@ THE SOFTWARE.
                         highlightColor: '#ffffff', // the color to draw the highlights - there will be a faint black shadow around them
                         highlightPoints: true, // highlight points
                         highlightLines: false, // highlight entires lines - if any point in selectedIndexes belongs to the line highlight the entire line
-                        highlightBars: false, // highlight bars
+                        highlightBars: false // highlight bars
                     }
                 }
             }
@@ -70,7 +70,6 @@ THE SOFTWARE.
             ctx.lineWidth = this._options.lineWidth;
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
-            let lastPointIndex;
             for (let j = 0; j < series.length; j++) {
                 let ps = series[j].datapoints.pointsize;
                 let highlightIndexes = this._options.selectedIndexes[j];

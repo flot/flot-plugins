@@ -23,7 +23,7 @@ THE SOFTWARE.
     const ELEMENT_ID = 'flot-digital-axis';
     let initialize;
     let symbolElements = [];
-    
+
     function getDigitalAxis(plot) {
         let isDigitalAxis = (axis) => axis.options.type === 'digital';
         return plot.getYAxes().filter(axis => isDigitalAxis(axis))[0];
@@ -62,7 +62,7 @@ THE SOFTWARE.
             series.label = `Signal ${data.indexOf(series) + 1}`;
         }
     }
-    
+
     function processOffset(plot, offset) {
         let digitalAxis = getDigitalAxis(plot);
         if (initialize || digitalAxis.options.elementWidth === undefined) {
@@ -78,7 +78,7 @@ THE SOFTWARE.
                     element.remove();
                     return elementWidth;
                 };
-    
+
                 data.forEach(series => {
                     if (series.digitalWaveform.signal.visible) {
                         let assignedToBus = buses[series.digitalWaveform.signal.bus] !== undefined;
@@ -87,13 +87,13 @@ THE SOFTWARE.
                         maxWidth = Math.max(maxWidth, elementWidth);
                     }
                 });
-    
+
                 buses.forEach(bus => {
                     let busElement = createBusTreeItem(0, 0, bus.label, digitalAxis.options.busSymbolCollapsed, false);
                     let elementWidth = getElementWidth(busElement);
                     maxWidth = Math.max(maxWidth, elementWidth);
                 });
-    
+
                 if (maxWidth > 0) {
                     let relativeMaxWidth = (maxWidth + 10) / placeholder.width();
                     let axisWidth = Math.min(relativeMaxWidth, 0.5);
@@ -175,7 +175,7 @@ THE SOFTWARE.
             }
         }
     }
-    
+
     function createTree(plot) {
         const tree = $(`<div id="${ELEMENT_ID}"></div>`);
         let digitalAxis = getDigitalAxis(plot);

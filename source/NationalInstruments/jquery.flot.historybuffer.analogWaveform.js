@@ -3,7 +3,7 @@
 Copyright (c) 2007-2015 National Instruments
 Licensed under the MIT license.
 */
-/*globals CBuffer, SegmentTree, module*/
+/*globals CBuffer, module*/
 
 /**
 # HistoryBufferWaveform
@@ -61,7 +61,7 @@ console.log(hb1.toDataSeries()); //[[4, 1], [5, 2], [6, 3], [null, null], [1, 1]
         this.changed = false;
     };
 
-    HistoryBufferWaveform.prototype.__proto__ = HistoryBufferNumeric.prototype; // delegate to HistoryBuffer
+    Object.setPrototypeOf(HistoryBufferWaveform.prototype, HistoryBufferNumeric.prototype); // delegate to HistoryBuffer
 
     HistoryBufferWaveform.prototype.rebuildSegmentTrees = function () { // no segment tree is used for waveforms
     };
@@ -107,7 +107,7 @@ console.log(hb1.toDataSeries()); //[[4, 1], [5, 2], [6, 3], [null, null], [1, 1]
     }
 
     function waveformsSeparated(aw1, aw2) {
-        if (aw1.Y.length == 1 || aw2.Y.length == 1) {
+        if (aw1.Y.length === 1 || aw2.Y.length === 1) {
             return false;
         }
 
@@ -123,7 +123,7 @@ console.log(hb1.toDataSeries()); //[[4, 1], [5, 2], [6, 3], [null, null], [1, 1]
             currentTS = new NITimestamp(TS),
             floatCurrentTS;
 
-        for (var i=0; i < Y.length; i++) {
+        for (var i = 0; i < Y.length; i++) {
             floatCurrentTS = currentTS.valueOf();
 
             if (floatCurrentTS >= (start - aw.dt) && floatCurrentTS <= (end + aw.dt)) {
@@ -140,7 +140,7 @@ console.log(hb1.toDataSeries()); //[[4, 1], [5, 2], [6, 3], [null, null], [1, 1]
             currentTS = new NITimestamp(TS),
             floatCurrentTS;
 
-        for (var i=0; i < Y.length; i++) {
+        for (var i = 0; i < Y.length; i++) {
             floatCurrentTS = currentTS.valueOf();
             buffer.push([floatCurrentTS, Y[i]]);
             currentTS.add(aw.dt);
@@ -253,8 +253,8 @@ console.log(hb1.toDataSeries()); //[[4, 1], [5, 2], [6, 3], [null, null], [1, 1]
     };
 
     HistoryBufferWaveform.prototype.rangeY = function (start, end, index) {
-        var minMax = {min : Infinity,
-                      max : -Infinity}
+        var minMax = {min: Infinity,
+            max: -Infinity}
 
         if (index === null || index === undefined) {
             index = 0;
@@ -266,10 +266,10 @@ console.log(hb1.toDataSeries()); //[[4, 1], [5, 2], [6, 3], [null, null], [1, 1]
             return {};
         }
 
-        if (start === null || start === undefined){
+        if (start === null || start === undefined) {
             start = (new NITimestamp(waveforms[0].t0)).valueOf();
         }
-        if (end === null || end === undefined){
+        if (end === null || end === undefined) {
             var aw = waveforms[waveforms.length - 1];
             end = (new NITimestamp(aw.t0)).add(aw.dt * aw.Y.length).valueOf();
         }
@@ -282,7 +282,6 @@ console.log(hb1.toDataSeries()); //[[4, 1], [5, 2], [6, 3], [null, null], [1, 1]
             ymin: minMax.min,
             ymax: minMax.max
         }
-
     }
 
     function updateMinMax(aw, minMax, start, end) {
@@ -320,7 +319,6 @@ console.log(hb1.toDataSeries()); //[[4, 1], [5, 2], [6, 3], [null, null], [1, 1]
             }
         }
     }
-
 
     HistoryBufferWaveform.prototype.toJSON = function() {
         var serializedHb = {

@@ -10,9 +10,10 @@
   },
   "scripts": {
     "eslint": "eslint \"./source/**/*.js\"",
-    "test": "karma start karma.conf.js --single-run",
+    "test": "karma start karma.conf.js --single-run --stopOnEsLintError",
     "karma": "karma start",
-    "build": "gulp build"
+    "build": "gulp build",
+    "eslint2": "eslint \"./source/NationalInstruments/**/*.js\" --fix"
   },
   "repository": {
     "type": "git",
