@@ -68,7 +68,6 @@ module.exports = function (config) {
         'source/NationalInstruments/jquery.flot.historybuffer.analogWaveform.js',
         'source/NationalInstruments/jquery.flot.segment-tree.js',
         'source/NationalInstruments/jquery.flot.scrollbar.js',
-        'node_modules/webcharts-development-settings/testsUtils/colors.js',
         'tests/cursors_dragUtilities.js',
         'tests/lib/jsverify.standalone.js',
         'tests/lib/jasmineHelpers2.js',
@@ -97,7 +96,7 @@ module.exports = function (config) {
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
-            'source/NationalInstruments/**/*.js': ['eslint']
+            'source/**/*.js': ['eslint']
         },
 
         eslint: {
