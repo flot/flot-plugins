@@ -12,8 +12,7 @@
     "eslint": "eslint \"./source/**/*.js\"",
     "test": "karma start karma.conf.js --single-run --stopOnEsLintError",
     "karma": "karma start",
-    "build": "gulp build",
-    "eslint2": "eslint \"./source/NationalInstruments/**/*.js\" --fix"
+    "build": "gulp build"
   },
   "repository": {
     "type": "git",
