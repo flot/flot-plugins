@@ -48,6 +48,7 @@ gulp.task('build_charting2', function () {
         'source/NationalInstruments/jquery.flot.digitalWaveform.js',
         'source/NationalInstruments/jquery.flot.digitalAxis.js',
         'source/NationalInstruments/jquery.flot.highlights.js',
+        'source/NationalInstruments/jquery.flot.annotations.js',
         'source/NationalInstruments/jquery.flot.scrollbar.js',
         'dist/source/NationalInstruments/jquery.flot.charting.js',
     ];
@@ -73,6 +74,7 @@ gulp.task('build_charting_es6', function () {
         'source/NationalInstruments/jquery.flot.digitalWaveform.js',
         'source/NationalInstruments/jquery.flot.digitalAxis.js',
         'source/NationalInstruments/jquery.flot.highlights.js',
+        'source/NationalInstruments/jquery.flot.annotations.js',
         'source/NationalInstruments/jquery.flot.scrollbar.js',
         'dist/source/NationalInstruments/jquery.flot.charting.js',
     ];

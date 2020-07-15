@@ -62,6 +62,7 @@ module.exports = function (config) {
         'source/NationalInstruments/jquery.flot.digitalAxis.js',
         'source/NationalInstruments/jquery.flot.charting.js',
         'source/NationalInstruments/jquery.flot.highlights.js',
+        'source/NationalInstruments/jquery.flot.annotations.js',
         'source/NationalInstruments/jquery.flot.historybuffer.js',
         'source/NationalInstruments/jquery.flot.historybuffer.numeric.js',
         'source/NationalInstruments/jquery.flot.historybuffer.analogWaveform.js',
