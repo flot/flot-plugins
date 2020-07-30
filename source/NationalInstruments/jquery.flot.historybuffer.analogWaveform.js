@@ -134,6 +134,23 @@ console.log(hb1.toDataSeries()); //[[4, 1], [5, 2], [6, 3], [null, null], [1, 1]
         }
     }
 
+    function prependWaveformToDecimateBuffer(aw, buffer) {
+        var Y = aw.Y,
+            TS = aw.t0,
+            currentTS = new NITimestamp(TS),
+            floatCurrentTS,
+            bufferToPrepend = [];
+
+        for (var i=0; i < Y.length; i++) {
+            floatCurrentTS = currentTS.valueOf();
+            bufferToPrepend.push(floatCurrentTS);
+            bufferToPrepend.push(Y[i]);
+            currentTS.add(aw.dt);
+        }
+
+        return bufferToPrepend.concat(buffer);
+    }
+
     function appendWaveformToDataSeries(aw, buffer) {
         var Y = aw.Y,
             TS = aw.t0,
@@ -158,9 +175,14 @@ console.log(hb1.toDataSeries()); //[[4, 1], [5, 2], [6, 3], [null, null], [1, 1]
         var result = [];
         var waveforms = this.buffers[index].toArray();
         var previousWaveform = waveforms[0];
+        var firstWaveformIndex = -1;
+        var i = -1;
+        var skippedWaveform = false;
 
         waveforms.forEach(function (waveform) {
+            i++;
             if (!waveformInRange(waveform, start, end)) {
+                skippedWaveform = true;
                 return;
             }
 
@@ -172,7 +194,15 @@ console.log(hb1.toDataSeries()); //[[4, 1], [5, 2], [6, 3], [null, null], [1, 1]
 
             previousWaveform = waveform;
             appendWaveformToDecimateBuffer(waveform, start, end, result);
+            if (firstWaveformIndex < 0 && skippedWaveform) {
+                firstWaveformIndex = i - 1;
+            }
         });
+
+        // always keep the last waveform that was out of range if it was a single-point waveform
+        if (result.length > 0 && result[0] > start && firstWaveformIndex >= 0 && waveforms[firstWaveformIndex].Y.length == 1) {
+            result = prependWaveformToDecimateBuffer(waveforms[firstWaveformIndex], result);
+        }
 
         return result;
     };
