@@ -341,7 +341,7 @@ THE SOFTWARE.
             var currentMatrix = currentState.selectedElement.getCTM(),
                 dx = page.X - currentState.x,
                 dy = page.Y - currentState.y;
-    
+
             currentMatrix.e += dx;
             currentMatrix.f += dy;
             currentState.selectedElement.transform.baseVal.getItem(0).setMatrix(currentMatrix);

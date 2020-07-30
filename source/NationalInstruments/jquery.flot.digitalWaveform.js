@@ -442,7 +442,7 @@ THE SOFTWARE.
             const adjustAxisOffset = (axis, autoScale) => {
                 return autoScale && axis.options.offset && axis.options.offset.below === 0 && axis.options.offset.above === 0;
             }
-            
+
             this._lazyInitialize(plot);
             switch (axis.direction) {
                 case 'x':
@@ -664,7 +664,6 @@ THE SOFTWARE.
             if (parseInt(fontSize) > maxHeight) {
                 return;
             }
-
 
             ctx.save();
             this._clipCanvasToAxes(ctx, axes.xaxis, axes.yaxis);
