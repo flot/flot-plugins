@@ -190,7 +190,7 @@ THE SOFTWARE.
                 if (x >= 0 && x < dataWidth && y >= 0 && y < dataHeight) {
                     items.push({
                         datapoint: [x, y, seriesData[x][y]],
-                        dataIndex: x * dataWidth + y,
+                        dataIndex: x * dataHeight + y,
                         series: series[seriesIndex],
                         seriesIndex: seriesIndex,
                         distance: 0
