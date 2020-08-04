@@ -120,6 +120,7 @@ THE SOFTWARE.
 
                     plot.hooks.drawSeries.push(drawSeries);
                     plot.hooks.processRawData.push(processRawData);
+                    plot.hooks.findNearbyItems.push(findNearbyItems);
 
                     opt = options;
 
@@ -176,6 +177,26 @@ THE SOFTWARE.
 
                 return palette;
             };
+
+            function findNearbyItems (plot, canvasX, canvasY, series, seriesIndex, radius, computeDistance, items) {
+                let seriesData = series[seriesIndex].data;
+                let dataWidth = seriesData.length;
+                let dataHeight = seriesData[0].length;
+
+                // Only return intensity graph area which mouse is directly over.
+                // Since the graph shows rectangles instead of points, no need to return "nearby" items.
+                let x = Math.floor(series[seriesIndex].xaxis.c2p(canvasX));
+                let y = Math.floor(series[seriesIndex].yaxis.c2p(canvasY));
+                if (x >= 0 && x < dataWidth && y >= 0 && y < dataHeight) {
+                    items.push({
+                        datapoint: [x, y, seriesData[x][y]],
+                        dataIndex: x * dataWidth + y,
+                        series: series[seriesIndex],
+                        seriesIndex: seriesIndex,
+                        distance: 0
+                    });
+                }
+            }
 
             /**
         **drawSeries(plot, ctx, serie)**
