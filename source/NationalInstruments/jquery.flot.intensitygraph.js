@@ -120,6 +120,7 @@ THE SOFTWARE.
 
                     plot.hooks.drawSeries.push(drawSeries);
                     plot.hooks.processRawData.push(processRawData);
+                    plot.hooks.findNearbyItems.push(findNearbyItems);
 
                     opt = options;
 
@@ -176,6 +177,36 @@ THE SOFTWARE.
 
                 return palette;
             };
+
+            function findNearbyItems (plot, canvasX, canvasY, series, seriesIndex, radius, computeDistance, items) {
+                const seriesData = series[seriesIndex].data;
+                const dataWidth = seriesData.length;
+                const dataHeight = seriesData[0].length;
+                const xaxis = series[seriesIndex].xaxis;
+                const yaxis = series[seriesIndex].yaxis;
+                const rectWidth = xaxis.p2c(1) - xaxis.p2c(0);
+                const rectHeight = yaxis.p2c(0) - yaxis.p2c(1);
+
+                for (let x = 0; x < dataWidth; x++) {
+                    for (let y = 0; y < dataHeight; y++) {
+                        const rectCenterPixelX = xaxis.p2c(x + 0.5);
+                        const rectCenterPixelY = yaxis.p2c(y + 0.5);
+                        // This computes the distance to the nearest edge of the rect, or 0 if the point is within the rect
+                        const dx = Math.max(Math.abs(canvasX - rectCenterPixelX) - rectWidth / 2, 0);
+                        const dy = Math.max(Math.abs(canvasY - rectCenterPixelY) - rectHeight / 2, 0);
+                        const distance = computeDistance ? computeDistance(dx, dy) : Math.sqrt(dx * dx + dy * dy);
+                        if (distance < radius) {
+                            items.push({
+                                datapoint: [x, y, seriesData[x][y]],
+                                dataIndex: x * dataHeight + y,
+                                series: series[seriesIndex],
+                                seriesIndex: seriesIndex,
+                                distance: distance
+                            });
+                        }
+                    }
+                }
+            }
 
             /**
         **drawSeries(plot, ctx, serie)**
