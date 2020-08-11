@@ -179,4 +179,64 @@ describe('A HistoryBufferWaveform', function () {
 
         expect(hb.query(0, 10, 1)).toEqual([1, 1, 2, 2, 3, 3]);
     });
+
+    it('returns first single point waveform that is out of visible range when connected to waveform in visible range', function () {
+        var hb = new HistoryBufferWaveform(10);
+        var singlePointWaveform = new NIAnalogWaveform({
+            t0: TimeZero,
+            dt: 1,
+            Y:[3.5]
+        });
+        var onlyVisibleWaveform = new NIAnalogWaveform({
+            t0: TimeZero + 3, // start this waveform more than 2x the previous dt
+            dt: 1,
+            Y:[0, 1, 2, 3]
+        });
+
+        hb.push(singlePointWaveform);
+        hb.push(onlyVisibleWaveform);
+
+        // start the visible range before the last appended waveform, but beyond the visible area of the first waveform
+        expect(hb.query(2, 6)).toEqual([0, 3.5, 3, 0, 4, 1, 5, 2, 6, 3]);
+    });
+
+    it('returns only last waveform in visible range when previous waveform has more than one point but is completely out of visible range', function () {
+        var hb = new HistoryBufferWaveform(10);
+        var singlePointWaveform = new NIAnalogWaveform({
+            t0: TimeZero,
+            dt: 1,
+            Y:[3.5, 4.5]
+        });
+        var onlyVisibleWaveform = new NIAnalogWaveform({
+            t0: TimeZero + 4, // start this waveform more than 2x the previous dt
+            dt: 1,
+            Y:[0, 1, 2, 3]
+        });
+
+        hb.push(singlePointWaveform);
+        hb.push(onlyVisibleWaveform);
+
+        // start the visible range before the last appended waveform, but beyond the visible area of the first waveform
+        expect(hb.query(3, 7)).toEqual([null, null, 4, 0, 5, 1, 6, 2, 7, 3]);
+    });
+
+    fit('returns last waveform out of visible range when previous waveform has more than one point but is completely out of visible range', function () {
+        var hb = new HistoryBufferWaveform(10);
+        var singlePointWaveform = new NIAnalogWaveform({
+            t0: TimeZero,
+            dt: 1,
+            Y:[3.5, 4.5]
+        });
+        var onlyVisibleWaveform = new NIAnalogWaveform({
+            t0: TimeZero + 2.5, // start this waveform more than 2x the previous dt
+            dt: 1,
+            Y:[0, 1, 2, 3]
+        });
+
+        hb.push(singlePointWaveform);
+        hb.push(onlyVisibleWaveform);
+
+        // start the visible range before the last appended waveform, but beyond the visible area of the first waveform
+        expect(hb.query(2.4, 6.4)).toEqual([0, 3.5, 1, 4.5, 2.5, 0, 3.5, 1, 4.5, 2, 5.5, 3]);
+    });
 });

@@ -141,12 +141,9 @@ console.log(hb1.toDataSeries()); //[[4, 1], [5, 2], [6, 3], [null, null], [1, 1]
             floatCurrentTS,
             bufferToPrepend = [];
 
-        for (var i=0; i < Y.length; i++) {
-            floatCurrentTS = currentTS.valueOf();
+            floatCurrentTS = currentTS.valueOf() + (aw.dt * Y.length);
             bufferToPrepend.push(floatCurrentTS);
-            bufferToPrepend.push(Y[i]);
-            currentTS.add(aw.dt);
-        }
+            bufferToPrepend.push(Y[Y.length - 1]);
 
         return bufferToPrepend.concat(buffer);
     }
@@ -175,7 +172,8 @@ console.log(hb1.toDataSeries()); //[[4, 1], [5, 2], [6, 3], [null, null], [1, 1]
         var result = [];
         var waveforms = this.buffers[index].toArray();
         var previousWaveform = waveforms[0];
-        var firstWaveformIndex = -1;
+        var firstSkippedWaveformIndex = -1;
+        var lastSkippedWaveformInex = -1;
         var i = -1;
         var skippedWaveform = false;
 
@@ -183,6 +181,7 @@ console.log(hb1.toDataSeries()); //[[4, 1], [5, 2], [6, 3], [null, null], [1, 1]
             i++;
             if (!waveformInRange(waveform, start, end)) {
                 skippedWaveform = true;
+                lastSkippedWaveformInex = i;
                 return;
             }
 
@@ -190,18 +189,20 @@ console.log(hb1.toDataSeries()); //[[4, 1], [5, 2], [6, 3], [null, null], [1, 1]
                 // add a "gap" to separate the analog waveforms
                 result.push(null);
                 result.push(null);
+            } else if (lastSkippedWaveformInex >= 0 && lastSkippedWaveformInex === i - 1) { // we might have skipped a waveform that needs to be included
+                result = prependWaveformToDecimateBuffer(waveforms[lastSkippedWaveformInex], result);
             }
 
             previousWaveform = waveform;
             appendWaveformToDecimateBuffer(waveform, start, end, result);
-            if (firstWaveformIndex < 0 && skippedWaveform) {
-                firstWaveformIndex = i - 1;
+            if (firstSkippedWaveformIndex < 0 && skippedWaveform) {
+                firstSkippedWaveformIndex = i - 1;
             }
         });
 
         // always keep the last waveform that was out of range if it was a single-point waveform
-        if (result.length > 0 && result[0] > start && firstWaveformIndex >= 0 && waveforms[firstWaveformIndex].Y.length == 1) {
-            result = prependWaveformToDecimateBuffer(waveforms[firstWaveformIndex], result);
+        if (result.length > 0 && result[0] > start && firstSkippedWaveformIndex >= 0 && waveforms[firstSkippedWaveformIndex].Y.length === 1) {
+            result = prependWaveformToDecimateBuffer(waveforms[firstSkippedWaveformIndex], result);
         }
 
         return result;
