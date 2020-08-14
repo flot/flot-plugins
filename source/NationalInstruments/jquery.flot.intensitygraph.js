@@ -189,6 +189,9 @@ THE SOFTWARE.
 
                 for (let x = 0; x < dataWidth; x++) {
                     for (let y = 0; y < dataHeight; y++) {
+                        if (Number.isNaN(seriesData[x][y])) {
+                            continue;
+                        }
                         const rectCenterPixelX = xaxis.p2c(x + 0.5);
                         const rectCenterPixelY = yaxis.p2c(y + 0.5);
                         // This computes the distance to the nearest edge of the rect, or 0 if the point is within the rect
