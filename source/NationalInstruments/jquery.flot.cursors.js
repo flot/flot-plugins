@@ -651,7 +651,7 @@ THE SOFTWARE.
             if (isDragging) {
                 return;
             }
-            
+
             var currentlySelectedCursor = selectedCursor(cursors);
 
             if (currentlySelectedCursor && e.buttons === 0) {

@@ -533,7 +533,7 @@ describe('A scatter graph', function () {
         });
         expect(index).toEqual(2);
     });
-    fit('should clip points on axis min and max', function() {
+    it('should clip points on axis min and max', function() {
         var plot = $.plot(placeholder, [[]], options);
 
         series.data = [[{x: 1, y: 2}, {x: 2, y: 3}, {x: 3, y: 4}, {x: 4, y: 5}, {x: 5, y: 6}]];

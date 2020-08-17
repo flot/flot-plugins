@@ -96,11 +96,6 @@ THE SOFTWARE.
                         return;
                     }
 
-                    
-                    var xmax = Number.NEGATIVE_INFINITY;
-                    var ymax = Number.NEGATIVE_INFINITY;
-                    var ymin = Number.POSITIVE_INFINITY;
-                    var xmin = Number.POSITIVE_INFINITY;
                     var x, y;
                     sDatapoints.points = [];
                     for (var j = 0; j < sData.length; j++) {
@@ -382,7 +377,7 @@ THE SOFTWARE.
                 var h = size;
                 var hroot2 = h / (2 * Math.sqrt(2));
                 ctx.beginPath();
-                ctx.moveTo(x - hroot2, y - hroot2 );
+                ctx.moveTo(x - hroot2, y - hroot2);
                 ctx.lineTo(x + hroot2, y + hroot2);
                 ctx.moveTo(x - hroot2, y + hroot2);
                 ctx.lineTo(x + hroot2, y - hroot2);
