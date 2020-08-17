@@ -198,7 +198,7 @@ console.log(hb1.toDataSeries()); //[[4, 1], [5, 2], [6, 3], [null, null], [1, 1]
 
             previousWaveform = waveform;
             appendWaveformToDecimateBuffer(waveform, start, end, result);
-            if (afterSkippedWaveformIndex >= 0 && afterSkippedWaveformIndex === i) {
+            if (afterSkippedWaveformIndex >= 0 && afterSkippedWaveformIndex === i && result.length > 0) {
                 appendWaveformSampleToDecimateBuffer(waveforms[afterSkippedWaveformIndex], 0, result);
             }
         });
