@@ -96,14 +96,14 @@ console.log(hb1.toDataSeries()); //[[4, 1], [5, 2], [6, 3], [null, null], [1, 1]
         var waveformEnd = t0.valueOf() + aw.Y.length * aw.dt;
 
         if (waveformStart < start && waveformEnd < start) {
-            return false;
+            return -1;
         }
 
         if (waveformStart > end && waveformEnd > end) {
-            return false;
+            return 1;
         }
 
-        return true;
+        return 0;
     }
 
     function waveformsSeparated(aw1, aw2) {
@@ -147,6 +147,17 @@ console.log(hb1.toDataSeries()); //[[4, 1], [5, 2], [6, 3], [null, null], [1, 1]
         }
     }
 
+    function appendWaveformSampleToDecimateBuffer(aw, sampleIndex, buffer) {
+        var Y = aw.Y,
+            TS = aw.t0,
+            currentTS = new NITimestamp(TS),
+            floatCurrentTS;
+
+        floatCurrentTS = currentTS.valueOf() + (aw.dt * sampleIndex);
+        buffer.push(floatCurrentTS);
+        buffer.push(Y[sampleIndex]);
+    }
+
     /** **query(start, end, step, index)** - decimates the data set at the
     provided *index*, starting at the start sample, ending at the end sample
     with the provided step */
@@ -158,34 +169,38 @@ console.log(hb1.toDataSeries()); //[[4, 1], [5, 2], [6, 3], [null, null], [1, 1]
         var result = [];
         var waveforms = this.buffers[index].toArray();
         var previousWaveform = waveforms[0];
-        var lastSkippedWaveformIndex = -1;
+        var beforeSkippedWaveformIndex = -1;
+        var afterSkippedWaveformIndex = -1;
         var i = -1;
 
         waveforms.forEach(function (waveform) {
             i++;
-            if (!waveformInRange(waveform, start, end)) {
-                lastSkippedWaveformIndex = i;
-                return;
+            var waveformVisibility = waveformInRange(waveform, start, end);
+            if (waveformVisibility !== 0) {
+                if (waveformVisibility > 0 && afterSkippedWaveformIndex < 0) {
+                    afterSkippedWaveformIndex = i; // do not early return
+                } else {
+                    if (waveformVisibility < 0) {
+                        beforeSkippedWaveformIndex = i;
+                    }
+
+                    return;
+                }
             }
 
             if (waveformsSeparated(previousWaveform, waveform)) {
                 // add a "gap" to separate the analog waveforms
                 result.push(null);
                 result.push(null);
-            } else if (lastSkippedWaveformIndex >= 0 && lastSkippedWaveformIndex === i - 1) { // we might have skipped a waveform that needs its most recent value to be included
-                var aw = waveforms[lastSkippedWaveformIndex],
-                    Y = aw.Y,
-                    TS = aw.t0,
-                    currentTS = new NITimestamp(TS),
-                    floatCurrentTS;
-        
-                floatCurrentTS = currentTS.valueOf() + (aw.dt * Y.length - 1);
-                result.push(floatCurrentTS);
-                result.push(Y[Y.length - 1]);
+            } else if (beforeSkippedWaveformIndex >= 0 && beforeSkippedWaveformIndex === i - 1) { // we might have skipped a waveform that needs its most recent value to be included
+                appendWaveformSampleToDecimateBuffer(waveforms[beforeSkippedWaveformIndex], waveforms[beforeSkippedWaveformIndex].Y.length - 1, result);
             }
 
             previousWaveform = waveform;
             appendWaveformToDecimateBuffer(waveform, start, end, result);
+            if (afterSkippedWaveformIndex >= 0 && afterSkippedWaveformIndex === i) {
+                appendWaveformSampleToDecimateBuffer(waveforms[afterSkippedWaveformIndex], 0, result);
+            }
         });
 
         return result;
