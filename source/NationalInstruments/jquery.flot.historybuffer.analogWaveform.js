@@ -119,8 +119,8 @@ console.log(hb1.toDataSeries()); //[[4, 1], [5, 2], [6, 3], [null, null], [1, 1]
 
     function appendWaveformToDecimateBuffer(aw, start, end, buffer) {
         var Y = aw.Y,
-            TS = aw.t0,
-            currentTS = new NITimestamp(TS),
+            t0 = aw.t0,
+            currentTS = new NITimestamp(t0),
             floatCurrentTS;
 
         for (var i = 0; i < Y.length; i++) {
@@ -136,8 +136,8 @@ console.log(hb1.toDataSeries()); //[[4, 1], [5, 2], [6, 3], [null, null], [1, 1]
 
     function appendWaveformToDataSeries(aw, buffer) {
         var Y = aw.Y,
-            TS = aw.t0,
-            currentTS = new NITimestamp(TS),
+            t0 = aw.t0,
+            currentTS = new NITimestamp(t0),
             floatCurrentTS;
 
         for (var i = 0; i < Y.length; i++) {
@@ -149,8 +149,8 @@ console.log(hb1.toDataSeries()); //[[4, 1], [5, 2], [6, 3], [null, null], [1, 1]
 
     function appendWaveformSampleToDecimateBuffer(aw, sampleIndex, buffer) {
         var Y = aw.Y,
-            TS = aw.t0,
-            currentTS = new NITimestamp(TS),
+            t0 = aw.t0,
+            currentTS = new NITimestamp(t0),
             floatCurrentTS;
 
         floatCurrentTS = currentTS.valueOf() + (aw.dt * sampleIndex);
