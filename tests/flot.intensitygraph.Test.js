@@ -793,4 +793,80 @@ describe('An Intensity graph', function() {
         expect(isClose(topColor, rgba(0,0,255,1))).toBeTruthy();
         expect(isClose(bottomColor, rgba(255,0,0,1))).toBeTruthy();
     });
+
+    it('should return nearby item when given coordinates within drawn rects', function () {
+        plot = $.plot(placeholder, [[[0], [0.5], [1]]], {
+            grid: {show: false},
+            xaxis: {show: false},
+            yaxis: {show: false},
+            series: {
+                intensitygraph: {
+                    show: true,
+                    gradient: [
+                        { value: 0, color: 'red' },
+                        { value: 1, color: 'blue' }
+                    ]
+                }
+            }
+        });
+        plot.draw();
+
+        let ctx = $(placeholder).find('.flot-base').get(0).getContext('2d');
+        let seriesFilter = () => true;
+        let nearbyItem1 = plot.findNearbyItem(1*ctx.canvas.width/8, ctx.canvas.height/2, seriesFilter, 1);
+        expect(nearbyItem1.datapoint).toEqual([0, 0, 0]);
+        let nearbyItem2 = plot.findNearbyItem(4*ctx.canvas.width/8, ctx.canvas.height/2, seriesFilter, 1);
+        expect(nearbyItem2.datapoint).toEqual([1, 0, 0.5]);
+        let nearbyItem3 = plot.findNearbyItem(7*ctx.canvas.width/8, ctx.canvas.height/2, seriesFilter, 1);
+        expect(nearbyItem3.datapoint).toEqual([2, 0, 1]);
+    });
+
+    it('should return multiple nearby items when search radius is large', function () {
+        plot = $.plot(placeholder, [[[0], [0.5], [1]]], {
+            grid: {show: false},
+            xaxis: {show: false},
+            yaxis: {show: false},
+            series: {
+                intensitygraph: {
+                    show: true,
+                    gradient: [
+                        { value: 0, color: 'red' },
+                        { value: 1, color: 'blue' }
+                    ]
+                }
+            }
+        });
+        plot.draw();
+
+        let ctx = $(placeholder).find('.flot-base').get(0).getContext('2d');
+        let seriesFilter = () => true;
+        let nearbyItems = plot.findNearbyItems(3*ctx.canvas.width/8, ctx.canvas.height/2, seriesFilter, 100);
+        expect(nearbyItems[0].datapoint).toEqual([1, 0, 0.5]);
+        expect(nearbyItems[1].datapoint).toEqual([0, 0, 0]);
+    });
+
+    it('should not return nearby item when given coordinates far from drawn rects', function () {
+        plot = $.plot(placeholder, [[[0], [0.5], [1]]], {
+            grid: {show: false},
+            xaxis: {show: false},
+            yaxis: {show: false},
+            series: {
+                intensitygraph: {
+                    show: true,
+                    gradient: [
+                        { value: 0, color: 'red' },
+                        { value: 1, color: 'blue' }
+                    ]
+                }
+            }
+        });
+        plot.draw();
+
+        let ctx = $(placeholder).find('.flot-base').get(0).getContext('2d');
+        let seriesFilter = () => true;
+        let nearbyItem1 = plot.findNearbyItem(ctx.canvas.width * 1.1, ctx.canvas.height/2, seriesFilter, 1);
+        expect(nearbyItem1).toBeNull();
+        let nearbyItem2 = plot.findNearbyItem(ctx.canvas.width/2, ctx.canvas.height * 1.1, seriesFilter, 1);
+        expect(nearbyItem2).toBeNull();
+    });
 });

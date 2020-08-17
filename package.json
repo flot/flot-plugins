@@ -1,6 +1,6 @@
 {
   "name": "flot-plugins",
-  "version": "3.8.3",
+  "version": "3.9.0",
   "description": "A collection of plug-ins for flot charts",
   "main": "index.js",
   "directories": {
@@ -10,7 +10,7 @@
   },
   "scripts": {
     "eslint": "eslint \"./source/**/*.js\"",
-    "test": "karma start karma.conf.js --single-run",
+    "test": "karma start karma.conf.js --single-run --stopOnEsLintError",
     "karma": "karma start",
     "build": "gulp build"
   },
@@ -50,6 +50,7 @@
     "karma-safari-launcher": "^1.0.0",
     "karma-spec-reporter": "0.0.31",
     "ljs": "^0.3.2",
+    "puppeteer": "^5.1.0",
     "travis-github-lint-status": "^1.0.1",
     "uglify-es": "^3.3.9",
     "webcharts-development-settings": "^1.0.9"

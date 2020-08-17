@@ -69,7 +69,7 @@ THE SOFTWARE.
                 show: true,
                 selected: false,
                 highlighted: false,
-                orientation: 'vertical',  // horizontal, vertical or box
+                orientation: 'vertical', // horizontal, vertical or box
                 halign: 'top',
                 dragLocation: '', /// start or end being moved
                 transparentRange: 'outside', // inside, outside
@@ -267,7 +267,7 @@ THE SOFTWARE.
                     relativeXStart: cursor.position.relativeXStart || cursor.xstart / plot.width(),
                     relativeYStart: cursor.position.relativeYStart || cursor.ystart / plot.height(),
                     relativeXEnd: cursor.position.relativeXEnd || cursor.xend / plot.width(),
-                    relativeYEnd: cursor.position.relativeYEnd || cursor.yend / plot.width(),
+                    relativeYEnd: cursor.position.relativeYEnd || cursor.yend / plot.width()
                 };
                 if (!isNaN(relativePosition.relativeStart) && !isNaN(relativePosition.relativeEnd)) {
                     cursor.position = relativePosition;
@@ -492,7 +492,7 @@ THE SOFTWARE.
             } else if (cursor.dragLocation === 'between') {
                 if (cursor.orientation !== 'horizontal') {
                     cursor.xstart = cursor.xstart + x - cursor.startMovePosition.x;
-                    cursor.xend = cursor.xend + x - cursor.startMovePosition.x ;
+                    cursor.xend = cursor.xend + x - cursor.startMovePosition.x;
                 }
 
                 if (cursor.orientation !== 'vertical') {
@@ -590,7 +590,7 @@ THE SOFTWARE.
         var xaxis = findXAxis(plot, cursor),
             yaxis = findYAxis(plot, cursor),
             position = cursor.position;
-        if ((position.xstart === undefined || position.xend === undefined) && 
+        if ((position.xstart === undefined || position.xend === undefined) &&
             xaxis.c2p &&
             !(xaxis.min === 0 && xaxis.max === 1)) {
             // if cursor is defined with an initial relative position, need to initialize
@@ -622,7 +622,7 @@ THE SOFTWARE.
             // if cursor is defined with an initial axis position, need to initialize
             // axis relative position values
             if (cursor.orientation !== 'horizontal') {
-                position.relativeXStart = xaxis.p2c(position.xstart) /plot.width();
+                position.relativeXStart = xaxis.p2c(position.xstart) / plot.width();
                 position.relativeXEnd = xaxis.p2c(position.xend) / plot.width();
             } else {
                 position.relativeXStart = 0;
@@ -635,7 +635,7 @@ THE SOFTWARE.
             // if cursor is defined with an initial axis position, need to initialize
             // axis relative position values
             if (cursor.orientation !== 'vertical') {
-                position.relativeYStart = yaxis.p2c(position.ystart) /plot.height();
+                position.relativeYStart = yaxis.p2c(position.ystart) / plot.height();
                 position.relativeYEnd = yaxis.p2c(position.yend) / plot.height();
             } else {
                 position.relativeYStart = 0;
@@ -761,7 +761,7 @@ THE SOFTWARE.
             if (rowIndex === 1) {
                 y += fontSizeInPx;
             }
-    }
+        }
 
         if (x < 0 || x > plot.width() || y < 0 || y > plot.height()) {
             return;
@@ -817,8 +817,8 @@ THE SOFTWARE.
             ctx.strokeStyle = cursor.color;
             ctx.lineWidth = cursor.lineWidth;
             if (cursor.orientation === 'vertical') {
-                var start = extent.xstart;
-                var end = extent.xend;
+                let start = extent.xstart;
+                let end = extent.xend;
                 ctx.moveTo(start, plot.height() / 2);
                 ctx.lineTo(end, plot.height() / 2);
                 if (Math.abs(start - end) > Number.EPSILON) {
@@ -829,9 +829,9 @@ THE SOFTWARE.
                     drawArrowHead(ctx, cursor, 'right', cursor.end, plot.height() / 2);
                 }
             } else if (cursor.orientation === 'horizontal') {
-                var start = extent.ystart;
-                var end = extent.yend;
-                    ctx.moveTo(plot.width() / 2, start);
+                let start = extent.ystart;
+                let end = extent.yend;
+                ctx.moveTo(plot.width() / 2, start);
                 ctx.lineTo(plot.width() / 2, end);
 
                 if (Math.abs(start - end) > Number.EPSILON) {

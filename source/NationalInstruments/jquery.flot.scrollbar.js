@@ -231,7 +231,7 @@ THE SOFTWARE.
         get containerSize() {
             return this.direction === Direction.Horizontal ? this._container.width() : this._container.height();
         }
-        
+
         get moveAmount() {
             return this.scrollbarSize * 0.1;
         }
@@ -262,7 +262,7 @@ THE SOFTWARE.
         _moveButtonMouseUp(moveButton) {
             clearTimeout(this._moveTimeout);
             clearInterval(this._moveInterval);
-            
+
             let disabled;
             if (moveButton === this._moveBelowButton) {
                 this._movingBelow = false;
@@ -393,11 +393,11 @@ THE SOFTWARE.
                 if (!isFinite(offsetBelow)) {
                     offsetBelow = 0;
                 }
-                
+
                 if (!isFinite(offsetAbove)) {
                     offsetAbove = 0;
                 }
-                
+
                 if (offsetBelow === 0 && offsetAbove === 0) {
                     this.axis.options.offset = {};
                 } else {
@@ -449,13 +449,13 @@ THE SOFTWARE.
             if (!this._outerContainer.length) {
                 this._outerContainer = this._createElement(className).appendTo(this._plot.getPlaceholder());
             }
-            
+
             switch (this.direction) {
                 case Direction.Horizontal:
                     this._outerContainer.css({
                         left: this._plot.getPlotOffset().left,
                         width: this._plot.width() + 'px',
-                        height: this._options.size + 'px',
+                        height: this._options.size + 'px'
                     });
                     this._scrollbar.css('width', '100%');
                     break;
@@ -468,12 +468,12 @@ THE SOFTWARE.
                     const getAxisWidth = () => {
                         return this.axis.box ? this.axis.box.width : 0;
                     }
-                
+
                     this._outerContainer.css({
                         top: this._plot.getPlotOffset().top,
                         left: this._plot.getPlotOffset().left - getBorderWidth() - getAxisWidth() - this._options.size,
                         width: this._options.size + 'px',
-                        height: this._plot.height() + 'px',
+                        height: this._plot.height() + 'px'
                     });
                     this._scrollbar.css('height', '100%');
                     break;
@@ -485,11 +485,11 @@ THE SOFTWARE.
         get backgroundColor() {
             return this._options.backgroundColor;
         }
-        
+
         get scrollbarColor() {
             return this._options.color;
         }
-        
+
         get scrollbarHoverColor() {
             return $.color.parse(this.scrollbarColor).scale('rgb', 0.85).toString();
         }
@@ -505,7 +505,7 @@ THE SOFTWARE.
         get moveButtonHoverColor() {
             return this.scrollbarColor;
         }
-        
+
         get moveButtonDisabledColor() {
             return this.scrollbarHoverColor;
         }

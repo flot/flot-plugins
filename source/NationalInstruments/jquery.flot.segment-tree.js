@@ -269,7 +269,6 @@ THE SOFTWARE.
         for (level = 0; level < this.tree.depth; level++) {
             this.populateTreeLevel(this.historyBuffer.lastUpdatedIndex, level);
         }
-
     };
 
     SegmentTree.prototype.readMinMax = function (start, end, minmax) {
@@ -291,7 +290,7 @@ THE SOFTWARE.
         }
 
         if (level > this.tree.levels.length) {
-            level =  this.tree.levels.length;
+            level = this.tree.levels.length;
         }
 
         var step = Math.pow(hb.branchFactor, level);
@@ -341,8 +340,8 @@ THE SOFTWARE.
             end = firstIndex - 1;
         }
 
-        if (end > lastIndex-1) {
-            end = lastIndex-1;
+        if (end > lastIndex - 1) {
+            end = lastIndex - 1;
         }
 
         if (step < 4) { // for small steps it is more efficient to bypass the segment tree. TODO: benchmark this
@@ -354,7 +353,7 @@ THE SOFTWARE.
             var minmax = new SegmentTreeNode();
 
             var maxIndex, minIndex;
-            for (i = start; i <= end; i = Math.round( i + step)) {
+            for (i = start; i <= end; i = Math.round(i + step)) {
                 var partialQueryEnd = Math.min(end + 1, Math.round(i + step));
                 minmax.max = Number.NEGATIVE_INFINITY;
                 minmax.min = Number.POSITIVE_INFINITY;
