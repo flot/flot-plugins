@@ -141,9 +141,9 @@ console.log(hb1.toDataSeries()); //[[4, 1], [5, 2], [6, 3], [null, null], [1, 1]
             floatCurrentTS,
             bufferToPrepend = [];
 
-            floatCurrentTS = currentTS.valueOf() + (aw.dt * Y.length);
-            bufferToPrepend.push(floatCurrentTS);
-            bufferToPrepend.push(Y[Y.length - 1]);
+        floatCurrentTS = currentTS.valueOf() + (aw.dt * Y.length - 1);
+        bufferToPrepend.push(floatCurrentTS);
+        bufferToPrepend.push(Y[Y.length - 1]);
 
         return bufferToPrepend.concat(buffer);
     }
@@ -199,11 +199,6 @@ console.log(hb1.toDataSeries()); //[[4, 1], [5, 2], [6, 3], [null, null], [1, 1]
                 firstSkippedWaveformIndex = i - 1;
             }
         });
-
-        // always keep the last waveform that was out of range if it was a single-point waveform
-        if (result.length > 0 && result[0] > start && firstSkippedWaveformIndex >= 0 && waveforms[firstSkippedWaveformIndex].Y.length === 1) {
-            result = prependWaveformToDecimateBuffer(waveforms[firstSkippedWaveformIndex], result);
-        }
 
         return result;
     };
