@@ -134,20 +134,6 @@ console.log(hb1.toDataSeries()); //[[4, 1], [5, 2], [6, 3], [null, null], [1, 1]
         }
     }
 
-    function prependWaveformToDecimateBuffer(aw, buffer) {
-        var Y = aw.Y,
-            TS = aw.t0,
-            currentTS = new NITimestamp(TS),
-            floatCurrentTS,
-            bufferToPrepend = [];
-
-        floatCurrentTS = currentTS.valueOf() + (aw.dt * Y.length - 1);
-        bufferToPrepend.push(floatCurrentTS);
-        bufferToPrepend.push(Y[Y.length - 1]);
-
-        return bufferToPrepend.concat(buffer);
-    }
-
     function appendWaveformToDataSeries(aw, buffer) {
         var Y = aw.Y,
             TS = aw.t0,
@@ -172,13 +158,13 @@ console.log(hb1.toDataSeries()); //[[4, 1], [5, 2], [6, 3], [null, null], [1, 1]
         var result = [];
         var waveforms = this.buffers[index].toArray();
         var previousWaveform = waveforms[0];
-        var lastSkippedWaveformInex = -1;
+        var lastSkippedWaveformIndex = -1;
         var i = -1;
 
         waveforms.forEach(function (waveform) {
             i++;
             if (!waveformInRange(waveform, start, end)) {
-                lastSkippedWaveformInex = i;
+                lastSkippedWaveformIndex = i;
                 return;
             }
 
@@ -186,8 +172,16 @@ console.log(hb1.toDataSeries()); //[[4, 1], [5, 2], [6, 3], [null, null], [1, 1]
                 // add a "gap" to separate the analog waveforms
                 result.push(null);
                 result.push(null);
-            } else if (lastSkippedWaveformInex >= 0 && lastSkippedWaveformInex === i - 1) { // we might have skipped a waveform that needs to be included
-                result = prependWaveformToDecimateBuffer(waveforms[lastSkippedWaveformInex], result);
+            } else if (lastSkippedWaveformIndex >= 0 && lastSkippedWaveformIndex === i - 1) { // we might have skipped a waveform that needs its most recent value to be included
+                var aw = waveforms[lastSkippedWaveformIndex],
+                    Y = aw.Y,
+                    TS = aw.t0,
+                    currentTS = new NITimestamp(TS),
+                    floatCurrentTS;
+        
+                floatCurrentTS = currentTS.valueOf() + (aw.dt * Y.length - 1);
+                result.push(floatCurrentTS);
+                result.push(Y[Y.length - 1]);
             }
 
             previousWaveform = waveform;

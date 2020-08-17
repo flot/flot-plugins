@@ -180,7 +180,7 @@ describe('A HistoryBufferWaveform', function () {
         expect(hb.query(0, 10, 1)).toEqual([1, 1, 2, 2, 3, 3]);
     });
 
-    it('returns first single point waveform that is out of visible range when connected to waveform in visible range', function () {
+    fit('returns first single point waveform that is out of visible range when connected to waveform in visible range', function () {
         var hb = new HistoryBufferWaveform(10);
         var singlePointWaveform = new NIAnalogWaveform({
             t0: TimeZero,
@@ -200,7 +200,7 @@ describe('A HistoryBufferWaveform', function () {
         expect(hb.query(2, 6)).toEqual([0, 3.5, 3, 0, 4, 1, 5, 2, 6, 3]);
     });
 
-    it('returns only last waveform in visible range when previous waveform has more than one point and a delta requiring a gap but is completely out of visible range', function () {
+    fit('returns only last waveform in visible range when previous waveform has more than one point and a delta requiring a gap but is completely out of visible range', function () {
         var hb = new HistoryBufferWaveform(10);
         var singlePointWaveform = new NIAnalogWaveform({
             t0: TimeZero,
@@ -220,7 +220,7 @@ describe('A HistoryBufferWaveform', function () {
         expect(hb.query(3, 7)).toEqual([null, null, 4, 0, 5, 1, 6, 2, 7, 3]);
     });
 
-    it('returns last point of last waveform out of visible range when previous waveform has more than one point and a delta where there should be no gap but is completely out of visible range', function () {
+    fit('returns last point of last waveform out of visible range when previous waveform has more than one point and a delta where there should be no gap but is completely out of visible range', function () {
         var hb = new HistoryBufferWaveform(10);
         var singlePointWaveform = new NIAnalogWaveform({
             t0: TimeZero,
