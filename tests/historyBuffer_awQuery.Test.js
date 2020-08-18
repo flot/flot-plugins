@@ -243,12 +243,12 @@ describe('A HistoryBufferWaveform', function () {
     it('returns first single point waveform that is out of visible range (on max side) when connected to waveform in visible range', function () {
         var hb = new HistoryBufferWaveform(10);
         var onlyVisibleWaveform = new NIAnalogWaveform({
-            t0: TimeZero, // start this waveform more than 2x the previous dt
+            t0: TimeZero, 
             dt: 1,
             Y:[0, 1, 2, 3]
         });
         var singlePointWaveform = new NIAnalogWaveform({
-            t0: 7,
+            t0: 7, // start this waveform more than 2x the previous dt
             dt: 1,
             Y:[3.5]
         });
