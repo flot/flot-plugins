@@ -276,6 +276,6 @@ describe('A HistoryBufferWaveform', function () {
         hb.push(multiPointWaveform);
 
         // start the visible range before the last appended waveform, but beyond the visible area of the first waveform
-        expect(hb.query(2.4, 6.4)).toEqual([2, 2, 3, 3, 4.5, 3.5, 5.5, 4.5]);
+        expect(hb.query(2.4, 3.4)).toEqual([2, 2, 3, 3, 4.5, 3.5]);
     });
 });

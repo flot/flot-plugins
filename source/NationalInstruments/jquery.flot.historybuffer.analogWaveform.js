@@ -42,6 +42,12 @@ console.log(hb1.toDataSeries()); //[[4, 1], [5, 2], [6, 3], [null, null], [1, 1]
 (function (global) {
     'use strict';
 
+    const waveformVisibility = Object.freeze({
+        BeforeRange: 1,
+        InRange: 2,
+        AfterRange: 3
+    })
+
     /** **HistoryBufferWaveform(capacity, width)** - the History buffer constructor creates
     a new history buffer with the specified capacity (default: 1024) and width (default: 1)*/
     var HistoryBufferWaveform = function (capacity, width) {
@@ -96,14 +102,14 @@ console.log(hb1.toDataSeries()); //[[4, 1], [5, 2], [6, 3], [null, null], [1, 1]
         var waveformEnd = t0.valueOf() + aw.Y.length * aw.dt;
 
         if (waveformStart < start && waveformEnd < start) {
-            return -1;
+            return waveformVisibility.BeforeRange;
         }
 
         if (waveformStart > end && waveformEnd > end) {
-            return 1;
+            return waveformVisibility.AfterRange;
         }
 
-        return 0;
+        return waveformVisibility.InRange;
     }
 
     function waveformsSeparated(aw1, aw2) {
@@ -118,44 +124,44 @@ console.log(hb1.toDataSeries()); //[[4, 1], [5, 2], [6, 3], [null, null], [1, 1]
     }
 
     function appendWaveformToDecimateBuffer(aw, start, end, buffer) {
-        var Y = aw.Y,
+        var samples = aw.Y,
             t0 = aw.t0,
             currentTS = new NITimestamp(t0),
             floatCurrentTS;
 
-        for (var i = 0; i < Y.length; i++) {
+        for (var i = 0; i < samples.length; i++) {
             floatCurrentTS = currentTS.valueOf();
 
             if (floatCurrentTS >= (start - aw.dt) && floatCurrentTS <= (end + aw.dt)) {
                 buffer.push(floatCurrentTS);
-                buffer.push(Y[i]);
+                buffer.push(samples[i]);
             }
             currentTS.add(aw.dt);
         }
     }
 
     function appendWaveformToDataSeries(aw, buffer) {
-        var Y = aw.Y,
+        var samples = aw.Y,
             t0 = aw.t0,
             currentTS = new NITimestamp(t0),
             floatCurrentTS;
 
-        for (var i = 0; i < Y.length; i++) {
+        for (var i = 0; i < samples.length; i++) {
             floatCurrentTS = currentTS.valueOf();
-            buffer.push([floatCurrentTS, Y[i]]);
+            buffer.push([floatCurrentTS, samples[i]]);
             currentTS.add(aw.dt);
         }
     }
 
     function appendWaveformSampleToDecimateBuffer(aw, sampleIndex, buffer) {
-        var Y = aw.Y,
+        var samples = aw.Y,
             t0 = aw.t0,
             currentTS = new NITimestamp(t0),
             floatCurrentTS;
 
         floatCurrentTS = currentTS.valueOf() + (aw.dt * sampleIndex);
         buffer.push(floatCurrentTS);
-        buffer.push(Y[sampleIndex]);
+        buffer.push(samples[sampleIndex]);
     }
 
     /** **query(start, end, step, index)** - decimates the data set at the
@@ -171,16 +177,14 @@ console.log(hb1.toDataSeries()); //[[4, 1], [5, 2], [6, 3], [null, null], [1, 1]
         var previousWaveform = waveforms[0];
         var beforeSkippedWaveformIndex = -1;
         var afterSkippedWaveformIndex = -1;
-        var i = -1;
 
-        waveforms.forEach(function (waveform) {
-            i++;
-            var waveformVisibility = waveformInRange(waveform, start, end);
-            if (waveformVisibility !== 0) {
-                if (waveformVisibility > 0 && afterSkippedWaveformIndex < 0) {
+        waveforms.forEach(function (waveform, i) {
+            var waveformRange = waveformInRange(waveform, start, end);
+            if (waveformRange !== waveformVisibility.InRange) {
+                if (waveformRange === waveformVisibility.AfterRange && afterSkippedWaveformIndex < 0) {
                     afterSkippedWaveformIndex = i; // do not early return
                 } else {
-                    if (waveformVisibility < 0) {
+                    if (waveformRange === waveformVisibility.BeforeRange) {
                         beforeSkippedWaveformIndex = i;
                     }
 
@@ -315,10 +319,10 @@ console.log(hb1.toDataSeries()); //[[4, 1], [5, 2], [6, 3], [null, null], [1, 1]
 
     function updateMinMax(aw, minMax, start, end) {
         var startTS, endTS, t,
-            Y = aw.Y,
+            samples = aw.Y,
             t0 = new NITimestamp(aw.t0);
 
-        if (Y.length === 0) {
+        if (samples.length === 0) {
             return;
         }
 
@@ -329,22 +333,22 @@ console.log(hb1.toDataSeries()); //[[4, 1], [5, 2], [6, 3], [null, null], [1, 1]
             return;
         }
 
-        for (var i = 0; i < Y.length; i++) {
+        for (var i = 0; i < samples.length; i++) {
             t = (new NITimestamp(t0)).add(aw.dt * i).valueOf();
             if (t < start || t > end) {
                 continue;
             }
 
-            if (Y[i] == null || Y[i] === Infinity || Y[i] === -Infinity || isNaN(Y[i])) {
+            if (samples[i] == null || samples[i] === Infinity || samples[i] === -Infinity || isNaN(samples[i])) {
                 continue;
             }
 
-            if (Y[i] > minMax.max) {
-                minMax.max = Y[i];
+            if (samples[i] > minMax.max) {
+                minMax.max = samples[i];
             }
 
-            if (Y[i] < minMax.min) {
-                minMax.min = Y[i];
+            if (samples[i] < minMax.min) {
+                minMax.min = samples[i];
             }
         }
     }
