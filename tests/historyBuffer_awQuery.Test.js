@@ -179,4 +179,103 @@ describe('A HistoryBufferWaveform', function () {
 
         expect(hb.query(0, 10, 1)).toEqual([1, 1, 2, 2, 3, 3]);
     });
+
+    it('returns first single point waveform that is out of visible range (on min side) when connected to waveform in visible range', function () {
+        var hb = new HistoryBufferWaveform(10);
+        var singlePointWaveform = new NIAnalogWaveform({
+            t0: TimeZero,
+            dt: 1,
+            Y:[3.5]
+        });
+        var onlyVisibleWaveform = new NIAnalogWaveform({
+            t0: TimeZero + 3, // start this waveform more than 2x the previous dt
+            dt: 1,
+            Y:[0, 1, 2, 3]
+        });
+
+        hb.push(singlePointWaveform);
+        hb.push(onlyVisibleWaveform);
+
+        // start the visible range before the last appended waveform, but beyond the visible area of the first waveform
+        expect(hb.query(2, 6)).toEqual([0, 3.5, 3, 0, 4, 1, 5, 2, 6, 3]);
+    });
+
+    it('returns only last waveform in visible range (on min side) when previous waveform has more than one point and a delta requiring a gap but is completely out of visible range', function () {
+        var hb = new HistoryBufferWaveform(10);
+        var multiPointWaveform = new NIAnalogWaveform({
+            t0: TimeZero,
+            dt: 1,
+            Y:[3.5, 4.5]
+        });
+        var onlyVisibleWaveform = new NIAnalogWaveform({
+            t0: TimeZero + 4, // start this waveform more than 2x the previous dt
+            dt: 1,
+            Y:[0, 1, 2, 3]
+        });
+
+        hb.push(multiPointWaveform);
+        hb.push(onlyVisibleWaveform);
+
+        // start the visible range before the last appended waveform, but beyond the visible area of the first waveform
+        expect(hb.query(3, 7)).toEqual([null, null, 4, 0, 5, 1, 6, 2, 7, 3]);
+    });
+
+    it('returns last point of last waveform out of visible range (on min side) when delta is close enough to not have gap.', function () {
+        var hb = new HistoryBufferWaveform(10);
+        var multiPointWaveform = new NIAnalogWaveform({
+            t0: TimeZero,
+            dt: 1,
+            Y:[3.5, 4.5]
+        });
+        var onlyVisibleWaveform = new NIAnalogWaveform({
+            t0: TimeZero + 2.5, // start this waveform less than 2x the previous dt
+            dt: 1,
+            Y:[0, 1, 2, 3]
+        });
+
+        hb.push(multiPointWaveform);
+        hb.push(onlyVisibleWaveform);
+
+        // start the visible range before the last appended waveform, but beyond the visible area of the first waveform
+        expect(hb.query(2.4, 6.4)).toEqual([1, 4.5, 2.5, 0, 3.5, 1, 4.5, 2, 5.5, 3]);
+    });
+
+    it('returns first single point waveform that is out of visible range (on max side) when connected to waveform in visible range', function () {
+        var hb = new HistoryBufferWaveform(10);
+        var onlyVisibleWaveform = new NIAnalogWaveform({
+            t0: TimeZero, 
+            dt: 1,
+            Y:[0, 1, 2, 3]
+        });
+        var singlePointWaveform = new NIAnalogWaveform({
+            t0: 7, // start this waveform more than 2x the previous dt
+            dt: 1,
+            Y:[3.5]
+        });
+
+        hb.push(onlyVisibleWaveform);
+        hb.push(singlePointWaveform);
+
+        expect(hb.query(1.5, 4.5)).toEqual([1, 1, 2, 2, 3, 3, 7, 3.5]);
+    });
+
+    it('returns first point of first waveform out of visible range (on max side) when delta is close enough to not have gap.', function () {
+        var hb = new HistoryBufferWaveform(10);
+        var onlyVisibleWaveform = new NIAnalogWaveform({
+            t0: TimeZero, // start this waveform less than 2x the previous dt
+            dt: 1,
+            Y:[0, 1, 2, 3]
+        });
+        var multiPointWaveform = new NIAnalogWaveform({
+            t0: TimeZero + 4.5,
+            dt: 1,
+            Y:[3.5, 4.5]
+        });
+
+        hb.push(onlyVisibleWaveform);
+        hb.push(multiPointWaveform);
+
+        // start the visible range before the last appended waveform, but beyond the visible area of the first waveform
+        expect(hb.query(2.4, 3.4)).toEqual([2, 2, 3, 3, 4.5, 3.5]);
+    });
 });
