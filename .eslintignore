@@ -1,13 +1,10 @@
 # /node_modules/* and /bower_components/* ignored by default
 
 # Ignore ni-element-infrastructure
-ni-element-infrastructure/*
-ni-test-infrastructure
-performance
 examples
 dist
-docs
 lib
 tests
 source/JUMFlot/*
 source/misc/*
+*.min.js
