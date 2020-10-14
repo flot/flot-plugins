@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* The MIT License
 
  Copyright (c) 2011 by Michael Zinsmaier and nergal.dev
@@ -226,16 +227,17 @@ ____________________________________________________
         function createHermiteSplines(datapoints, curvedLinesOptions, yPos) {
             var points = datapoints.points;
             var ps = datapoints.pointsize;
+            var i;
 
             // preparation get length (x_{k+1} - x_k) and slope s=(p_{k+1} - p_k) / (x_{k+1} - x_k) of the segments
             var segmentLengths = [];
             var segmentSlopes = [];
 
-            for (var i = 0; i < points.length - ps; i += ps) {
-                var curX = i;
-                var curY = i + yPos;
-                var dx = points[curX + ps] - points[curX];
-                var dy = points[curY + ps] - points[curY];
+            for (i = 0; i < points.length - ps; i += ps) {
+                let curX = i;
+                let curY = i + yPos;
+                let dx = points[curX + ps] - points[curX];
+                let dy = points[curY + ps] - points[curY];
 
                 segmentLengths.push(dx);
                 segmentSlopes.push(dy / dx);
@@ -246,25 +248,25 @@ ____________________________________________________
             var gradients = [segmentSlopes[0]];
             if (curvedLinesOptions.monotonicFit) {
                 // Fritsch Carlson
-                for (var i = 1; i < segmentLengths.length; i++) {
-                    var slope = segmentSlopes[i];
-                    var prev_slope = segmentSlopes[i - 1];
-                    if (slope * prev_slope <= 0) { // sign(prev_slope) != sign(slpe)
+                for (i = 1; i < segmentLengths.length; i++) {
+                    let slope = segmentSlopes[i];
+                    let prevSlope = segmentSlopes[i - 1];
+                    if (slope * prevSlope <= 0) { // sign(prevSlope) != sign(slpe)
                         gradients.push(0);
                     } else {
-                        var length = segmentLengths[i];
-                        var prev_length = segmentLengths[i - 1];
-                        var common = length + prev_length;
-                        //m = 3 (prev_length + length) / ((2 length + prev_length) / prev_slope + (length + 2 prev_length) / slope)
-                        gradients.push(3 * common / ((common + length) / prev_slope + (common + prev_length) / slope));
+                        let length = segmentLengths[i];
+                        let prevLength = segmentLengths[i - 1];
+                        let common = length + prevLength;
+                        //m = 3 (prevLength + length) / ((2 length + prevLength) / prevSlope + (length + 2 prevLength) / slope)
+                        gradients.push(3 * common / ((common + length) / prevSlope + (common + prevLength) / slope));
                     }
                 }
             } else {
                 // Cardinal spline with t € [0,1]
                 // Catmull-Rom for t = 0
-                for (var i = ps; i < points.length - ps; i += ps) {
-                    var curX = i;
-                    var curY = i + yPos;
+                for (i = ps; i < points.length - ps; i += ps) {
+                    let curX = i;
+                    let curY = i + yPos;
                     gradients.push(Number(curvedLinesOptions.tension) * (points[curY + ps] - points[curY - ps]) / (points[curX + ps] - points[curX - ps]));
                 }
             }
@@ -286,7 +288,7 @@ ____________________________________________________
 
             //create functions with from the coefficients and capture the parameters
             var ret = [];
-            for (var i = 0; i < segmentLengths.length; i++) {
+            for (i = 0; i < segmentLengths.length; i++) {
                 var spline = function (x_k, coef1, coef2, coef3, coef4) {
                     // spline for a segment
                     return function (x) {
@@ -309,12 +311,13 @@ ____________________________________________________
             var ps = datapoints.pointsize;
             var num = Number(curvedLinesOptions.curvePointFactor) * (points.length / ps);
 
-            var xdata = new Array();
-            var ydata = new Array();
+            var xdata = [];
+            var ydata = [];
 
             var curX = -1;
             var curY = -1;
             var j = 0;
+            var i;
 
             if (curvedLinesOptions.fit) {
                 //insert a point before and after the "real" data point to force the line
@@ -332,7 +335,7 @@ ____________________________________________________
                     fpDist = Number(curvedLinesOptions.fitPointDist);
                 }
 
-                for (var i = 0; i < points.length; i += ps) {
+                for (i = 0; i < points.length; i += ps) {
                     var frontX;
                     var backX;
                     curX = i;
@@ -365,7 +368,7 @@ ____________________________________________________
                 }
             } else {
                 //just use the datapoints
-                for (var i = 0; i < points.length; i += ps) {
+                for (i = 0; i < points.length; i += ps) {
                     curX = i;
                     curY = i + yPos;
 
@@ -377,13 +380,13 @@ ____________________________________________________
 
             var n = xdata.length;
 
-            var y2 = new Array();
-            var delta = new Array();
+            var y2 = [];
+            var delta = [];
             y2[0] = 0;
             y2[n - 1] = 0;
             delta[0] = 0;
 
-            for (var i = 1; i < n - 1; ++i) {
+            for (i = 1; i < n - 1; ++i) {
                 var d = (xdata[i + 1] - xdata[i - 1]);
                 if (d === 0) {
                     //point before current point and after current point need some space in between
@@ -397,16 +400,16 @@ ____________________________________________________
                 delta[i] = (6 * delta[i] / (xdata[i + 1] - xdata[i - 1]) - s * delta[i - 1]) / p;
             }
 
-            for (var j = n - 2; j >= 0; --j) {
+            for (j = n - 2; j >= 0; --j) {
                 y2[j] = y2[j] * y2[j + 1] + delta[j];
             }
 
             //   xmax  - xmin  / #points
             var step = (xdata[n - 1] - xdata[0]) / (num - 1);
 
-            var xnew = new Array();
-            var ynew = new Array();
-            var result = new Array();
+            var xnew = [];
+            var ynew = [];
+            var result = [];
 
             xnew[0] = xdata[0];
             ynew[0] = ydata[0];
@@ -455,7 +458,6 @@ ____________________________________________________
                 typeof curvedLinesOptions.curvePointFactor !== 'undefined' ||
                 typeof curvedLinesOptions.fitPointDist !== 'undefined') {
                 throw new Error("CurvedLines detected illegal parameters. The CurvedLines API changed with version 1.0.0 please check the options object.");
-                return true;
             }
             return false;
         }
