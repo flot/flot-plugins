@@ -1,6 +1,3 @@
-/* global describe, it, expect, HistoryBuffer */
-/* jshint browser: true*/
-
 /* brackets-xunit: includes=../lib/cbuffer.js,../lib/jsverify.standalone.js,../lib/jasmineHelpers2.js,../jquery.flot.historybuffer.js */
 
 describe('A HistoryBufferWaveform', function () {
@@ -14,37 +11,37 @@ describe('A HistoryBufferWaveform', function () {
         aw = new NIAnalogWaveform({
             t0: TimeZero + 4,
             dt: 1,
-            Y:[1, 2, 3]
+            Y: [1, 2, 3]
         });
 
         aw1 = new NIAnalogWaveform({
             t0: TimeZero + 1,
             dt: 1,
-            Y:[1, 2, 3]
+            Y: [1, 2, 3]
         });
 
         aw2 = new NIAnalogWaveform({
             t0: TimeZero + 8,
             dt: 1,
-            Y:[4, 3, 2]
+            Y: [4, 3, 2]
         });
 
         aw3 = new NIAnalogWaveform({
             t0: TimeZero + 10,
             dt: 1,
-            Y:[0, 1, 2]
+            Y: [0, 1, 2]
         });
 
         aw4 = new NIAnalogWaveform({
             t0: TimeZero + 1,
             dt: 1,
-            Y:[1, 2, 3, 4, 5, 6, 7]
+            Y: [1, 2, 3, 4, 5, 6, 7]
         });
 
         empty_aw = new NIAnalogWaveform({
             t0: TimeZero + 10,
             dt: 1,
-            Y:[]
+            Y: []
         });
     });
 
@@ -79,7 +76,7 @@ describe('A HistoryBufferWaveform', function () {
 
         hb.push(aw4);
 
-        expect(hb.rangeX(0)).toEqual({xmin:1, xmax: 7, deltamin: 1});
+        expect(hb.rangeX(0)).toEqual({xmin: 1, xmax: 7, deltamin: 1});
     });
 
     it('has basic rangeY capabilities', function () {
@@ -95,7 +92,7 @@ describe('A HistoryBufferWaveform', function () {
 
         hb.push(aw4);
 
-        expect(hb.rangeX()).toEqual({xmin:1, xmax: 7, deltamin: 1});
+        expect(hb.rangeX()).toEqual({xmin: 1, xmax: 7, deltamin: 1});
     });
 
     it('works with empty parameters for rangeY', function () {
@@ -163,14 +160,13 @@ describe('A HistoryBufferWaveform', function () {
         var largeAW = new NIAnalogWaveform({
             t0: TimeZero + 1,
             dt: 0.5,
-            Y:[0, 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+            Y: [0, 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
         });
 
         hb.push(largeAW);
 
         expect(hb.query(5, 5.5, 1)).toEqual([4.5, 8, 5, 9, 5.5, 10, 6, 11]);
     });
-
 
     it('returns proper data series after the buffer overflows', function () {
         var hb = new HistoryBufferWaveform(1);
@@ -185,12 +181,12 @@ describe('A HistoryBufferWaveform', function () {
         var singlePointWaveform = new NIAnalogWaveform({
             t0: TimeZero,
             dt: 1,
-            Y:[3.5]
+            Y: [3.5]
         });
         var onlyVisibleWaveform = new NIAnalogWaveform({
             t0: TimeZero + 3, // start this waveform more than 2x the previous dt
             dt: 1,
-            Y:[0, 1, 2, 3]
+            Y: [0, 1, 2, 3]
         });
 
         hb.push(singlePointWaveform);
@@ -205,12 +201,12 @@ describe('A HistoryBufferWaveform', function () {
         var multiPointWaveform = new NIAnalogWaveform({
             t0: TimeZero,
             dt: 1,
-            Y:[3.5, 4.5]
+            Y: [3.5, 4.5]
         });
         var onlyVisibleWaveform = new NIAnalogWaveform({
             t0: TimeZero + 4, // start this waveform more than 2x the previous dt
             dt: 1,
-            Y:[0, 1, 2, 3]
+            Y: [0, 1, 2, 3]
         });
 
         hb.push(multiPointWaveform);
@@ -225,12 +221,12 @@ describe('A HistoryBufferWaveform', function () {
         var multiPointWaveform = new NIAnalogWaveform({
             t0: TimeZero,
             dt: 1,
-            Y:[3.5, 4.5]
+            Y: [3.5, 4.5]
         });
         var onlyVisibleWaveform = new NIAnalogWaveform({
             t0: TimeZero + 2.5, // start this waveform less than 2x the previous dt
             dt: 1,
-            Y:[0, 1, 2, 3]
+            Y: [0, 1, 2, 3]
         });
 
         hb.push(multiPointWaveform);
@@ -243,14 +239,14 @@ describe('A HistoryBufferWaveform', function () {
     it('returns first single point waveform that is out of visible range (on max side) when connected to waveform in visible range', function () {
         var hb = new HistoryBufferWaveform(10);
         var onlyVisibleWaveform = new NIAnalogWaveform({
-            t0: TimeZero, 
+            t0: TimeZero,
             dt: 1,
-            Y:[0, 1, 2, 3]
+            Y: [0, 1, 2, 3]
         });
         var singlePointWaveform = new NIAnalogWaveform({
             t0: 7, // start this waveform more than 2x the previous dt
             dt: 1,
-            Y:[3.5]
+            Y: [3.5]
         });
 
         hb.push(onlyVisibleWaveform);
@@ -264,12 +260,12 @@ describe('A HistoryBufferWaveform', function () {
         var onlyVisibleWaveform = new NIAnalogWaveform({
             t0: TimeZero, // start this waveform less than 2x the previous dt
             dt: 1,
-            Y:[0, 1, 2, 3]
+            Y: [0, 1, 2, 3]
         });
         var multiPointWaveform = new NIAnalogWaveform({
             t0: TimeZero + 4.5,
             dt: 1,
-            Y:[3.5, 4.5]
+            Y: [3.5, 4.5]
         });
 
         hb.push(onlyVisibleWaveform);

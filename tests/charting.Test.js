@@ -1,5 +1,3 @@
-/* global $, describe, it, beforeEach, afterEach, expect, HistoryBuffer, setFixtures */
-/* jshint browser: true*/
 /* brackets-xunit: includes=../lib/cbuffer.js,../jquery.flot.historybuffer.js*,../jquery.flot.js,../jquery.flot.charting.js */
 
 describe('A chart', function () {
@@ -23,7 +21,7 @@ describe('A chart', function () {
     it('allows to specify a historyBuffer when creating the plot', function () {
         var hb = new HistoryBuffer(10, 1);
         hb.push(33);
-        
+
         plot = $.plot(placeholder, [{}], {
             series: {
                 historyBuffer: hb
@@ -127,7 +125,7 @@ describe('A chart', function () {
         hb.push(33);
         hb.push(34);
 
-        plot = $.plot(placeholder, [{data:[], color: 'red', lines: { lineWidth: 5}}], {
+        plot = $.plot(placeholder, [{data: [], color: 'red', lines: { lineWidth: 5}}], {
             series: {
                 historyBuffer: hb
             }
@@ -144,14 +142,14 @@ describe('A chart', function () {
 
         plot = $.plot(placeholder,
             [
-                {data:[], color: 'red', lines: { lineWidth: 5}},
-                {data:[], color: 'blue', lines: { lineWidth: 3}},
+                {data: [], color: 'red', lines: { lineWidth: 5}},
+                {data: [], color: 'blue', lines: { lineWidth: 3}}
             ]
             , {
-            series: {
-                historyBuffer: hb
-            }
-        });
+                series: {
+                    historyBuffer: hb
+                }
+            });
 
         expect(plot.getData()[0].color).toEqual('red');
         expect(plot.getData()[0].lines.lineWidth).toEqual(5);
@@ -159,25 +157,25 @@ describe('A chart', function () {
         expect(plot.getData()[1].lines.lineWidth).toEqual(3);
     });
 
-    it('when history buffer is widened the additional plot settings are taken into account', function (done ) {
+    it('when history buffer is widened the additional plot settings are taken into account', function (done) {
         var hb = new HistoryBuffer(10, 1);
         hb.push(33);
         hb.push(34);
 
         plot = $.plot(placeholder,
             [
-                {data:[], color: 'red', lines: { lineWidth: 5}},
-                {data:[], color: 'blue', lines: { lineWidth: 3}},
+                {data: [], color: 'red', lines: { lineWidth: 5}},
+                {data: [], color: 'blue', lines: { lineWidth: 3}}
             ]
             , {
-            series: {
-                historyBuffer: hb
-            }
-        });
+                series: {
+                    historyBuffer: hb
+                }
+            });
 
         hb.setWidth(2);
-        hb.push([2,3]);
-        hb.push([3,4]);
+        hb.push([2, 3]);
+        hb.push([3, 4]);
 
         requestAnimationFrame(function() {
             expect(plot.getData()[0].color).toEqual('red');
@@ -234,7 +232,7 @@ describe('A chart', function () {
 
             hb.appendArray([[10, 2], [11, 3], [12, 4], [13, 5], [14, 6]]);
 
-            plot = $.plot(placeholder, [[],[]], {
+            plot = $.plot(placeholder, [[], []], {
                 series: {
                     historyBuffer: hb
                 },
@@ -260,7 +258,7 @@ describe('A chart', function () {
 
             hb.appendArray([[10, 6], [11, 5], [12, 4], [13, 3], [14, 2]]);
 
-            plot = $.plot(placeholder, [{data:[]}, {data:[], yaxis: 2}], {
+            plot = $.plot(placeholder, [{data: []}, {data: [], yaxis: 2}], {
                 series: {
                     historyBuffer: hb
                 },
@@ -274,7 +272,7 @@ describe('A chart', function () {
                 }, {
                     autoScale: 'exact'
                 }
-              ]
+                ]
             });
 
             expect(plot.getData()[0].datapoints.points).toEqual([1, 11, 2, 12, 3, 13]);
@@ -293,14 +291,14 @@ describe('A chart', function () {
             var hb = new HistoryBuffer(20, 2);
             hb.appendArray([[10, 2], [11, 3], [12, 4], [13, 5], [14, 6]]);
 
-            plot = $.plot(placeholder, [[],[]], {
+            plot = $.plot(placeholder, [[], []], {
                 series: {
                     historyBuffer: hb,
                     bars: {
                         lineWidth: 1,
                         show: true,
                         fillColor: 'blue'
-                    },
+                    }
                 }
             });
 
@@ -311,12 +309,12 @@ describe('A chart', function () {
             var aw1 = new NIAnalogWaveform({
                     t0: new NITimestamp() + 3,
                     dt: 10,
-                    Y:[3, 5, 9]
+                    Y: [3, 5, 9]
                 }),
                 aw2 = new NIAnalogWaveform({
                     t0: new NITimestamp() + 4,
                     dt: 1,
-                    Y:[7, 11, 15]
+                    Y: [7, 11, 15]
                 }),
                 hb = new HistoryBufferWaveform(10);
 
@@ -329,7 +327,7 @@ describe('A chart', function () {
                         lineWidth: 1,
                         show: true,
                         fillColor: 'blue'
-                    },
+                    }
                 }
             });
 
@@ -340,25 +338,25 @@ describe('A chart', function () {
             var aw1 = new NIAnalogWaveform({
                     t0: new NITimestamp() + 3,
                     dt: 10,
-                    Y:[3, 5, 9]
+                    Y: [3, 5, 9]
                 }),
                 aw2 = new NIAnalogWaveform({
                     t0: new NITimestamp() + 4,
                     dt: 1,
-                    Y:[7, 11, 15]
+                    Y: [7, 11, 15]
                 }),
                 hb = new HistoryBufferWaveform(10, 2);
 
             hb.push([aw1, aw2]);
 
-            plot = $.plot(placeholder, [[],[]], {
+            plot = $.plot(placeholder, [[], []], {
                 series: {
                     historyBuffer: hb,
                     bars: {
                         lineWidth: 1,
                         show: true,
                         fillColor: 'blue'
-                    },
+                    }
                 }
             });
 
@@ -370,20 +368,20 @@ describe('A chart', function () {
             var empty_aw = new NIAnalogWaveform({
                     t0: new NITimestamp() + 10,
                     dt: 1,
-                    Y:[]
+                    Y: []
                 }),
                 hb = new HistoryBufferWaveform(10);
 
             hb.appendArray([empty_aw]);
 
-            plot = $.plot(placeholder, [[],[]], {
+            plot = $.plot(placeholder, [[], []], {
                 series: {
                     historyBuffer: hb,
                     bars: {
                         lineWidth: 1,
                         show: true,
                         fillColor: 'blue'
-                    },
+                    }
                 }
             });
 
@@ -394,20 +392,20 @@ describe('A chart', function () {
             var empty_aw = new NIAnalogWaveform({
                     t0: new NITimestamp() + 10,
                     dt: 100,
-                    Y:[1]
+                    Y: [1]
                 }),
                 hb = new HistoryBufferWaveform(10);
 
             hb.appendArray([empty_aw]);
 
-            plot = $.plot(placeholder, [[],[]], {
+            plot = $.plot(placeholder, [[], []], {
                 series: {
                     historyBuffer: hb,
                     bars: {
                         lineWidth: 1,
                         show: true,
                         fillColor: 'blue'
-                    },
+                    }
                 }
             });
 
@@ -417,20 +415,20 @@ describe('A chart', function () {
         it('should consider barWidth 0.8 for not defined dt of analogWaveform', function() {
             var empty_aw = new NIAnalogWaveform({
                     t0: new NITimestamp() + 10,
-                    Y:[2]
+                    Y: [2]
                 }),
                 hb = new HistoryBufferWaveform(10);
 
             hb.appendArray([empty_aw]);
 
-            plot = $.plot(placeholder, [[],[]], {
+            plot = $.plot(placeholder, [[], []], {
                 series: {
                     historyBuffer: hb,
                     bars: {
                         lineWidth: 1,
                         show: true,
                         fillColor: 'blue'
-                    },
+                    }
                 }
             });
 
@@ -441,20 +439,20 @@ describe('A chart', function () {
             var empty_aw = new NIAnalogWaveform({
                     t0: new NITimestamp() + 10,
                     dt: -1,
-                    Y:[2, 3, 4, 5]
+                    Y: [2, 3, 4, 5]
                 }),
                 hb = new HistoryBufferWaveform(10);
 
             hb.appendArray([empty_aw]);
 
-            plot = $.plot(placeholder, [[],[]], {
+            plot = $.plot(placeholder, [[], []], {
                 series: {
                     historyBuffer: hb,
                     bars: {
                         lineWidth: 1,
                         show: true,
                         fillColor: 'blue'
-                    },
+                    }
                 }
             });
 

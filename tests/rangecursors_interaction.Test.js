@@ -1,6 +1,3 @@
-/* global $, describe, it, xit, after, beforeEach, afterEach, expect, jasmine */
-/* jshint browser: true*/
-
 describe("Cursors interaction", function () {
     'use strict';
 
@@ -306,7 +303,7 @@ describe("Cursors interaction", function () {
                     name: 'Blue cursor',
                     color: 'blue',
                     orientation: 'box',
-                    position: {  relativeXStart: 0.5, relativeXEnd: 0.6, relativeYStart: 0.5, relativeYEnd: 0.6 }
+                    position: { relativeXStart: 0.5, relativeXEnd: 0.6, relativeYStart: 0.5, relativeYEnd: 0.6 }
                 }
             ],
             xaxes: [ { position: 'top' } ]
@@ -370,7 +367,7 @@ describe("Cursors interaction", function () {
                     color: 'blue',
                     constrainToEdge: false,
                     orientation: 'box',
-                    position: {  relativeXStart: 0.5, relativeXEnd: 0.6, relativeYStart: 0.5, relativeYEnd: 0.6 }
+                    position: { relativeXStart: 0.5, relativeXEnd: 0.6, relativeYStart: 0.5, relativeYEnd: 0.6 }
                 }
             ],
             xaxes: [ { position: 'top' } ]

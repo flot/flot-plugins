@@ -119,6 +119,20 @@
       "standard/computed-property-even-spacing": ["error", "even"],
   
       "promise/param-names": "error"
-    }
+    },
+    "overrides": [
+      {
+        "files":[
+          "tests/**"
+        ],
+        "env": {
+          "jasmine": true
+        },
+        "globals": {
+          // set by jasmine-jquery
+          "setFixtures": true
+        }
+      }
+    ]
   }
   

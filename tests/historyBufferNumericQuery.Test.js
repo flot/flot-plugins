@@ -324,7 +324,6 @@ describe('A HistoryBufferNumeric', function () {
             section.forEach(function (s) {
                 decimatedRes = decimatedRes.concat(s);
             });
-
         }
 
         return decimatedRes;
@@ -333,7 +332,7 @@ describe('A HistoryBufferNumeric', function () {
     /*makes sure that we get the query results in order*/
     function indexesAreInAscendingOrder(dataSeries) {
         var res = true;
-        for (var i = 2; i < dataSeries.length; i+=2) {
+        for (var i = 2; i < dataSeries.length; i += 2) {
             if (dataSeries[i - 2] >= dataSeries[i]) {
                 res = false;
             }

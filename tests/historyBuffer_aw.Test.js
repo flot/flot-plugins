@@ -9,25 +9,25 @@ describe('An analogWaveform History Buffer', function () {
         aw = new NIAnalogWaveform({
             t0: TimeZero + 4,
             dt: 1,
-            Y:[1, 2, 3]
+            Y: [1, 2, 3]
         });
 
         aw1 = new NIAnalogWaveform({
             t0: TimeZero + 1,
             dt: 1,
-            Y:[1, 2, 3]
+            Y: [1, 2, 3]
         });
 
         aw2 = new NIAnalogWaveform({
             t0: TimeZero + 8,
             dt: 1,
-            Y:[4, 3, 2]
+            Y: [4, 3, 2]
         });
 
         aw2 = new NIAnalogWaveform({
             t0: TimeZero + 10,
             dt: 1,
-            Y:[0, 1, 2]
+            Y: [0, 1, 2]
         });
     });
 
@@ -247,7 +247,7 @@ describe('An analogWaveform History Buffer', function () {
             var spy = jasmine.createSpy('registerOnChange');
             hb.appendArray([aw, aw1]);
 
-            hb.registerOnChange(onChangeKey,spy);
+            hb.registerOnChange(onChangeKey, spy);
             hb.clear();
 
             expect(spy).toHaveBeenCalled();

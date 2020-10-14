@@ -1,6 +1,3 @@
-/* global $, describe, it, beforeEach, afterEach, expect, jasmine, spyOn */
-/* jshint browser: true*/
-
 describe('Flot highlights', function () {
     'use strict';
     var d1 = [];
@@ -47,7 +44,7 @@ describe('Flot highlights', function () {
                     highlightPoints: true,
                     highlightBars: false,
                     highlightLineWidth: 5,
-                    selectedIndexes:selectedIndexes
+                    selectedIndexes: selectedIndexes
                 }
             }
         });
@@ -69,7 +66,7 @@ describe('Flot highlights', function () {
                     highlightPoints: true,
                     highlightBars: false,
                     highlightLineWidth: 5,
-                    selectedRange:selectedRange
+                    selectedRange: selectedRange
                 }
             }
         });
@@ -91,7 +88,7 @@ describe('Flot highlights', function () {
                     highlightPoints: true,
                     highlightBars: false,
                     highlightLineWidth: 5,
-                    selectedIndexes:selectedIndexes
+                    selectedIndexes: selectedIndexes
                 }
             }
         });
@@ -113,7 +110,7 @@ describe('Flot highlights', function () {
                     highlightPoints: false,
                     highlightBars: false,
                     highlightLineWidth: 5,
-                    selectedIndexes:selectedIndexes
+                    selectedIndexes: selectedIndexes
                 }
             }
         });
@@ -135,7 +132,7 @@ describe('Flot highlights', function () {
                     highlightPoints: false,
                     highlightBars: false,
                     highlightLineWidth: 5,
-                    selectedRange:selectedRange
+                    selectedRange: selectedRange
                 }
             }
         });
@@ -158,7 +155,7 @@ describe('Flot highlights', function () {
                     highlightPoints: false,
                     highlightBars: true,
                     highlightLineWidth: 5,
-                    selectedIndexes:selectedIndexes
+                    selectedIndexes: selectedIndexes
                 }
             }
         });

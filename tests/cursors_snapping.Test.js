@@ -1,6 +1,3 @@
-/* global $, describe, it, xit, after, beforeEach, afterEach, expect, jasmine */
-/* jshint browser: true*/
-
 describe("Cursors snapping", function () {
     'use strict';
 

@@ -1,6 +1,3 @@
-/* global $, describe, it, beforeEach, afterEach, expect, jasmine, spyOn */
-/* jshint browser: true*/
-
 describe('Flot cursors', function () {
     'use strict';
 
@@ -550,7 +547,7 @@ describe('Flot cursors', function () {
         beforeAll(function () {
             loadDragSimulators();
         });
-    
+
         it("should be called when a cursor is added", function() {
             plot = $.plot(placeholder, [sampledata], {});
 
@@ -651,16 +648,16 @@ describe('Flot cursors', function () {
                 ]
             });
             jasmine.clock().tick(20);
-    
+
             var cursor = plot.getRangeCursors()[0];
             var options = { mouseX: plot.getPlotOffset().left + plot.width() * 0.5,
                 mouseY: plot.getPlotOffset().top + plot.height() * 0.6 };
             $('.flot-overlay').simulate("flotdragstart", options);
             jasmine.clock().tick(20);
-    
+
             var cursorX = plot.getPlotOffset().left + plot.width() * 0.5 + 20;
             var cursorY = plot.getPlotOffset().top + plot.height() * 0.2;
-                var options = { mouseX: cursorX, mouseY: cursorY, dx: 13, dy: 5 };
+            var options = { mouseX: cursorX, mouseY: cursorY, dx: 13, dy: 5 };
             $('.flot-overlay').simulate("flotdrag", options);
 
             $('.flot-overlay').simulate("flotdragend", options);

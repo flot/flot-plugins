@@ -26,10 +26,9 @@ describe('A scrollbar', function() {
     });
 
     describe('horizontal', function() {
-
         it('should create a scrollbar', function() {
             plot = $.plot(placeholder, data, options);
-            
+
             let outerContainer = placeholder.find('.flot-scrollbar-horizontal');
             expect(outerContainer.length).toBe(1);
             expect(outerContainer.children().length).toBe(3);
@@ -42,14 +41,14 @@ describe('A scrollbar', function() {
         it('should add offset to plot depending on size', function() {
             options.scrollbars[0].size = 100;
             plot = $.plot(placeholder, data, options);
-            
+
             let offset = plot.getPlotOffset();
             expect(offset.bottom).toBeGreaterThanOrEqual(100);
         });
 
         it('should be positioned below plot', function() {
             plot = $.plot(placeholder, data, options);
-            
+
             let container = placeholder.find('.flot-scrollbar-horizontal');
             expect(container.offset().left).toBe(placeholder.offset().left + plot.getPlotOffset().left);
             expect(container.offset().top + container.outerHeight()).toBe(placeholder.offset().top + placeholder.height());
@@ -61,7 +60,7 @@ describe('A scrollbar', function() {
                 offset: { below: 1, above: -1 }
             }
             plot = $.plot(placeholder, data, options);
-            
+
             let container = placeholder.find('.flot-scrollbar-container');
             let scrollbar = container.find('.flot-scrollbar');
             expect(scrollbar.offset().left - container.offset().left).toBeCloseTo(container.width() / 3, 1);
@@ -70,7 +69,7 @@ describe('A scrollbar', function() {
 
         it('should zoom in on left handle drag', function() {
             plot = $.plot(placeholder, data, options);
-            
+
             let container = placeholder.find('.flot-scrollbar-container');
             let leftHandle = placeholder.find('.flot-scrollbar-below-handle');
             let xaxis = plot.getXAxes()[0];
@@ -82,7 +81,7 @@ describe('A scrollbar', function() {
 
         it('should zoom in on right handle drag', function() {
             plot = $.plot(placeholder, data, options);
-            
+
             let container = placeholder.find('.flot-scrollbar-container');
             let rightHandle = placeholder.find('.flot-scrollbar-above-handle');
             let xaxis = plot.getXAxes()[0];
@@ -97,7 +96,7 @@ describe('A scrollbar', function() {
                 offset: { below: 1, above: -1 }
             }
             plot = $.plot(placeholder, data, options);
-            
+
             let container = placeholder.find('.flot-scrollbar-container');
             let scrollbar = placeholder.find('.flot-scrollbar');
             let xaxis = plot.getXAxes()[0];
@@ -112,7 +111,7 @@ describe('A scrollbar', function() {
                 offset: { below: 1, above: -1 }
             }
             plot = $.plot(placeholder, data, options);
-            
+
             let container = placeholder.find('.flot-scrollbar-container');
             let xaxis = plot.getXAxes()[0];
             let x = 0.75 / (xaxis.datamax - xaxis.datamin) * container.width();
@@ -129,7 +128,7 @@ describe('A scrollbar', function() {
                 offset: { below: 1, above: -1 }
             }
             plot = $.plot(placeholder, data, options);
-            
+
             let container = placeholder.find('.flot-scrollbar-container');
             container.dblclick();
 
@@ -143,7 +142,7 @@ describe('A scrollbar', function() {
                 offset: { below: 1, above: -1 }
             }
             plot = $.plot(placeholder, data, options);
-            
+
             let moveLeftButton = placeholder.find('.flot-scrollbar-move-below');
             moveLeftButton.simulate('mousedown');
 
@@ -157,7 +156,7 @@ describe('A scrollbar', function() {
                 offset: { below: 1, above: -1 }
             }
             plot = $.plot(placeholder, data, options);
-            
+
             let moveRightButton = placeholder.find('.flot-scrollbar-move-above');
             moveRightButton.simulate('mousedown');
 
@@ -171,7 +170,7 @@ describe('A scrollbar', function() {
                 offset: { below: 1, above: -1 }
             }
             plot = $.plot(placeholder, data, options);
-            
+
             let moveLeftButton = placeholder.find('.flot-scrollbar-move-below');
             // starts moving after 500 ms and moves every 50 ms
             moveLeftButton.simulate('mousedown');
@@ -184,14 +183,13 @@ describe('A scrollbar', function() {
     });
 
     describe('vertical', function() {
-
         beforeEach(function () {
             options.scrollbars[0].direction = 'vertical';
         });
 
         it('should create a scrollbar', function() {
             plot = $.plot(placeholder, data, options);
-            
+
             let outerContainer = placeholder.find('.flot-scrollbar-vertical');
             expect(outerContainer.length).toBe(1);
             expect(outerContainer.children().length).toBe(3);
@@ -204,14 +202,14 @@ describe('A scrollbar', function() {
         it('should add offset to plot depending on size', function() {
             options.scrollbars[0].size = 100;
             plot = $.plot(placeholder, data, options);
-            
+
             let offset = plot.getPlotOffset();
             expect(offset.left).toBeGreaterThanOrEqual(100);
         });
 
         it('should be positioned next to plot', function() {
             plot = $.plot(placeholder, data, options);
-            
+
             let container = placeholder.find('.flot-scrollbar-vertical');
             expect(container.offset().left).toBeCloseTo(placeholder.offset().left, -1);
             expect(container.offset().top).toBeCloseTo(placeholder.offset().top + plot.getPlotOffset().top);
@@ -224,7 +222,7 @@ describe('A scrollbar', function() {
                 offset: { below: 1, above: -1 }
             }
             plot = $.plot(placeholder, data, options);
-            
+
             let container = placeholder.find('.flot-scrollbar-container');
             let scrollbar = container.find('.flot-scrollbar');
             expect(scrollbar.offset().top - container.offset().top).toBeCloseTo(container.height() / 3, 1);
@@ -233,7 +231,7 @@ describe('A scrollbar', function() {
 
         it('should zoom in on below handle drag', function() {
             plot = $.plot(placeholder, data, options);
-            
+
             let container = placeholder.find('.flot-scrollbar-container');
             let belowHandle = placeholder.find('.flot-scrollbar-below-handle');
             let yaxis = plot.getYAxes()[0];
@@ -245,7 +243,7 @@ describe('A scrollbar', function() {
 
         it('should zoom in on above handle drag', function() {
             plot = $.plot(placeholder, data, options);
-            
+
             let container = placeholder.find('.flot-scrollbar-container');
             let aboveHandle = placeholder.find('.flot-scrollbar-above-handle');
             let yaxis = plot.getYAxes()[0];
@@ -260,7 +258,7 @@ describe('A scrollbar', function() {
                 offset: { below: 1, above: -1 }
             }
             plot = $.plot(placeholder, data, options);
-            
+
             let container = placeholder.find('.flot-scrollbar-container');
             let scrollbar = placeholder.find('.flot-scrollbar');
             let yaxis = plot.getYAxes()[0];
@@ -275,7 +273,7 @@ describe('A scrollbar', function() {
                 offset: { below: 1, above: -1 }
             }
             plot = $.plot(placeholder, data, options);
-            
+
             let container = placeholder.find('.flot-scrollbar-container');
             let yaxis = plot.getYAxes()[0];
             let y = 0.75 / (yaxis.datamax - yaxis.datamin) * container.height();
@@ -292,7 +290,7 @@ describe('A scrollbar', function() {
                 offset: { below: 1, above: -1 }
             }
             plot = $.plot(placeholder, data, options);
-            
+
             let container = placeholder.find('.flot-scrollbar-container');
             container.dblclick();
 
@@ -306,7 +304,7 @@ describe('A scrollbar', function() {
                 offset: { below: 1, above: -1 }
             }
             plot = $.plot(placeholder, data, options);
-            
+
             let moveBottomButton = placeholder.find('.flot-scrollbar-move-below');
             moveBottomButton.simulate('mousedown');
 
@@ -320,7 +318,7 @@ describe('A scrollbar', function() {
                 offset: { below: 1, above: -1 }
             }
             plot = $.plot(placeholder, data, options);
-            
+
             let moveTopButton = placeholder.find('.flot-scrollbar-move-above');
             moveTopButton.simulate('mousedown');
 
@@ -334,7 +332,7 @@ describe('A scrollbar', function() {
                 offset: { below: 1, above: -1 }
             }
             plot = $.plot(placeholder, data, options);
-            
+
             let moveBottomButton = placeholder.find('.flot-scrollbar-move-below');
             // starts moving after 500 ms and moves every 50 ms
             moveBottomButton.simulate('mousedown');

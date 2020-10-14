@@ -1,5 +1,3 @@
-/* global $, describe, it, beforeEach, afterEach, expect, HistoryBuffer, setFixtures */
-/* jshint browser: true*/
 /* brackets-xunit: includes=../lib/cbuffer.js,../jquery.flot.historybuffer.js*,../jquery.flot.js,../jquery.flot.charting.js */
 
 describe('A chart', function () {
@@ -13,19 +11,19 @@ describe('A chart', function () {
     var aw = new NIAnalogWaveform({
         t0: TimeZero + 4,
         dt: 1,
-        Y:[1, 2, 3]
+        Y: [1, 2, 3]
     });
 
     var aw1 = new NIAnalogWaveform({
         t0: TimeZero + 1,
         dt: 1,
-        Y:[1, 2, 3]
+        Y: [1, 2, 3]
     });
 
     var aw2 = new NIAnalogWaveform({
         t0: TimeZero + 1,
         dt: 1,
-        Y:[1, 2, 3, 4, 5]
+        Y: [1, 2, 3, 4, 5]
     });
 
     beforeEach(function () {
@@ -47,7 +45,7 @@ describe('A chart', function () {
         plot = $.plot(placeholder, [{}], {
             series: {
                 historyBuffer: hb
-            },
+            }
         });
 
         expect(plot.getData()[0].datapoints.points).toEqual([4, 1, 5, 2, 6, 3]);
@@ -61,7 +59,7 @@ describe('A chart', function () {
         var delayedAW = new NIAnalogWaveform({
             t0: TimeZero + 5,
             dt: 1,
-            Y:[1, 2, 3]
+            Y: [1, 2, 3]
         });
 
         hb.push(delayedAW);
@@ -80,15 +78,15 @@ describe('A chart', function () {
         var awOneValue = new NIAnalogWaveform({
             t0: TimeZero + 1,
             dt: 1,
-            Y:[1]
+            Y: [1]
         });
 
         var awTwoValue = new NIAnalogWaveform({
             t0: TimeZero + 12,
             dt: 1,
-            Y:[1, 2]
+            Y: [1, 2]
         });
-    
+
         hb.push(awOneValue);
         hb.push(awTwoValue);
 
@@ -122,13 +120,13 @@ describe('A chart', function () {
         hb.push(new NIAnalogWaveform({
             t0: (TimeZero + 4) + ':0',
             dt: 1,
-            Y:[1, 2, 3]})
+            Y: [1, 2, 3]})
         );
 
         hb.push(new NIAnalogWaveform({
             t0: (TimeZero + 1) + ':0',
             dt: 1,
-            Y:[1, 2, 3]})
+            Y: [1, 2, 3]})
         );
 
         plot = $.plot(placeholder, [{}], {

@@ -1,6 +1,3 @@
-/* global $, describe, it, xit, after, beforeEach, afterEach, expect, jasmine */
-/* jshint browser: true*/
-
 describe('Cursors Position', function () {
     'use strict';
 

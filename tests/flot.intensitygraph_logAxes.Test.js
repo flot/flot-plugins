@@ -1,4 +1,3 @@
-/* global setFixtures */
 /* brackets-xunit: includes=../lib/cbuffer.js,../jquery.flot.historybuffer.js*,../jquery.flot.js,../jquery.flot.charting.js */
 
 describe('An Intensity graph with log axes', function() {
@@ -19,7 +18,6 @@ describe('An Intensity graph with log axes', function() {
     });
 
     [0, 1, 2].forEach(function(borderWidth) {
-
         it('should use the log mode of the x axis when borderWidth = ' + borderWidth, function () {
             plot = $.plot(placeholder, [[[0, 0], [1, 1], [2, 2]]], {
                 grid: {show: borderWidth > 0, borderWidth: borderWidth},
@@ -27,7 +25,9 @@ describe('An Intensity graph with log axes', function() {
                 yaxis: {show: false, autoScale: 'none', min: 1, max: 2},
                 series: {
                     intensitygraph: {
-                        show: true, min: 0, max: 2,
+                        show: true,
+                        min: 0,
+                        max: 2,
                         gradient: [
                             { value: 0, color: 'red' },
                             { value: 1, color: 'lime' },
@@ -39,12 +39,12 @@ describe('An Intensity graph with log axes', function() {
 
             var xaxis = plot.getXAxes()[0],
                 yaxis = plot.getYAxes()[0];
-            expect(rgba(255,0,0,1)).toFillPixel(plot, xaxis.p2c(0.1), yaxis.p2c(1.5));
-            expect(rgba(255,0,0,1)).toFillPixel(plot, xaxis.p2c(0.9), yaxis.p2c(1.5));
-            expect(rgba(0,255,0,1)).toFillPixel(plot, xaxis.p2c(1.1), yaxis.p2c(1.5));
-            expect(rgba(0,255,0,1)).toFillPixel(plot, xaxis.p2c(1.9), yaxis.p2c(1.5));
-            expect(rgba(0,0,255,1)).toFillPixel(plot, xaxis.p2c(2.1), yaxis.p2c(1.5));
-            expect(rgba(0,0,255,1)).toFillPixel(plot, xaxis.p2c(2.9), yaxis.p2c(1.5));
+            expect(rgba(255, 0, 0, 1)).toFillPixel(plot, xaxis.p2c(0.1), yaxis.p2c(1.5));
+            expect(rgba(255, 0, 0, 1)).toFillPixel(plot, xaxis.p2c(0.9), yaxis.p2c(1.5));
+            expect(rgba(0, 255, 0, 1)).toFillPixel(plot, xaxis.p2c(1.1), yaxis.p2c(1.5));
+            expect(rgba(0, 255, 0, 1)).toFillPixel(plot, xaxis.p2c(1.9), yaxis.p2c(1.5));
+            expect(rgba(0, 0, 255, 1)).toFillPixel(plot, xaxis.p2c(2.1), yaxis.p2c(1.5));
+            expect(rgba(0, 0, 255, 1)).toFillPixel(plot, xaxis.p2c(2.9), yaxis.p2c(1.5));
         });
 
         it('should use the log mode of the y axis when borderWidth = ' + borderWidth, function () {
@@ -54,7 +54,9 @@ describe('An Intensity graph with log axes', function() {
                 yaxis: {show: false, mode: 'log', autoScale: 'none', min: 0.01, max: 3},
                 series: {
                     intensitygraph: {
-                        show: true, min: 0, max: 2,
+                        show: true,
+                        min: 0,
+                        max: 2,
                         gradient: [
                             { value: 0, color: 'red' },
                             { value: 1, color: 'lime' },
@@ -66,12 +68,12 @@ describe('An Intensity graph with log axes', function() {
 
             var xaxis = plot.getXAxes()[0],
                 yaxis = plot.getYAxes()[0];
-            expect(rgba(255,0,0,1)).toFillPixel(plot, xaxis.p2c(1.5), yaxis.p2c(0.1));
-            expect(rgba(255,0,0,1)).toFillPixel(plot, xaxis.p2c(1.5), yaxis.p2c(0.9));
-            expect(rgba(0,255,0,1)).toFillPixel(plot, xaxis.p2c(1.5), yaxis.p2c(1.1));
-            expect(rgba(0,255,0,1)).toFillPixel(plot, xaxis.p2c(1.5), yaxis.p2c(1.9));
-            expect(rgba(0,0,255,1)).toFillPixel(plot, xaxis.p2c(1.5), yaxis.p2c(2.1));
-            expect(rgba(0,0,255,1)).toFillPixel(plot, xaxis.p2c(1.5), yaxis.p2c(2.9));
+            expect(rgba(255, 0, 0, 1)).toFillPixel(plot, xaxis.p2c(1.5), yaxis.p2c(0.1));
+            expect(rgba(255, 0, 0, 1)).toFillPixel(plot, xaxis.p2c(1.5), yaxis.p2c(0.9));
+            expect(rgba(0, 255, 0, 1)).toFillPixel(plot, xaxis.p2c(1.5), yaxis.p2c(1.1));
+            expect(rgba(0, 255, 0, 1)).toFillPixel(plot, xaxis.p2c(1.5), yaxis.p2c(1.9));
+            expect(rgba(0, 0, 255, 1)).toFillPixel(plot, xaxis.p2c(1.5), yaxis.p2c(2.1));
+            expect(rgba(0, 0, 255, 1)).toFillPixel(plot, xaxis.p2c(1.5), yaxis.p2c(2.9));
         });
 
         it('should use the log mode of the x and y axes when borderWidth = ' + borderWidth, function () {
@@ -81,7 +83,9 @@ describe('An Intensity graph with log axes', function() {
                 yaxis: {show: false, mode: 'log', autoScale: 'none', min: 0.1, max: 3},
                 series: {
                     intensitygraph: {
-                        show: true, min: -3, max: 5,
+                        show: true,
+                        min: -3,
+                        max: 5,
                         gradient: [
                             { value: -3, color: 'cyan' },
                             { value: -2, color: 'orange' },
@@ -99,10 +103,10 @@ describe('An Intensity graph with log axes', function() {
 
             var xaxis = plot.getXAxes()[0],
                 yaxis = plot.getYAxes()[0];
-            expect(rgba(0,255,0,1)).toFillPixel(plot, xaxis.p2c(1.9), yaxis.p2c(1.9));
-            expect(rgba(0,0,255,1)).toFillPixel(plot, xaxis.p2c(1.1), yaxis.p2c(2.1));
-            expect(rgba(0,255,255,1)).toFillPixel(plot, xaxis.p2c(2.1), yaxis.p2c(1.9));
-            expect(rgba(0,0,0,1)).toFillPixel(plot, xaxis.p2c(2.1), yaxis.p2c(2.1));
+            expect(rgba(0, 255, 0, 1)).toFillPixel(plot, xaxis.p2c(1.9), yaxis.p2c(1.9));
+            expect(rgba(0, 0, 255, 1)).toFillPixel(plot, xaxis.p2c(1.1), yaxis.p2c(2.1));
+            expect(rgba(0, 255, 255, 1)).toFillPixel(plot, xaxis.p2c(2.1), yaxis.p2c(1.9));
+            expect(rgba(0, 0, 0, 1)).toFillPixel(plot, xaxis.p2c(2.1), yaxis.p2c(2.1));
         });
 
         it('should draw using the higher color when there are more points per pixel in a horizontal line when borderWidth = ' + borderWidth, function () {
@@ -130,7 +134,7 @@ describe('An Intensity graph with log axes', function() {
             // check the color of random sequence of pixels in the right of the canvas
             // there are so many points squeezed per pixel that the drawing area should be blue
             for (var i = 1; i < 5; i++) {
-                expect(rgba(0,0,255,1)).toFillPixel(plot, plot.width() - i, plot.height() / 2);
+                expect(rgba(0, 0, 255, 1)).toFillPixel(plot, plot.width() - i, plot.height() / 2);
             }
         });
 
@@ -159,7 +163,7 @@ describe('An Intensity graph with log axes', function() {
             // check the color of random sequence of pixels at the top of the canvas
             // there are so many points squeezed per pixel that the drawing area should be blue
             for (var i = 1; i < 5; i++) {
-                expect(rgba(0,0,255,1)).toFillPixel(plot, plot.width() / 2, 1);
+                expect(rgba(0, 0, 255, 1)).toFillPixel(plot, plot.width() / 2, 1);
             }
         });
 
@@ -196,7 +200,7 @@ describe('An Intensity graph with log axes', function() {
             // there are so many points squeezed per pixel that the drawing area should be blue
             for (var i = 1; i < 5; i++) {
                 for (var j = 1; j < 5; j++) {
-                    expect(rgba(0,0,255,1)).toFillPixel(plot, plot.width() - i, j);
+                    expect(rgba(0, 0, 255, 1)).toFillPixel(plot, plot.width() - i, j);
                 }
             }
         });
@@ -209,7 +213,9 @@ describe('An Intensity graph with log axes', function() {
             yaxis: {show: false, mode: 'log', autoScale: 'none', min: 0.01, max: 2},
             series: {
                 intensitygraph: {
-                    show: true, min: -10, max: 10,
+                    show: true,
+                    min: -10,
+                    max: 10,
                     lowColor: 'rgba(255,0,0,1)',
                     highColor: 'rgba(0,255,0,1)',
                     gradient: [
@@ -222,9 +228,9 @@ describe('An Intensity graph with log axes', function() {
 
         var xaxis = plot.getXAxes()[0],
             yaxis = plot.getYAxes()[0];
-        expect(rgba(0,0,255,1)).toFillPixel(plot, xaxis.p2c(0.5), yaxis.p2c(0.5));
-        expect(rgba(0,255,0,1)).toFillPixel(plot, xaxis.p2c(0.5), yaxis.p2c(1.5));
-        expect(rgba(255,0,0,1)).toFillPixel(plot, xaxis.p2c(1.5), yaxis.p2c(0.5));
-        expect(rgba(255,255,255,1)).toFillPixel(plot, xaxis.p2c(1.5), yaxis.p2c(1.5));
+        expect(rgba(0, 0, 255, 1)).toFillPixel(plot, xaxis.p2c(0.5), yaxis.p2c(0.5));
+        expect(rgba(0, 255, 0, 1)).toFillPixel(plot, xaxis.p2c(0.5), yaxis.p2c(1.5));
+        expect(rgba(255, 0, 0, 1)).toFillPixel(plot, xaxis.p2c(1.5), yaxis.p2c(0.5));
+        expect(rgba(255, 255, 255, 1)).toFillPixel(plot, xaxis.p2c(1.5), yaxis.p2c(1.5));
     });
 });

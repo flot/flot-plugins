@@ -729,8 +729,8 @@ describe('A digital waveform', function() {
 
     function setupCanvasToSpyOn(plot, f) {
         let axes = plot.getAxes();
-        axes.xaxis.p2c = (p) => p * (f ? f : 1);
-        axes.yaxis.p2c = (p) => p * (f ? f : 1);
+        axes.xaxis.p2c = (p) => p * (f || 1);
+        axes.yaxis.p2c = (p) => p * (f || 1);
         return plot.getCanvas().getContext('2d');
     }
 

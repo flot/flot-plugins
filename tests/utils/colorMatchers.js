@@ -30,9 +30,9 @@ function createTestMatrix(columns, rows, value) {
 
 function createPatternTestMatrix(columns, rows) {
     var data = [];
-    for(var i = 0; i < columns; i++) {
+    for (var i = 0; i < columns; i++) {
         data[i] = [];
-        for(var j = 0; j < rows; j++) {
+        for (var j = 0; j < rows; j++) {
             data[i][j] = (i + j) % 2;
         }
     }
@@ -41,9 +41,9 @@ function createPatternTestMatrix(columns, rows) {
 
 function createBorderTestMatrix(columns, rows) {
     var data = [], d = 1;
-    for(var i = 0; i < columns; i++) {
+    for (var i = 0; i < columns; i++) {
         data[i] = [];
-        for(var j = 0; j < rows; j++) {
+        for (var j = 0; j < rows; j++) {
             if (i === d || i === columns - 1 - d || j === d || j === rows - 1 - d) {
                 data[i][j] = 1;
             } else {

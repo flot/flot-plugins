@@ -1,6 +1,3 @@
-/* global $, describe, it, beforeEach, afterEach, expect, jasmine, spyOn */
-/* jshint browser: true*/
-
 describe('Flot annotations', function () {
     'use strict';
     var d1 = [];

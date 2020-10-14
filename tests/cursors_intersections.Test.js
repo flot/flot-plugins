@@ -1,6 +1,3 @@
-/* global $, describe, it, xit, after, beforeEach, afterEach, expect, jasmine */
-/* jshint browser: true*/
-
 describe("Cursors intersections", function () {
     'use strict';
 

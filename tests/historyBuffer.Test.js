@@ -84,7 +84,6 @@ describe('A HistoryBuffer works with numeric data', function () {
         expect(hb.lastIndex()).toBe(7);
     });
 
-
     it('has an appendArray method', function () {
         var hb = new HistoryBuffer(10);
 
@@ -160,7 +159,7 @@ describe('A HistoryBuffer works with numeric data', function () {
         expect(serializedHb['capacity']).toBe(10);
         expect(serializedHb['valueType']).toBe('HistoryBuffer');
         expect(serializedHb['count']).toBe(3);
-        expect(serializedHb['data']).toEqual([1,2,3]);
+        expect(serializedHb['data']).toEqual([1, 2, 3]);
     });
 
     it('stringify method works for plots with multiple data series', function () {
@@ -179,7 +178,6 @@ describe('A HistoryBuffer works with numeric data', function () {
     });
 
     describe('registerOnChange notification', function () {
-
         it('has an registerOnChange method', function () {
             var hb = new HistoryBuffer(10, 1);
 
@@ -302,7 +300,6 @@ describe('A History Buffer works with analogWaveform data', function () {
     var utc = new Date(Date.UTC(1904, 0, 1, 0, 0, 0));
     var TimeZero = new NITimestamp(utc);
 
-
     function analogWaveformHB(capacity, width) {
         var hb = new HistoryBuffer(capacity, width);
         hb.setType('analogWaveform');
@@ -314,25 +311,25 @@ describe('A History Buffer works with analogWaveform data', function () {
         aw = new NIAnalogWaveform({
             t0: TimeZero + 4,
             dt: 1,
-            Y:[1, 2, 3]
+            Y: [1, 2, 3]
         });
 
         aw1 = new NIAnalogWaveform({
             t0: TimeZero + 1,
             dt: 1,
-            Y:[1, 2, 3]
+            Y: [1, 2, 3]
         });
 
         aw2 = new NIAnalogWaveform({
             t0: TimeZero + 8,
             dt: 1,
-            Y:[4, 3, 2]
+            Y: [4, 3, 2]
         });
 
         aw3 = new NIAnalogWaveform({
             t0: TimeZero + 10,
             dt: 1,
-            Y:[0, 1, 2]
+            Y: [0, 1, 2]
         });
 
         serializedHb = {
@@ -453,7 +450,7 @@ describe('A History Buffer works with analogWaveform data', function () {
     it('has a toJSON method', function () {
         var hb = analogWaveformHB(10, 2);
 
-        hb.appendArray([[aw, aw1], [aw2,aw3]]);
+        hb.appendArray([[aw, aw1], [aw2, aw3]]);
 
         expect(hb.toJSON()).toEqual(serializedHb);
     });
@@ -475,16 +472,15 @@ describe('A History Buffer works with analogWaveform data', function () {
     });
 
     it('toDataSeries method works for history buffers with width > 1', function () {
-        var hb = analogWaveformHB(10,2);
+        var hb = analogWaveformHB(10, 2);
 
         hb.appendArray([[aw, aw2], [aw1, aw3]]);
 
         expect(hb.toDataSeries(0)).toEqual([[4, 1], [5, 2], [6, 3], [1, 1], [2, 2], [3, 3]]);
-        expect(hb.toDataSeries(1)).toEqual([[8, 4], [9, 3], [10, 2], [10, 0], [11, 1],[12, 2]]);
+        expect(hb.toDataSeries(1)).toEqual([[8, 4], [9, 3], [10, 2], [10, 0], [11, 1], [12, 2]]);
     });
 
     describe('registerOnChange notification', function () {
-
         it('has an registerOnChange method', function () {
             var hb = analogWaveformHB(10, 1);
 

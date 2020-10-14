@@ -3,7 +3,6 @@
 # Ignore ni-element-infrastructure
 dist
 lib
-tests
 source/JUMFlot/*
 source/misc/*
 *.min.js

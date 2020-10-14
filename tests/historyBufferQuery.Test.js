@@ -32,7 +32,7 @@ describe('A HistoryBuffer', function () {
 
         hb.appendArray([2, 5, 4, 6]);
 
-        expect(hb.rangeX(0)).toEqual({xmin:0, xmax: 3, deltamin: 1});
+        expect(hb.rangeX(0)).toEqual({xmin: 0, xmax: 3, deltamin: 1});
     });
 
     it('has basic rangeY capabilities', function () {
@@ -40,7 +40,7 @@ describe('A HistoryBuffer', function () {
 
         hb.appendArray([2, 5, 4, 6]);
 
-        expect(hb.rangeY(1,2,0)).toEqual({ymin: 4, ymax: 5});
+        expect(hb.rangeY(1, 2, 0)).toEqual({ymin: 4, ymax: 5});
     });
 
     it('works with empty parameters for rangeY', function () {
@@ -74,8 +74,8 @@ describe('A HistoryBuffer', function () {
         hb.push([5, 6]);
         hb.push([15, 16]);
 
-        expect(hb.rangeX(0)).toEqual({xmin:0, xmax: 1, deltamin: 1});
-        expect(hb.rangeX(1)).toEqual({xmin:0, xmax: 1, deltamin: 1});
+        expect(hb.rangeX(0)).toEqual({xmin: 0, xmax: 1, deltamin: 1});
+        expect(hb.rangeX(1)).toEqual({xmin: 0, xmax: 1, deltamin: 1});
     });
 
     it('returns empty data series when querying an empty history Buffer', function () {
@@ -173,7 +173,6 @@ describe('A HistoryBuffer', function () {
             section.forEach(function (s) {
                 decimatedRes = decimatedRes.concat(s);
             });
-
         }
 
         return decimatedRes;
@@ -182,7 +181,7 @@ describe('A HistoryBuffer', function () {
     /*makes sure that we get the query results in order*/
     function indexesAreInAscendingOrder(dataSeries) {
         var res = true;
-        for (var i = 2; i < dataSeries.length; i+=2) {
+        for (var i = 2; i < dataSeries.length; i += 2) {
             if (dataSeries[i - 2] >= dataSeries[i]) {
                 res = false;
             }

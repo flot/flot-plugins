@@ -1,4 +1,3 @@
-/* global setFixtures */
 /* brackets-xunit: includes=../lib/cbuffer.js,../jquery.flot.historybuffer.js*,../jquery.flot.js,../jquery.flot.charting.js */
 
 describe('An Intensity graph', function() {
@@ -33,8 +32,8 @@ describe('An Intensity graph', function() {
         plot.draw();
 
         var ctx = $(placeholder).find('.flot-base').get(0).getContext('2d'),
-            c = getPixelColor(ctx, ctx.canvas.width/2, ctx.canvas.height/2);
-        expect(isClose(c, rgba(0,0,0,0))).toBeTruthy();
+            c = getPixelColor(ctx, ctx.canvas.width / 2, ctx.canvas.height / 2);
+        expect(isClose(c, rgba(0, 0, 0, 0))).toBeTruthy();
     });
 
     it('should draw using the coresponding colors of the gradient', function () {
@@ -55,12 +54,12 @@ describe('An Intensity graph', function() {
         plot.draw();
 
         var ctx = $(placeholder).find('.flot-base').get(0).getContext('2d'),
-            c0 = getPixelColor(ctx, 1*ctx.canvas.width/8, ctx.canvas.height/2),
-            c1 = getPixelColor(ctx, 4*ctx.canvas.width/8, ctx.canvas.height/2),
-            c2 = getPixelColor(ctx, 7*ctx.canvas.width/8, ctx.canvas.height/2);
-        expect(isClose(c0, rgba(255,0,0,1))).toBeTruthy();
-        expect(isClose(c1, rgba(127,0,127,1))).toBeTruthy();
-        expect(isClose(c2, rgba(0,0,255,1))).toBeTruthy();
+            c0 = getPixelColor(ctx, 1 * ctx.canvas.width / 8, ctx.canvas.height / 2),
+            c1 = getPixelColor(ctx, 4 * ctx.canvas.width / 8, ctx.canvas.height / 2),
+            c2 = getPixelColor(ctx, 7 * ctx.canvas.width / 8, ctx.canvas.height / 2);
+        expect(isClose(c0, rgba(255, 0, 0, 1))).toBeTruthy();
+        expect(isClose(c1, rgba(127, 0, 127, 1))).toBeTruthy();
+        expect(isClose(c2, rgba(0, 0, 255, 1))).toBeTruthy();
     });
 
     it('should draw using the low and high colors', function () {
@@ -85,12 +84,12 @@ describe('An Intensity graph', function() {
         plot.draw();
 
         var ctx = $(placeholder).find('.flot-base').get(0).getContext('2d'),
-            c1 = getPixelColor(ctx, 1*ctx.canvas.width/8, ctx.canvas.height/2),
-            c2 = getPixelColor(ctx, 4*ctx.canvas.width/8, ctx.canvas.height/2),
-            c3 = getPixelColor(ctx, 7*ctx.canvas.width/8, ctx.canvas.height/2);
-        expect(isClose(c1, rgba(0,0,0,1))).toBeTruthy();
-        expect(isClose(c2, rgba(255,0,0,1))).toBeTruthy();
-        expect(isClose(c3, rgba(255,255,255,1))).toBeTruthy();
+            c1 = getPixelColor(ctx, 1 * ctx.canvas.width / 8, ctx.canvas.height / 2),
+            c2 = getPixelColor(ctx, 4 * ctx.canvas.width / 8, ctx.canvas.height / 2),
+            c3 = getPixelColor(ctx, 7 * ctx.canvas.width / 8, ctx.canvas.height / 2);
+        expect(isClose(c1, rgba(0, 0, 0, 1))).toBeTruthy();
+        expect(isClose(c2, rgba(255, 0, 0, 1))).toBeTruthy();
+        expect(isClose(c3, rgba(255, 255, 255, 1))).toBeTruthy();
     });
 
     it('should draw using the low color when there are more points per pixel', function () {
@@ -115,8 +114,8 @@ describe('An Intensity graph', function() {
         plot.draw();
 
         var ctx = $(placeholder).find('.flot-base').get(0).getContext('2d'),
-            c = getPixelColor(ctx, ctx.canvas.width/2, ctx.canvas.height/2);
-        expect(isClose(c, rgba(0,0,0,1))).toBeTruthy();
+            c = getPixelColor(ctx, ctx.canvas.width / 2, ctx.canvas.height / 2);
+        expect(isClose(c, rgba(0, 0, 0, 1))).toBeTruthy();
     });
 
     it('should draw using the high color when there are more points per pixel', function () {
@@ -141,8 +140,8 @@ describe('An Intensity graph', function() {
         plot.draw();
 
         var ctx = $(placeholder).find('.flot-base').get(0).getContext('2d'),
-            c = getPixelColor(ctx, ctx.canvas.width/2, ctx.canvas.height/2);
-        expect(isClose(c, rgba(255,255,255,1))).toBeTruthy();
+            c = getPixelColor(ctx, ctx.canvas.width / 2, ctx.canvas.height / 2);
+        expect(isClose(c, rgba(255, 255, 255, 1))).toBeTruthy();
     });
 
     it('should draw using the only color of the gradien when only one is specified', function () {
@@ -158,7 +157,7 @@ describe('An Intensity graph', function() {
                     lowColor: 'rgba(0,0,0,1)',
                     highColor: 'rgba(255,255,255,1)',
                     gradient: [
-                        { value: 0.25, color: 'red' },
+                        { value: 0.25, color: 'red' }
                     ]
                 }
             }
@@ -166,12 +165,12 @@ describe('An Intensity graph', function() {
         plot.draw();
 
         var ctx = $(placeholder).find('.flot-base').get(0).getContext('2d'),
-            c1 = getPixelColor(ctx, 1*ctx.canvas.width/8, ctx.canvas.height/2),
-            c2 = getPixelColor(ctx, 4*ctx.canvas.width/8, ctx.canvas.height/2),
-            c3 = getPixelColor(ctx, 7*ctx.canvas.width/8, ctx.canvas.height/2);
-        expect(isClose(c1, rgba(255,0,0,1))).toBeTruthy();
-        expect(isClose(c2, rgba(255,0,0,1))).toBeTruthy();
-        expect(isClose(c3, rgba(255,0,0,1))).toBeTruthy();
+            c1 = getPixelColor(ctx, 1 * ctx.canvas.width / 8, ctx.canvas.height / 2),
+            c2 = getPixelColor(ctx, 4 * ctx.canvas.width / 8, ctx.canvas.height / 2),
+            c3 = getPixelColor(ctx, 7 * ctx.canvas.width / 8, ctx.canvas.height / 2);
+        expect(isClose(c1, rgba(255, 0, 0, 1))).toBeTruthy();
+        expect(isClose(c2, rgba(255, 0, 0, 1))).toBeTruthy();
+        expect(isClose(c3, rgba(255, 0, 0, 1))).toBeTruthy();
     });
 
     it('should work with a gradient of a arbitrary limits', function () {
@@ -188,8 +187,8 @@ describe('An Intensity graph', function() {
                     highColor: 'rgba(255,255,255,1)',
                     gradient: [
                         { value: -0.5, color: 'red' },
-                        { value:  0.5, color: 'yellow' },
-                        { value:  1.5, color: 'blue' }
+                        { value: 0.5, color: 'yellow' },
+                        { value: 1.5, color: 'blue' }
                     ]
                 }
             }
@@ -197,16 +196,16 @@ describe('An Intensity graph', function() {
         plot.draw();
 
         var ctx = $(placeholder).find('.flot-base').get(0).getContext('2d'),
-            c1 = getPixelColor(ctx, 1*ctx.canvas.width/10, ctx.canvas.height/2),
-            c2 = getPixelColor(ctx, 3*ctx.canvas.width/10, ctx.canvas.height/2),
-            c3 = getPixelColor(ctx, 5*ctx.canvas.width/10, ctx.canvas.height/2),
-            c4 = getPixelColor(ctx, 7*ctx.canvas.width/10, ctx.canvas.height/2),
-            c5 = getPixelColor(ctx, 9*ctx.canvas.width/10, ctx.canvas.height/2);
-        expect(isClose(c1, rgba(0,0,0,1))).toBeTruthy();
-        expect(isClose(c2, rgba(255,0,0,1))).toBeTruthy();
-        expect(isClose(c3, rgba(255,255,0,1))).toBeTruthy();
-        expect(isClose(c4, rgba(0,0,255,1))).toBeTruthy();
-        expect(isClose(c5, rgba(255,255,255,1))).toBeTruthy();
+            c1 = getPixelColor(ctx, 1 * ctx.canvas.width / 10, ctx.canvas.height / 2),
+            c2 = getPixelColor(ctx, 3 * ctx.canvas.width / 10, ctx.canvas.height / 2),
+            c3 = getPixelColor(ctx, 5 * ctx.canvas.width / 10, ctx.canvas.height / 2),
+            c4 = getPixelColor(ctx, 7 * ctx.canvas.width / 10, ctx.canvas.height / 2),
+            c5 = getPixelColor(ctx, 9 * ctx.canvas.width / 10, ctx.canvas.height / 2);
+        expect(isClose(c1, rgba(0, 0, 0, 1))).toBeTruthy();
+        expect(isClose(c2, rgba(255, 0, 0, 1))).toBeTruthy();
+        expect(isClose(c3, rgba(255, 255, 0, 1))).toBeTruthy();
+        expect(isClose(c4, rgba(0, 0, 255, 1))).toBeTruthy();
+        expect(isClose(c5, rgba(255, 255, 255, 1))).toBeTruthy();
     });
 
     it('should ignore the values of the gradient outside the minimum and maximum limits', function () {
@@ -223,8 +222,8 @@ describe('An Intensity graph', function() {
                     highColor: 'rgba(255,255,255,1)',
                     gradient: [
                         { value: -0.5, color: 'red' },
-                        { value:  2.5, color: 'yellow' },
-                        { value:  1.5, color: 'blue' }
+                        { value: 2.5, color: 'yellow' },
+                        { value: 1.5, color: 'blue' }
                     ]
                 }
             }
@@ -232,16 +231,16 @@ describe('An Intensity graph', function() {
         plot.draw();
 
         var ctx = $(placeholder).find('.flot-base').get(0).getContext('2d'),
-            c1 = getPixelColor(ctx, 1*ctx.canvas.width/10, ctx.canvas.height/2),
-            c2 = getPixelColor(ctx, 3*ctx.canvas.width/10, ctx.canvas.height/2),
-            c3 = getPixelColor(ctx, 5*ctx.canvas.width/10, ctx.canvas.height/2),
-            c4 = getPixelColor(ctx, 7*ctx.canvas.width/10, ctx.canvas.height/2),
-            c5 = getPixelColor(ctx, 9*ctx.canvas.width/10, ctx.canvas.height/2);
-        expect(isClose(c1, rgba(0,0,0,1))).toBeTruthy();
-        expect(isClose(c2, rgba(255,0,0,1))).toBeTruthy();
-        expect(isClose(c3, rgba(127,0,127,1))).toBeTruthy();
-        expect(isClose(c4, rgba(0,0,255,1))).toBeTruthy();
-        expect(isClose(c5, rgba(255,255,255,1))).toBeTruthy();
+            c1 = getPixelColor(ctx, 1 * ctx.canvas.width / 10, ctx.canvas.height / 2),
+            c2 = getPixelColor(ctx, 3 * ctx.canvas.width / 10, ctx.canvas.height / 2),
+            c3 = getPixelColor(ctx, 5 * ctx.canvas.width / 10, ctx.canvas.height / 2),
+            c4 = getPixelColor(ctx, 7 * ctx.canvas.width / 10, ctx.canvas.height / 2),
+            c5 = getPixelColor(ctx, 9 * ctx.canvas.width / 10, ctx.canvas.height / 2);
+        expect(isClose(c1, rgba(0, 0, 0, 1))).toBeTruthy();
+        expect(isClose(c2, rgba(255, 0, 0, 1))).toBeTruthy();
+        expect(isClose(c3, rgba(127, 0, 127, 1))).toBeTruthy();
+        expect(isClose(c4, rgba(0, 0, 255, 1))).toBeTruthy();
+        expect(isClose(c5, rgba(255, 255, 255, 1))).toBeTruthy();
     });
 
     it('should draw nothing when the limits of the x axis are negative', function () {
@@ -262,12 +261,12 @@ describe('An Intensity graph', function() {
         plot.draw();
 
         var ctx = $(placeholder).find('.flot-base').get(0).getContext('2d'),
-            c0 = getPixelColor(ctx, 1*ctx.canvas.width/8, ctx.canvas.height/2),
-            c1 = getPixelColor(ctx, 4*ctx.canvas.width/8, ctx.canvas.height/2),
-            c2 = getPixelColor(ctx, 7*ctx.canvas.width/8, ctx.canvas.height/2);
-        expect(isClose(c0, rgba(0,0,0,0))).toBeTruthy();
-        expect(isClose(c1, rgba(0,0,0,0))).toBeTruthy();
-        expect(isClose(c2, rgba(0,0,0,0))).toBeTruthy();
+            c0 = getPixelColor(ctx, 1 * ctx.canvas.width / 8, ctx.canvas.height / 2),
+            c1 = getPixelColor(ctx, 4 * ctx.canvas.width / 8, ctx.canvas.height / 2),
+            c2 = getPixelColor(ctx, 7 * ctx.canvas.width / 8, ctx.canvas.height / 2);
+        expect(isClose(c0, rgba(0, 0, 0, 0))).toBeTruthy();
+        expect(isClose(c1, rgba(0, 0, 0, 0))).toBeTruthy();
+        expect(isClose(c2, rgba(0, 0, 0, 0))).toBeTruthy();
     });
 
     it('should draw nothing when the limits of the x axis are above the data width', function () {
@@ -288,12 +287,12 @@ describe('An Intensity graph', function() {
         plot.draw();
 
         var ctx = $(placeholder).find('.flot-base').get(0).getContext('2d'),
-            c0 = getPixelColor(ctx, 1*ctx.canvas.width/8, ctx.canvas.height/2),
-            c1 = getPixelColor(ctx, 4*ctx.canvas.width/8, ctx.canvas.height/2),
-            c2 = getPixelColor(ctx, 7*ctx.canvas.width/8, ctx.canvas.height/2);
-        expect(isClose(c0, rgba(0,0,0,0))).toBeTruthy();
-        expect(isClose(c1, rgba(0,0,0,0))).toBeTruthy();
-        expect(isClose(c2, rgba(0,0,0,0))).toBeTruthy();
+            c0 = getPixelColor(ctx, 1 * ctx.canvas.width / 8, ctx.canvas.height / 2),
+            c1 = getPixelColor(ctx, 4 * ctx.canvas.width / 8, ctx.canvas.height / 2),
+            c2 = getPixelColor(ctx, 7 * ctx.canvas.width / 8, ctx.canvas.height / 2);
+        expect(isClose(c0, rgba(0, 0, 0, 0))).toBeTruthy();
+        expect(isClose(c1, rgba(0, 0, 0, 0))).toBeTruthy();
+        expect(isClose(c2, rgba(0, 0, 0, 0))).toBeTruthy();
     });
 
     it('should draw nothing when the limits of the y axis are negative', function () {
@@ -314,12 +313,12 @@ describe('An Intensity graph', function() {
         plot.draw();
 
         var ctx = $(placeholder).find('.flot-base').get(0).getContext('2d'),
-            c0 = getPixelColor(ctx, 1*ctx.canvas.width/8, ctx.canvas.height/2),
-            c1 = getPixelColor(ctx, 4*ctx.canvas.width/8, ctx.canvas.height/2),
-            c2 = getPixelColor(ctx, 7*ctx.canvas.width/8, ctx.canvas.height/2);
-        expect(isClose(c0, rgba(0,0,0,0))).toBeTruthy();
-        expect(isClose(c1, rgba(0,0,0,0))).toBeTruthy();
-        expect(isClose(c2, rgba(0,0,0,0))).toBeTruthy();
+            c0 = getPixelColor(ctx, 1 * ctx.canvas.width / 8, ctx.canvas.height / 2),
+            c1 = getPixelColor(ctx, 4 * ctx.canvas.width / 8, ctx.canvas.height / 2),
+            c2 = getPixelColor(ctx, 7 * ctx.canvas.width / 8, ctx.canvas.height / 2);
+        expect(isClose(c0, rgba(0, 0, 0, 0))).toBeTruthy();
+        expect(isClose(c1, rgba(0, 0, 0, 0))).toBeTruthy();
+        expect(isClose(c2, rgba(0, 0, 0, 0))).toBeTruthy();
     });
 
     it('should draw nothing when the limits of the y axis are above the data height', function () {
@@ -340,12 +339,12 @@ describe('An Intensity graph', function() {
         plot.draw();
 
         var ctx = $(placeholder).find('.flot-base').get(0).getContext('2d'),
-            c0 = getPixelColor(ctx, 1*ctx.canvas.width/8, ctx.canvas.height/2),
-            c1 = getPixelColor(ctx, 4*ctx.canvas.width/8, ctx.canvas.height/2),
-            c2 = getPixelColor(ctx, 7*ctx.canvas.width/8, ctx.canvas.height/2);
-        expect(isClose(c0, rgba(0,0,0,0))).toBeTruthy();
-        expect(isClose(c1, rgba(0,0,0,0))).toBeTruthy();
-        expect(isClose(c2, rgba(0,0,0,0))).toBeTruthy();
+            c0 = getPixelColor(ctx, 1 * ctx.canvas.width / 8, ctx.canvas.height / 2),
+            c1 = getPixelColor(ctx, 4 * ctx.canvas.width / 8, ctx.canvas.height / 2),
+            c2 = getPixelColor(ctx, 7 * ctx.canvas.width / 8, ctx.canvas.height / 2);
+        expect(isClose(c0, rgba(0, 0, 0, 0))).toBeTruthy();
+        expect(isClose(c1, rgba(0, 0, 0, 0))).toBeTruthy();
+        expect(isClose(c2, rgba(0, 0, 0, 0))).toBeTruthy();
     });
 
     it('should draw a piece of data when the axis limits are not perfectly matching the data width and height 1', function () {
@@ -365,8 +364,8 @@ describe('An Intensity graph', function() {
                 +--------------------------------+
         */
         plot = $.plot(placeholder, [[[0.0, 0.6],
-                                     [0.2, 0.8],
-                                     [0.4, 1.0]]], {
+            [0.2, 0.8],
+            [0.4, 1.0]]], {
             grid: {show: true},
             xaxis: {show: true, min: 1, max: 4, autoScale: 'none'},
             yaxis: {show: true, min: 1, max: 3, autoScale: 'none'},
@@ -383,12 +382,12 @@ describe('An Intensity graph', function() {
         plot.draw();
 
         var ctx = $(placeholder).find('.flot-base').get(0).getContext('2d'),
-            c00 = getPixelColor(ctx, 1*ctx.canvas.width/8, 2*ctx.canvas.height/3),
-            c01 = getPixelColor(ctx, 4*ctx.canvas.width/8, 2*ctx.canvas.height/3),
-            c02 = getPixelColor(ctx, 7*ctx.canvas.width/8, 2*ctx.canvas.height/3);
-        expect(isClose(c00, rgba(1*255/5,0,4*255/5,1))).toBeTruthy();
-        expect(isClose(c01, rgba(0*255/5,0,5*255/5,1))).toBeTruthy();
-        expect(isClose(c02, rgba(0,0,0,0))).toBeTruthy();
+            c00 = getPixelColor(ctx, 1 * ctx.canvas.width / 8, 2 * ctx.canvas.height / 3),
+            c01 = getPixelColor(ctx, 4 * ctx.canvas.width / 8, 2 * ctx.canvas.height / 3),
+            c02 = getPixelColor(ctx, 7 * ctx.canvas.width / 8, 2 * ctx.canvas.height / 3);
+        expect(isClose(c00, rgba(1 * 255 / 5, 0, 4 * 255 / 5, 1))).toBeTruthy();
+        expect(isClose(c01, rgba(0 * 255 / 5, 0, 5 * 255 / 5, 1))).toBeTruthy();
+        expect(isClose(c02, rgba(0, 0, 0, 0))).toBeTruthy();
     });
 
     it('should draw a piece of data when the axis limits are not perfectly matching the data width and height 2', function () {
@@ -410,8 +409,8 @@ describe('An Intensity graph', function() {
                                                  x
         */
         plot = $.plot(placeholder, [[[0.0, 0.6],
-                                     [0.2, 0.8],
-                                     [0.4, 1.0]]], {
+            [0.2, 0.8],
+            [0.4, 1.0]]], {
             grid: {show: true},
             xaxis: {show: true, min: -1, max: 2, autoScale: 'none'},
             yaxis: {show: true, min: -1, max: 1, autoScale: 'none'},
@@ -428,15 +427,15 @@ describe('An Intensity graph', function() {
         plot.draw();
 
         var ctx = $(placeholder).find('.flot-base').get(0).getContext('2d'),
-            c10 = getPixelColor(ctx, 1*ctx.canvas.width/8, 1*ctx.canvas.height/3),
-            c11 = getPixelColor(ctx, 4*ctx.canvas.width/8, 1*ctx.canvas.height/3),
-            c12 = getPixelColor(ctx, 7*ctx.canvas.width/8, 1*ctx.canvas.height/3);
-        expect(isClose(c10, rgba(0,0,0,0))).toBeTruthy();
-        expect(isClose(c11, rgba(5*255/5,0,0*255/5,1))).toBeTruthy();
-        expect(isClose(c12, rgba(4*255/5,0,1*255/5,1))).toBeTruthy();
+            c10 = getPixelColor(ctx, 1 * ctx.canvas.width / 8, 1 * ctx.canvas.height / 3),
+            c11 = getPixelColor(ctx, 4 * ctx.canvas.width / 8, 1 * ctx.canvas.height / 3),
+            c12 = getPixelColor(ctx, 7 * ctx.canvas.width / 8, 1 * ctx.canvas.height / 3);
+        expect(isClose(c10, rgba(0, 0, 0, 0))).toBeTruthy();
+        expect(isClose(c11, rgba(5 * 255 / 5, 0, 0 * 255 / 5, 1))).toBeTruthy();
+        expect(isClose(c12, rgba(4 * 255 / 5, 0, 1 * 255 / 5, 1))).toBeTruthy();
     });
 
-    it('should not throw when the size of the plot is not an integer value', function (){
+    it('should not throw when the size of the plot is not an integer value', function () {
         $(placeholder).css('padding', '10%');
         $(placeholder).css('width', '89.43px');
         $(placeholder).css('height', '98.76px');
@@ -496,7 +495,7 @@ describe('An Intensity graph', function() {
                     borderColors.push(getPixelColor(ctx, i, ctx.canvas.height / 2));
                 }
                 borderColors.forEach(function(bc) {
-                    expect(isClose(bc, rgba(0,255,0,1))).toBeTruthy();
+                    expect(isClose(bc, rgba(0, 255, 0, 1))).toBeTruthy();
                 });
 
                 var nearBorderColors = [];
@@ -505,7 +504,7 @@ describe('An Intensity graph', function() {
                 nearBorderColors.push(getPixelColor(ctx, ctx.canvas.width / 2, ctx.canvas.height - 1 - borderWidth));
                 nearBorderColors.push(getPixelColor(ctx, borderWidth, ctx.canvas.height / 2));
                 nearBorderColors.forEach(function(nbc) {
-                    expect(isClose(nbc, rgba(255,0,0,1))).toBeTruthy();
+                    expect(isClose(nbc, rgba(255, 0, 0, 1))).toBeTruthy();
                 });
             });
         });
@@ -558,7 +557,7 @@ describe('An Intensity graph', function() {
                 borderColors.push(getScaledPixelColor(ctx, pixelRatio, i, height / 2));
             }
             borderColors.forEach(function(bc) {
-                expect(isClose(bc, rgba(0,255,0,1))).toBeTruthy();
+                expect(isClose(bc, rgba(0, 255, 0, 1))).toBeTruthy();
             });
 
             var nearBorderColors = [];
@@ -567,7 +566,7 @@ describe('An Intensity graph', function() {
             nearBorderColors.push(getScaledPixelColor(ctx, pixelRatio, width / 2, height - 1 - borderWidth));
             nearBorderColors.push(getScaledPixelColor(ctx, pixelRatio, borderWidth, height / 2));
             nearBorderColors.forEach(function(nbc) {
-                expect(isClose(nbc, rgba(255,0,0,1))).toBeTruthy();
+                expect(isClose(nbc, rgba(255, 0, 0, 1))).toBeTruthy();
             });
         });
     });
@@ -599,7 +598,7 @@ describe('An Intensity graph', function() {
             for (var i = start; i < stop; i++) {
                 for (var j = start; j < stop; j++) {
                     var c = getPixelColor(ctx, i * ctx.canvas.width / steps, j * ctx.canvas.height / steps);
-                    expect(isClose(c, rgba(0,0,0,0))).toBeFalsy();
+                    expect(isClose(c, rgba(0, 0, 0, 0))).toBeFalsy();
                 }
             }
         });
@@ -624,7 +623,9 @@ describe('An Intensity graph', function() {
                 yaxis: {show: visibleBorder, min: 0.123, max: 2.345, autoScale: 'none'},
                 series: {
                     intensitygraph: {
-                        show: true, min: 0, max: 3,
+                        show: true,
+                        min: 0,
+                        max: 3,
                         gradient: [
                             { value: 0, color: 'rgba(0,0,255,0.5)' },
                             { value: 1, color: 'rgba(0,255,0,0.5)' },
@@ -641,13 +642,13 @@ describe('An Intensity graph', function() {
             //not aligned with the center of the canvas/drawing area
             var e = 0.1; //error caused by scaling up the pixel in rect by rect mode
             expect(isClose(
-                getPixelColor(ctx, cx(2-e), cy(2-e)), rgba(255,0,0,0.5))).toBeTruthy();
+                getPixelColor(ctx, cx(2 - e), cy(2 - e)), rgba(255, 0, 0, 0.5))).toBeTruthy();
             expect(isClose(
-                getPixelColor(ctx, cx(2-e), cy(2+e)), rgba(255,0,255,0.5))).toBeTruthy();
+                getPixelColor(ctx, cx(2 - e), cy(2 + e)), rgba(255, 0, 255, 0.5))).toBeTruthy();
             expect(isClose(
-                getPixelColor(ctx, cx(2+e), cy(2-e)), rgba(255,0,255,0.5))).toBeTruthy();
+                getPixelColor(ctx, cx(2 + e), cy(2 - e)), rgba(255, 0, 255, 0.5))).toBeTruthy();
             expect(isClose(
-                getPixelColor(ctx, cx(2+e), cy(2+e)), rgba(0,0,255,0.5))).toBeTruthy();
+                getPixelColor(ctx, cx(2 + e), cy(2 + e)), rgba(0, 0, 255, 0.5))).toBeTruthy();
         });
 
         function cx(value) {
@@ -694,7 +695,7 @@ describe('An Intensity graph', function() {
         for (var i = 0; i < 5; i++) {
             for (var j = 0; j < 5; j++) {
                 var c = getPixelColor(ctx, ctx.canvas.width / 2 + i, ctx.canvas.height / 2 + j);
-                expect(isClose(c, rgba(0,0,255,1))).toBeTruthy();
+                expect(isClose(c, rgba(0, 0, 255, 1))).toBeTruthy();
             }
         }
     });
@@ -731,9 +732,9 @@ describe('An Intensity graph', function() {
             insideColor = getPixelColor(ctx, ctx.canvas.width / 2, ctx.canvas.height / 2),
             leftBorderColor = getPixelColor(ctx, 0, ctx.canvas.height / 2),
             bottomBorderColor = getPixelColor(ctx, ctx.canvas.width / 2, ctx.canvas.height - 1);
-        expect(isClose(insideColor, rgba(255,0,0,1))).toBeTruthy();
-        expect(isClose(leftBorderColor, rgba(0,0,255,1))).toBeTruthy();
-        expect(isClose(bottomBorderColor, rgba(0,0,255,1))).toBeTruthy();
+        expect(isClose(insideColor, rgba(255, 0, 0, 1))).toBeTruthy();
+        expect(isClose(leftBorderColor, rgba(0, 0, 255, 1))).toBeTruthy();
+        expect(isClose(bottomBorderColor, rgba(0, 0, 255, 1))).toBeTruthy();
     });
 
     it('should use colorscale limits for data color when autoScale = exact', function() {
@@ -765,10 +766,10 @@ describe('An Intensity graph', function() {
         expect(colorScaleAxis.min).toEqual(0.1);
         expect(colorScaleAxis.max).toEqual(0.5);
         var ctx = $(placeholder).find('.flot-base').get(0).getContext('2d'),
-            bottomColor = getPixelColor(ctx, ctx.canvas.width/2 + 20, ctx.canvas.height - 30),
+            bottomColor = getPixelColor(ctx, ctx.canvas.width / 2 + 20, ctx.canvas.height - 30),
             topColor = getPixelColor(ctx, 10, ctx.canvas.height / 2 - 20);
-        expect(isClose(topColor, rgba(0,0,255,1))).toBeTruthy();
-        expect(isClose(bottomColor, rgba(255,0,0,1))).toBeTruthy();
+        expect(isClose(topColor, rgba(0, 0, 255, 1))).toBeTruthy();
+        expect(isClose(bottomColor, rgba(255, 0, 0, 1))).toBeTruthy();
     });
 
     it('should draw all values for axis min = 0.1', function() {
@@ -788,10 +789,10 @@ describe('An Intensity graph', function() {
 
         plot.draw();
         var ctx = $(placeholder).find('.flot-base').get(0).getContext('2d'),
-            topColor = getPixelColor(ctx, ctx.canvas.width/2, ctx.canvas.height/2 - 20),
-            bottomColor = getPixelColor(ctx, ctx.canvas.width/2, ctx.canvas.height/2 + 20);
-        expect(isClose(topColor, rgba(0,0,255,1))).toBeTruthy();
-        expect(isClose(bottomColor, rgba(255,0,0,1))).toBeTruthy();
+            topColor = getPixelColor(ctx, ctx.canvas.width / 2, ctx.canvas.height / 2 - 20),
+            bottomColor = getPixelColor(ctx, ctx.canvas.width / 2, ctx.canvas.height / 2 + 20);
+        expect(isClose(topColor, rgba(0, 0, 255, 1))).toBeTruthy();
+        expect(isClose(bottomColor, rgba(255, 0, 0, 1))).toBeTruthy();
     });
 
     it('should return nearby item when given coordinates within drawn rects', function () {
@@ -813,11 +814,11 @@ describe('An Intensity graph', function() {
 
         let ctx = $(placeholder).find('.flot-base').get(0).getContext('2d');
         let seriesFilter = () => true;
-        let nearbyItem1 = plot.findNearbyItem(1*ctx.canvas.width/8, ctx.canvas.height/2, seriesFilter, 1);
+        let nearbyItem1 = plot.findNearbyItem(1 * ctx.canvas.width / 8, ctx.canvas.height / 2, seriesFilter, 1);
         expect(nearbyItem1.datapoint).toEqual([0, 0, 0]);
-        let nearbyItem2 = plot.findNearbyItem(4*ctx.canvas.width/8, ctx.canvas.height/2, seriesFilter, 1);
+        let nearbyItem2 = plot.findNearbyItem(4 * ctx.canvas.width / 8, ctx.canvas.height / 2, seriesFilter, 1);
         expect(nearbyItem2.datapoint).toEqual([1, 0, 0.5]);
-        let nearbyItem3 = plot.findNearbyItem(7*ctx.canvas.width/8, ctx.canvas.height/2, seriesFilter, 1);
+        let nearbyItem3 = plot.findNearbyItem(7 * ctx.canvas.width / 8, ctx.canvas.height / 2, seriesFilter, 1);
         expect(nearbyItem3.datapoint).toEqual([2, 0, 1]);
     });
 
@@ -840,7 +841,7 @@ describe('An Intensity graph', function() {
 
         let ctx = $(placeholder).find('.flot-base').get(0).getContext('2d');
         let seriesFilter = () => true;
-        let nearbyItems = plot.findNearbyItems(3*ctx.canvas.width/8, ctx.canvas.height/2, seriesFilter, 100);
+        let nearbyItems = plot.findNearbyItems(3 * ctx.canvas.width / 8, ctx.canvas.height / 2, seriesFilter, 100);
         expect(nearbyItems[0].datapoint).toEqual([1, 0, 0.5]);
         expect(nearbyItems[1].datapoint).toEqual([0, 0, 0]);
     });
@@ -864,9 +865,9 @@ describe('An Intensity graph', function() {
 
         let ctx = $(placeholder).find('.flot-base').get(0).getContext('2d');
         let seriesFilter = () => true;
-        let nearbyItem1 = plot.findNearbyItem(ctx.canvas.width * 1.1, ctx.canvas.height/2, seriesFilter, 1);
+        let nearbyItem1 = plot.findNearbyItem(ctx.canvas.width * 1.1, ctx.canvas.height / 2, seriesFilter, 1);
         expect(nearbyItem1).toBeNull();
-        let nearbyItem2 = plot.findNearbyItem(ctx.canvas.width/2, ctx.canvas.height * 1.1, seriesFilter, 1);
+        let nearbyItem2 = plot.findNearbyItem(ctx.canvas.width / 2, ctx.canvas.height * 1.1, seriesFilter, 1);
         expect(nearbyItem2).toBeNull();
     });
 });

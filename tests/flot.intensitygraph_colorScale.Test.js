@@ -1,4 +1,3 @@
-/* global setFixtures */
 /* brackets-xunit: includes=../lib/cbuffer.js,../jquery.flot.historybuffer.js*,../jquery.flot.js,../jquery.flot.charting.js */
 
 describe('Color scale', function() {
@@ -33,7 +32,7 @@ describe('Color scale', function() {
                 min: 0,
                 max: 50,
                 type: 'colorScale'
-            }],
+            }]
         });
 
         var yaxes = plot.getYAxes(),
@@ -51,32 +50,32 @@ describe('Color scale', function() {
                     }
                 },
                 yaxes: [{
-                        position: position,
-                        show: true,
-                        min: 0,
-                        max: 50,
-                        autoScale: 'none'
-                    }, {
-                        position: 'right',
-                        show: true,
-                        min: 0,
-                        max: 50,
-                        autoScale: 'none'
-                    }, {
-                        position: 'right',
-                        show: true,
-                        min: 0,
-                        max: 50,
-                        type: 'colorScale'
-                    },
-                    {
-                        position: position,
-                        show: true,
-                        min: 0,
-                        max: 50,
-                        autoScale: 'none'
-                    }
-                ],
+                    position: position,
+                    show: true,
+                    min: 0,
+                    max: 50,
+                    autoScale: 'none'
+                }, {
+                    position: 'right',
+                    show: true,
+                    min: 0,
+                    max: 50,
+                    autoScale: 'none'
+                }, {
+                    position: 'right',
+                    show: true,
+                    min: 0,
+                    max: 50,
+                    type: 'colorScale'
+                },
+                {
+                    position: position,
+                    show: true,
+                    min: 0,
+                    max: 50,
+                    autoScale: 'none'
+                }
+                ]
             });
 
             var yaxes = plot.getYAxes(),
@@ -143,7 +142,6 @@ describe('Color scale', function() {
     });
 
     describe('drawLegend', function() {
-
         var intensityGraph = new $.plot.IntensityGraph();
 
         it('should add all the colors to the gradient according to the values of the markers', function() {
@@ -205,5 +203,4 @@ describe('Color scale', function() {
             expect(ctx.createLinearGradient.calls.first().args).toEqual([0, y + h, 0, y]);
         });
     });
-
 });

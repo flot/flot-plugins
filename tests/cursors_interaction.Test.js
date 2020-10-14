@@ -1,6 +1,3 @@
-/* global $, describe, it, xit, after, beforeEach, afterEach, expect, jasmine */
-/* jshint browser: true*/
-
 describe("Cursors interaction", function () {
     'use strict';
 
@@ -1122,40 +1119,40 @@ describe("Cursors interaction", function () {
                 var rect = thumb.getBoundingClientRect();
                 return {
                     x: (rect.left + rect.right) / 2,
-                    y: (rect.top + rect.bottom) / 2,
+                    y: (rect.top + rect.bottom) / 2
                 };
             }
             var graphArea = {
                 left: plot.offset().left,
                 right: plot.offset().left + plot.width(),
                 top: plot.offset().top,
-                bottom: plot.offset().top + plot.height(),
+                bottom: plot.offset().top + plot.height()
             };
 
             var topThumb = plot.getCursors()[0].thumbs[0];
             simulate.mouseDown(topThumb, 0, 0);
-            
+
             simulate.mouseMove(topThumb, plot.width() + 50, 0);
             jasmine.clock().tick(20);
             expect(thumbCenter(topThumb).x).toBeCloseTo(graphArea.right, 0);
-            
+
             simulate.mouseMove(topThumb, -(plot.width() + 50), 0);
             jasmine.clock().tick(20);
             expect(thumbCenter(topThumb).x).toBeCloseTo(graphArea.left, 0);
-            
+
             simulate.mouseUp(topThumb, 0, 0);
-            
+
             var rightThumb = plot.getCursors()[1].thumbs[0];
             simulate.mouseDown(rightThumb, 0, 0);
-            
+
             simulate.mouseMove(rightThumb, 0, plot.height() + 50);
             jasmine.clock().tick(20);
             expect(thumbCenter(rightThumb).y).toBeCloseTo(graphArea.bottom, 0);
-            
+
             simulate.mouseMove(rightThumb, 0, -(plot.height() + 50));
             jasmine.clock().tick(20);
             expect(thumbCenter(rightThumb).y).toBeCloseTo(graphArea.top, 0);
-            
+
             simulate.mouseUp(rightThumb, 0, 0);
         });
     });
