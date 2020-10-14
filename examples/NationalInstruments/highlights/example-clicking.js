@@ -1,6 +1,3 @@
-/*global jQuery, $*/
-/*jshint browser: true*/
-
 $(function () {
     'use strict';
     var d1 = [];
@@ -42,7 +39,7 @@ $(function () {
                     highlightPoints: !selectLines,
                     highlightBars: false,
                     lineWidth: 5,
-                    selectedIndexes:selectedIndexes
+                    selectedIndexes: selectedIndexes
                 }
             }
         });

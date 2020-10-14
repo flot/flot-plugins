@@ -1,6 +1,3 @@
-/*global $, HistoryBuffer*/
-/*jshint browser: true*/
-
 $(function () {
     'use strict';
     var plot;
@@ -20,7 +17,7 @@ $(function () {
             AWdata.push(sin);
         }
 
-        var aw = new NIAnalogWaveform({t0: globalIndex/256,Y:AWdata, dt:0.001});
+        var aw = new NIAnalogWaveform({t0: globalIndex / 256, Y: AWdata, dt: 0.001});
 
         buffer.push(aw);
     }
@@ -29,7 +26,7 @@ $(function () {
         series: {
             historyBuffer: buffer,
             lines: {
-                show: true,
+                show: true
                 //lineWidth: 1
             },
             shadowSize: 0

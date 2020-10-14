@@ -1,5 +1,4 @@
-/*global $, HistoryBuffer*/
-/*jshint browser: true*/
+/*global HistoryBuffer*/
 
 $(function () {
     'use strict';
@@ -30,7 +29,7 @@ $(function () {
         series: {
             historyBuffer: buffer,
             lines: {
-                show: true,
+                show: true
                 //lineWidth: 1
             },
             shadowSize: 0

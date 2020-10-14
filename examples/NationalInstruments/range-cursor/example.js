@@ -1,6 +1,3 @@
-/*global jQuery, $*/
-/*jshint browser: true*/
-
 $(function () {
     'use strict';
     var plot;
@@ -195,5 +192,5 @@ $(function () {
         });
     }
 
-    updateChart ();
+    updateChart();
 });

@@ -1,6 +1,3 @@
-/*global jQuery, $*/
-/*jshint browser: true*/
-
 $(function () {
     'use strict';
     var d1 = [];
@@ -25,7 +22,7 @@ $(function () {
                 highlightPoints: true,
                 highlightBars: false,
                 lineWidth: 5,
-                selectedIndexes:[[0, 2, 3, 4, 5], [0,1,2], [0,2,3]]
+                selectedIndexes: [[0, 2, 3, 4, 5], [0, 1, 2], [0, 2, 3]]
             }
         }
     });

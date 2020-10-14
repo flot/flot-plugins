@@ -4,13 +4,13 @@ var plot = $.plot($("#placeholder"), [
         yaxis: 1
     },
     {
-        data: [[0,1],[1,2], [2, 3], [3, 4], [4, 5]],
+        data: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]],
         yaxis: 2
     }
 ], {
     yaxes: [
         { min: -3, max: 5, offset: {below: 0, above: 0}, autoScale: "none", show: true },
-        { min: -3, max: 5, offset: {below: 0, above: 0}, autoScale: "none", show: false },
+        { min: -3, max: 5, offset: {below: 0, above: 0}, autoScale: "none", show: false }
     ],
     cursors: [
         {

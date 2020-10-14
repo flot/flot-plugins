@@ -1,7 +1,6 @@
 # /node_modules/* and /bower_components/* ignored by default
 
 # Ignore ni-element-infrastructure
-examples
 dist
 lib
 tests

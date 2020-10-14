@@ -1,6 +1,3 @@
-/*global jQuery, $*/
-/*jshint browser: true*/
-
 $(function () {
     'use strict';
     var plot;
@@ -41,8 +38,8 @@ $(function () {
         setTimeout(updateChart, 16);
     }
 
-    $('#interpolate_checkbox').click(function(){
-        if($(this).is(':checked')){
+    $('#interpolate_checkbox').click(function() {
+        if ($(this).is(':checked')) {
             createPlot(true);
         } else {
             createPlot(false);
@@ -53,91 +50,89 @@ $(function () {
     createPlot();
 
     function createPlot(interpolate) {
-
-      plot = $.plot("#placeholder", [
-          {
-              data: sin,
-              label: "sin(x)"
-          },
-          {
-              data: cos,
-              label: "cos(x)"
-          }
-      ], {
-          series: {
-              lines: {
-                  show: true
-              },
-              points: {
-                  show: true
-              }
-          },
-          cursors: [
-              {
-                  name: 'Red cursor',
-                  mode: 'x',
-                  color: 'red',
-                  showIntersections: false,
-                  showLabel: true,
-                  symbol: 'triangle',
-                  position: {
-                      relativeX: 0.75,
-                      relativeY: 0.5
-                  },
-                  showThumbs: 't'
-              },
-              {
-                  name: 'Blue cursor',
-                  mode: 'xy',
-                  color: 'blue',
-                  showIntersections: false,
-                  snapToPlot: -1,
-                  symbol: 'diamond',
-                  position: {
-                      relativeX: 0.5,
-                      relativeY: 0.5
-                  },
-                  interpolate: interpolate,
-                  showThumbs: 'b'
-              },
-              {
-                  name: 'Green cursor',
-                  mode: 'y',
-                  color: 'green',
-                  showIntersections: false,
-                  symbol: 'cross',
-                  showLabel: true,
-                  showValues: true,
-                  fontSize: '10px',
-                  fontStyle: 'italic',
-                  position: {
-                      relativeX: 0.25,
-                      relativeY: 0.25
-                  },
-                  showThumbs: 'l'
-              }
-          ],
-          grid: {
-              hoverable: true,
-              clickable: true,
-              autoHighlight: false
-          },
-          yaxis: {
-              min: 0,
-              max: 2,
-              autoscale: 'none',
-              showTickLabels: 'all'
-          },
-          zoom: {
-              interactive: true
-          },
-          pan: {
-              interactive: true,
-              enableTouch: true
-          }
-      });
+        plot = $.plot("#placeholder", [
+            {
+                data: sin,
+                label: "sin(x)"
+            },
+            {
+                data: cos,
+                label: "cos(x)"
+            }
+        ], {
+            series: {
+                lines: {
+                    show: true
+                },
+                points: {
+                    show: true
+                }
+            },
+            cursors: [
+                {
+                    name: 'Red cursor',
+                    mode: 'x',
+                    color: 'red',
+                    showIntersections: false,
+                    showLabel: true,
+                    symbol: 'triangle',
+                    position: {
+                        relativeX: 0.75,
+                        relativeY: 0.5
+                    },
+                    showThumbs: 't'
+                },
+                {
+                    name: 'Blue cursor',
+                    mode: 'xy',
+                    color: 'blue',
+                    showIntersections: false,
+                    snapToPlot: -1,
+                    symbol: 'diamond',
+                    position: {
+                        relativeX: 0.5,
+                        relativeY: 0.5
+                    },
+                    interpolate: interpolate,
+                    showThumbs: 'b'
+                },
+                {
+                    name: 'Green cursor',
+                    mode: 'y',
+                    color: 'green',
+                    showIntersections: false,
+                    symbol: 'cross',
+                    showLabel: true,
+                    showValues: true,
+                    fontSize: '10px',
+                    fontStyle: 'italic',
+                    position: {
+                        relativeX: 0.25,
+                        relativeY: 0.25
+                    },
+                    showThumbs: 'l'
+                }
+            ],
+            grid: {
+                hoverable: true,
+                clickable: true,
+                autoHighlight: false
+            },
+            yaxis: {
+                min: 0,
+                max: 2,
+                autoscale: 'none',
+                showTickLabels: 'all'
+            },
+            zoom: {
+                interactive: true
+            },
+            pan: {
+                interactive: true,
+                enableTouch: true
+            }
+        });
     }
-
 
     $("#placeholder").bind("cursorupdates", function (event, cursordata) {
         $('#hoverdata').empty();
@@ -153,8 +148,7 @@ $(function () {
                 } else if (cursor.target.mode === 'x') {
                     x = cursor.x.toFixed(4);
                     y = point.y.toFixed(4);
-                }
-                 else if (cursor.target.mode === 'y') {
+                } else if (cursor.target.mode === 'y') {
                     x = point.x.toFixed(4);
                     y = cursor.y.toFixed(4);
                 }

@@ -1,6 +1,3 @@
-/*global jQuery, $*/
-/*jshint browser: true*/
-
 $(function () {
     'use strict';
     var d1 = [];
@@ -19,13 +16,13 @@ $(function () {
             lines: { show: true },
             points: { show: true }
         },
-        annotations:[{
+        annotations: [{
             show: true,
             location: 'absolute',
             x: 4,
             y: 8,
             label: 'hello world2',
-            showArrow: false,
+            showArrow: false
         }]
     });
 
