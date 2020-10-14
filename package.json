@@ -48,7 +48,7 @@
     "karma-jasmine-html-reporter": "^0.2.2",
     "karma-jasmine-jquery": "^0.1.1",
     "karma-safari-launcher": "^1.0.0",
-    "karma-spec-reporter": "0.0.31",
+    "karma-spec-reporter": "0.0.32",
     "ljs": "^0.3.2",
     "puppeteer": "^5.1.0",
     "travis-github-lint-status": "^1.0.1",
