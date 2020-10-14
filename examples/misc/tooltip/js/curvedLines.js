@@ -123,7 +123,7 @@ ____________________________________________________
             //this can happen if somebody upgrades to v1.x.x without adjusting the parameters or uses old examples
             var invalidLegacyOptions = hasInvalidParameters(series.curvedLines);
 
-            if (!invalidLegacyOptions && series.curvedLines.apply == true && series.originSeries === undefined && nrPoints > (1 + EPSILON)) {
+            if (!invalidLegacyOptions && series.curvedLines.apply && series.originSeries === undefined && nrPoints > (1 + EPSILON)) {
                 if (series.lines.fill) {
                     var pointsTop = calculateCurvePoints(datapoints, series.curvedLines, 1);
                     var pointsBottom = calculateCurvePoints(datapoints, series.curvedLines, 2);
@@ -137,7 +137,7 @@ ____________________________________________________
                     var i = 0;
                     var ps = 2;
                     while (i < pointsTop.length || j < pointsBottom.length) {
-                        if (pointsTop[i] == pointsBottom[j]) {
+                        if (pointsTop[i] === pointsBottom[j]) {
                             datapoints.points[k] = pointsTop[i];
                             datapoints.points[k + 1] = pointsTop[i + 1];
                             datapoints.points[k + 2] = pointsBottom[j + 1];
@@ -164,7 +164,7 @@ ____________________________________________________
         }
 
         function calculateCurvePoints(datapoints, curvedLinesOptions, yPos) {
-            if (typeof curvedLinesOptions.legacyOverride !== 'undefined' && curvedLinesOptions.legacyOverride != false) {
+            if (typeof curvedLinesOptions.legacyOverride !== 'undefined' && !curvedLinesOptions.legacyOverride) {
                 var defaultOptions = {
                     fit: false,
                     curvePointFactor: 20,
@@ -343,7 +343,7 @@ ____________________________________________________
                     backX = points[curX] + fpDist;
 
                     var factor = 2;
-                    while (frontX == points[curX] || backX == points[curX]) {
+                    while (frontX === points[curX] || backX === points[curX]) {
                         //inside the ulp
                         frontX = points[curX] - (fpDist * factor);
                         backX = points[curX] + (fpDist * factor);
@@ -385,7 +385,7 @@ ____________________________________________________
 
             for (var i = 1; i < n - 1; ++i) {
                 var d = (xdata[i + 1] - xdata[i - 1]);
-                if (d == 0) {
+                if (d === 0) {
                     //point before current point and after current point need some space in between
                     return [];
                 }
@@ -433,7 +433,7 @@ ____________________________________________________
                 //found point one to the left and one to the right of generated new point
                 var h = (xdata[max] - xdata[min]);
 
-                if (h == 0) {
+                if (h === 0) {
                     //similar to above two points from original x data need some space between them
                     return [];
                 }
