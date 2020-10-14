@@ -19,8 +19,6 @@ THE SOFTWARE.
 /* Flot plugin for adding annotations to the graph
 */
 
-/*global jQuery*/
-
 (function ($) {
     'use strict';
 

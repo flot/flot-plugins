@@ -18,7 +18,7 @@ THE SOFTWARE.
 */
 /* Flot plugin that makes charting easier and more efficient.
 */
-/*global jQuery, requestAnimationFrame*/
+/*global requestAnimationFrame*/
 
 (function ($) {
     'use strict';
