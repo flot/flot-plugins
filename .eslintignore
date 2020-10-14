@@ -4,5 +4,4 @@
 dist
 lib
 source/JUMFlot/*
-source/misc/*
 *.min.js
