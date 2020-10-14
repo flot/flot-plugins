@@ -1,6 +1,6 @@
 $(function () {
     'use strict';
-    let plot;
+
     let offset = 0.0;
     let sin = [],
         cos = [];
@@ -19,7 +19,7 @@ $(function () {
     createPlot();
 
     function createPlot() {
-        plot = $.plot("#placeholder", [
+        $.plot("#placeholder", [
             {
                 data: sin,
                 label: "sin(x)",

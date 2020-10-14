@@ -1,10 +1,9 @@
 $(function () {
     'use strict';
-    var plot;
+
     var buffer = new HistoryBufferWaveform(10, 1);
     var globalIndex = 0;
     var chartStep = 0.01;
-    var arr = [];
 
     function updateData() {
         var sin,
@@ -22,7 +21,7 @@ $(function () {
         buffer.push(aw);
     }
 
-    plot = $.plot('#placeholder', [[]], {
+    $.plot('#placeholder', [[]], {
         series: {
             historyBuffer: buffer,
             lines: {

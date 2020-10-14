@@ -1,7 +1,6 @@
 $(function () {
     'use strict';
     var plot;
-    var offset = 0.0;
     var h = 51;
     var w = 101;
     var max = Math.sqrt(h * h + w * w);

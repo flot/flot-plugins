@@ -1,12 +1,9 @@
 $(function () {
     'use strict';
     var plot;
-    var offset = 0.0;
     var h = 51;
     var w = 101;
     var max = Math.sqrt(h * h + w * w);
-    var floorMaxToo = 10;
-    var legendMax = max % floorMaxToo === 0 ? max : Math.floor(max - (max % floorMaxToo) + floorMaxToo);
     var iMap = [];
     var count = 0;
 

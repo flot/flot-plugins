@@ -25,7 +25,7 @@ $(function () {
         }
     }
 
-    plot = $.plot('#placeholder', [[], [], [], []], {
+    $.plot('#placeholder', [[], [], [], []], {
         series: {
             historyBuffer: buffer,
             lines: {

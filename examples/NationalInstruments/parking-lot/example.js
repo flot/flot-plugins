@@ -1,4 +1,4 @@
-var plot = $.plot($("#placeholder"), [
+$.plot($("#placeholder"), [
     {
         data: [[0, 0], [1, 1], [2, 1], [3, 0]],
         yaxis: 1
