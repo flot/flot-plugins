@@ -18,7 +18,7 @@ THE SOFTWARE.
 */
 /* history buffer data structure for charting.
 */
-/*globals CBuffer, SegmentTree*/
+/*globals CBuffer, SegmentTree, module*/
 
 /**
 # HistoryBuffer

@@ -1,3 +1,4 @@
+/* eslint-env node */
 // Karma configuration
 // Generated on Wed Jun 15 2016 09:05:44 GMT-0500 (CDT)
 

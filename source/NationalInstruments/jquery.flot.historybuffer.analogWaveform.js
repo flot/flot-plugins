@@ -3,7 +3,7 @@
 Copyright (c) 2007-2015 National Instruments
 Licensed under the MIT license.
 */
-/*globals CBuffer*/
+/*globals CBuffer, HistoryBufferNumeric, NITimestamp, module*/
 
 /**
 # HistoryBufferWaveform

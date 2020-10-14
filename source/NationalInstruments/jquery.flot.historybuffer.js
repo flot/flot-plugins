@@ -78,6 +78,8 @@ The common charting operations performed on a history buffer are
 
 */
 
+/*global HistoryBufferNumeric, HistoryBufferWaveform, module*/
+
 /** ## HistoryBuffer methods*/
 (function (global) {
     'use strict';

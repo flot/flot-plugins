@@ -1,3 +1,5 @@
+/*global HistoryBufferWaveform, NIAnalogWaveform*/
+
 $(function () {
     'use strict';
 

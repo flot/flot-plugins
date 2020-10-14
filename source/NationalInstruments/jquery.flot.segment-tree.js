@@ -18,7 +18,7 @@ THE SOFTWARE.
 */
 /* Segment tree data structure for fast min/max queries
 */
-/*globals CBuffer*/
+/*globals CBuffer, module*/
 
 (function (global) {
     'use strict';

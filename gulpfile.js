@@ -1,3 +1,5 @@
+/* eslint-env node */
+
 var gulp = require('gulp');
 var filesExist = require('files-exist');
 var concat = require('gulp-concat');
