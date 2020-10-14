@@ -12,11 +12,11 @@ module.exports = function (config) {
             'win': ['Firefox', 'Chrome', 'Edge'],
             'linux': ['Firefox', 'Chrome'],
             // 'mac': ['Firefox', 'Chrome', 'Safari']
-            'mac': ['Chrome',]
+            'mac': ['Chrome']
         },
         isWin = /^win/.test(process.platform),
         isLinux = /^linux/.test(process.platform),
-        isMac = /^darwin/.test(process.platform),
+        // isMac = /^darwin/.test(process.platform),
         currentOSType = isWin ? 'win' : (isLinux ? 'linux' : 'mac'),
         currentOSBrowsers = browsersMatrix[currentOSType];
 
@@ -102,7 +102,7 @@ module.exports = function (config) {
         },
 
         eslint: {
-            stopOnError: config.stopOnEsLintError ? true : false,
+            stopOnError: !!config.stopOnEsLintError,
             showWarnings: true,
             engine: {
                 configFile: '.eslintrc.json',
