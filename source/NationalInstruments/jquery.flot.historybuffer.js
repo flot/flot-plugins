@@ -18,7 +18,6 @@ THE SOFTWARE.
 */
 /* history buffer data structure for charting, supporting numeric and waveform data
 */
-/*globals  module*/
 
 /**
 # HistoryBuffer
