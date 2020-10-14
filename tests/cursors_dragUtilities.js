@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 function loadDragSimulators() {
     function doDragStart(dragOptions, simulator) {
         simulator.simulateEvent(simulator.target, "mousedown", dragOptions);
@@ -25,7 +26,6 @@ function loadDragSimulators() {
                 mouseY: 0
             }, this.options);
             var target = this.target,
-                eventDoc = target.ownerDocument,
                 bBox = target.getBoundingClientRect(),
                 x = Math.floor(bBox.left + options.mouseX),
                 y = Math.floor(bBox.top + options.mouseY),
@@ -45,7 +45,6 @@ function loadDragSimulators() {
                 buttons: 0
             }, this.options);
             var target = this.target,
-                eventDoc = target.ownerDocument,
                 bBox = target.getBoundingClientRect(),
                 x = Math.floor(bBox.left + options.mouseX),
                 y = Math.floor(bBox.top + options.mouseY),
@@ -59,7 +58,6 @@ function loadDragSimulators() {
                 mouseY: 0
             }, this.options);
             var target = this.target,
-                eventDoc = target.ownerDocument,
                 bBox = target.getBoundingClientRect(),
                 x = Math.floor(bBox.left + options.mouseX),
                 y = Math.floor(bBox.top + options.mouseY);
@@ -73,7 +71,6 @@ function loadDragSimulators() {
                 mouseY: 0
             }, this.options);
             var target = this.target,
-                eventDoc = target.ownerDocument,
                 bBox = target.getBoundingClientRect(),
                 x = Math.floor(bBox.left + options.mouseX),
                 y = Math.floor(bBox.top + options.mouseY),

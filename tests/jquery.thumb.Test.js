@@ -92,6 +92,11 @@ describe('thumb plugin', function () {
 
     describe('thumbs navigation', function() {
         var placeholder, svgRoot, thumb;
+        let simulate;
+
+        beforeAll(() => {
+            simulate = window.simulate;
+        });
 
         beforeEach(function() {
             placeholder = setFixtures('<div id="test-container" style="width: 600px;height: 400px">')
@@ -296,6 +301,11 @@ describe('thumb plugin', function () {
 
     describe('shutdown', function() {
         var placeholder, svgRoot, thumb;
+        let simulate;
+
+        beforeAll(() => {
+            simulate = window.simulate;
+        });
 
         beforeEach(function() {
             placeholder = setFixtures('<div id="test-container" style="width: 600px;height: 400px">')
@@ -395,6 +405,12 @@ describe('thumb plugin', function () {
     describe('reorderTumbs', function() {
         var placeholder, svgRoot, thumbs,
             thumbA, thumbB, thumbC, thumbD;
+        let simulate;
+
+        beforeAll(() => {
+            simulate = window.simulate;
+        });
+
         beforeEach(function() {
             placeholder = setFixtures('<div id="test-container" style="width: 600px;height: 400px; stroke:red;">')
                 .find('#test-container');

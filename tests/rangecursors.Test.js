@@ -545,6 +545,7 @@ describe('Flot cursors', function () {
     });
     describe('cursorupdates', function() {
         beforeAll(function () {
+            // eslint-disable-next-line no-undef
             loadDragSimulators();
         });
 
@@ -649,7 +650,6 @@ describe('Flot cursors', function () {
             });
             jasmine.clock().tick(20);
 
-            var cursor = plot.getRangeCursors()[0];
             var options = { mouseX: plot.getPlotOffset().left + plot.width() * 0.5,
                 mouseY: plot.getPlotOffset().top + plot.height() * 0.6 };
             $('.flot-overlay').simulate("flotdragstart", options);
@@ -657,7 +657,7 @@ describe('Flot cursors', function () {
 
             var cursorX = plot.getPlotOffset().left + plot.width() * 0.5 + 20;
             var cursorY = plot.getPlotOffset().top + plot.height() * 0.2;
-            var options = { mouseX: cursorX, mouseY: cursorY, dx: 13, dy: 5 };
+            options = { mouseX: cursorX, mouseY: cursorY, dx: 13, dy: 5 };
             $('.flot-overlay').simulate("flotdrag", options);
 
             $('.flot-overlay').simulate("flotdragend", options);

@@ -1,3 +1,5 @@
+/*globals HistoryBuffer*/
+
 describe('Cursors Position', function () {
     'use strict';
 

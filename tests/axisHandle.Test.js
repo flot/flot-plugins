@@ -1,5 +1,7 @@
 'use strict';
 
+/*global waitUntilAsync*/
+
 describe('Flot axis handles', () => {
     const sampleData = [[0, 1], [1, 1.1], [2, 1.2]];
     let plot;
@@ -1192,6 +1194,15 @@ describe('Axis handle interaction', () => {
     const sampleData = [[0, 1], [1, 1.1], [2, 1.2]];
     let plot;
     let placeholder;
+    let simulate;
+
+    beforeAll(() => {
+        simulate = window.simulate;
+    });
+
+    afterAll(() => {
+        simulate = null;
+    });
 
     beforeEach(function () {
         const fixture = setFixtures('<div id="demo-container" style="width: 800px;height: 600px">').find('#demo-container').get(0);

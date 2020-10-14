@@ -11,7 +11,7 @@ describe('A scrollbar', function() {
 
         options = {
             scrollbars: [{}]
-        },
+        };
         data = [{ data: [0, 1, 2, 3], flatdata: true, lines: { show: true } }];
 
         jasmine.clock().install();

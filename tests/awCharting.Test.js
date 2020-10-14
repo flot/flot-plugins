@@ -1,4 +1,4 @@
-/* brackets-xunit: includes=../lib/cbuffer.js,../jquery.flot.historybuffer.js*,../jquery.flot.js,../jquery.flot.charting.js */
+/*globals NITimestamp, NIAnalogWaveform, HistoryBufferWaveform*/
 
 describe('A chart', function () {
     'use strict';

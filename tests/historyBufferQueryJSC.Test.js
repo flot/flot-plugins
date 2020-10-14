@@ -1,3 +1,5 @@
+/*globals HistoryBufferNumeric, jsc*/
+
 describe('HistoryBufferNumeric Query QuickCheck', function () {
     'use strict';
 

@@ -5,6 +5,7 @@ describe("Cursors interaction", function () {
     var placeholder, plot, cursor, cursorX, cursorY, simulate = window.simulate;
 
     beforeAll(function () {
+        // eslint-disable-next-line no-undef
         loadDragSimulators();
     });
 

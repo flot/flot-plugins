@@ -1,3 +1,5 @@
+/*globals NITimestamp, NIAnalogWaveform, HistoryBufferWaveform*/
+
 describe('An analogWaveform History Buffer', function () {
     'use strict';
     var aw, aw1, aw2, aw3;

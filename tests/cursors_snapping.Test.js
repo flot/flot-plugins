@@ -12,6 +12,7 @@ describe("Cursors snapping", function () {
     var placeholder;
 
     beforeAll(function () {
+        // eslint-disable-next-line no-undef
         loadDragSimulators();
     });
 

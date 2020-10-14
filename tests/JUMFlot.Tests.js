@@ -1,12 +1,8 @@
 describe('JUMFlot tests', () => {
     'use strict';
-    var minx = 0, maxx = 200, miny = 0, maxy = 100,
-        series, ctx, plotWidth, plotHeight, plotOffset, placeholder, options;
+    var series, ctx, placeholder, options;
     beforeEach(function () {
         placeholder = setFixtures('<div id="test-container" style="width: 200px;height: 100px;border-style: solid;border-width: 1px"><canvas id="theCanvas" style="width: 100%; height: 100%" /></div>')
-        plotWidth = 200;
-        plotHeight = 100;
-        plotOffset = { top: 0, left: 0 };
         options = {
             grid: {show: true}
         };
@@ -66,15 +62,15 @@ describe('JUMFlot tests', () => {
     describe('a graph width bandwidth', () => {
         it('draws bandwidths', () => {
             var d1 = [
-                [ 1, 160, 100], [ 2, 133, 87], [ 3, 138, 94],
-                [ 4, 136, 84], [ 5, 125, 78], [ 6, 131, 84],
-                [ 7, 136, 84], [ 8, 160, 99], [ 9, 123, 80],
-                [10, 138, 85], [11, 139, 85], [12, 125, 79],
-                [13, 130, 79], [14, 176, 92], [15, 137, 79],
-                [16, 124, 81], [17, 122, 74], [18, 130, 82],
-                [19, 132, 76], [20, 134, 83], [21, 126, 77],
-                [22, 126, 74], [23, 121, 79], [24, 137, 72],
-                [25, 138, 74], [26, 120, 79]
+                [ 1, 160, 100 ], [ 2, 133, 87 ], [ 3, 138, 94 ],
+                [ 4, 136, 84 ], [ 5, 125, 78 ], [ 6, 131, 84 ],
+                [ 7, 136, 84 ], [ 8, 160, 99 ], [ 9, 123, 80 ],
+                [ 10, 138, 85 ], [ 11, 139, 85 ], [ 12, 125, 79 ],
+                [ 13, 130, 79 ], [ 14, 176, 92 ], [ 15, 137, 79 ],
+                [ 16, 124, 81 ], [ 17, 122, 74 ], [ 18, 130, 82 ],
+                [ 19, 132, 76 ], [ 20, 134, 83 ], [ 21, 126, 77 ],
+                [ 22, 126, 74 ], [ 23, 121, 79 ], [ 24, 137, 72 ],
+                [ 25, 138, 74 ], [ 26, 120, 79 ]
             ];
             options.xaxes = [{min: 0, max: 26, autoScale: 'none'}];
             options.yaxes = [{min: 60, max: 200, autoScale: 'none'}];
@@ -95,11 +91,6 @@ describe('JUMFlot tests', () => {
                 [40, 50, 20],
                 [70, 10, 5],
                 [80, 80, 7]
-            ];
-            var d2 = [
-                [60, 25, 15],
-                [70, 40, 6],
-                [30, 80, 4]
             ];
             options.series = {
                 bubbles: {
@@ -143,8 +134,8 @@ describe('JUMFlot tests', () => {
             var data = $.plot.candlestick.createCandlestick(
                 {label: "my Company", data: dt, candlestick: {show: true, lineWidth: 2, debug: false}});
             options.series = {candlestick: {active: true}};
-            options.xaxes = [{mode: "time", min: 0, max: 12, autoScale: 'none' }];
-            options.yaxes = [ {position: "left"}, {position: "right"}];
+            options.xaxes = [{mode: "time", min: 0, max: 12, autoScale: 'none'}];
+            options.yaxes = [{position: "left"}, {position: "right"}];
             $.plot(placeholder, data, options);
             ctx = document.querySelector('.flot-base').getContext('2d');
             spyOn(ctx, 'moveTo').and.callThrough();
@@ -173,14 +164,13 @@ describe('JUMFlot tests', () => {
     describe('a gantt chart', () => {
         it('draws a gantt chart', () => {
             var d2 = [
-                [ 5, 5, 8, "Put Water into Pot"],
-                [ 8, 4, 10, "Put Pot on Cooker"],
+                [ 5, 5, 8, "Put Water into Pot" ],
+                [ 8, 4, 10, "Put Pot on Cooker" ],
                 [10, 4, 23, "Cook Water"]
             ];
-            var data = [{label: "Coffee", data: d2, gantt: {connectSteps: {show: true, color: "rgb(0,255,0)" } } }];
             options.series = {editMode: 'v',
                 editable: true,
-                gantt: {active: true, show: true, barHeight: 0.5 }
+                gantt: { active: true, show: true, barHeight: 0.5 }
             };
             options.xaxes = [{min: 0, max: 23, mode: "time", autoScale: 'none'}];
             options.yaxes = [{min: 0.5, max: 5.5, ticks: [[1, "Bowl"], [2, "Cup"], [3, "Can"], [4, "Cooker"], [5, "Desk"]], autoScale: 'none'}];
@@ -200,7 +190,7 @@ describe('JUMFlot tests', () => {
                 {value: 3, label: "male"}, {value: 1, label: "Albino"}
             ];
             options.series = {pyramids: {active: true, show: true, mode: "slice"}};
-            var p = $.plot(placeholder, [d1], options);
+            $.plot(placeholder, [d1], options);
             ctx = document.querySelector('.flot-base').getContext('2d');
             spyOn(ctx, 'moveTo').and.callThrough();
             spyOn(ctx, 'lineTo').and.callThrough();
@@ -212,7 +202,7 @@ describe('JUMFlot tests', () => {
     describe('a rectangle graph', () => {
         it('draws a rectangle graph', () => {
             var dt1 = [
-                {label: "Nuts", data: 200, color: {colors: ["white", "yellow", "orange", "blue"] } },
+                {label: "Nuts", data: 200, color: {colors: ["white", "yellow", "orange", "blue"]}},
                 {label: "strawberry", data: 100, color: "red"},
                 {label: "apple", data: 60, color: "green"},
                 {label: "banana", data: 20, color: "yellow"},
@@ -220,8 +210,8 @@ describe('JUMFlot tests', () => {
                 {label: "blueberry", data: 2}
             ];
             var d1 = [{data: dt1, rectangle: {show: true}}];
-            options.series = {rectangle: {active: true, show: true } };
-            var p = $.plot(placeholder, d1, options);
+            options.series = { rectangle: { active: true, show: true } };
+            $.plot(placeholder, d1, options);
             ctx = document.querySelector('.flot-base').getContext('2d');
             spyOn(ctx, 'fillRect').and.callThrough();
             $.plot(placeholder, d1, options);
@@ -234,8 +224,8 @@ describe('JUMFlot tests', () => {
             var d2 = [ 20, 60, 50, 80, 70 ];
             var d3 = [ 50, 70, 90, 90, 80 ];
             var data = [
-                { label: "high", color: "blue", data: d3, rose: {show: true } },
-                { label: "middle", color: {colors: ["yellow", "orange", "red"] }, data: d2, rose: {show: true } },
+                { label: "high", color: "blue", data: d3, rose: { show: true } },
+                { label: "middle", color: { colors: ["yellow", "orange", "red"] }, data: d2, rose: { show: true } },
                 { label: "low", color: "green", data: d1, rose: {show: true} }
             ];
             options.series = {rose: {active: true, roseSize: 0.8, leafSize: 0.7}};

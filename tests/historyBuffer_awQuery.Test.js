@@ -1,9 +1,9 @@
-/* brackets-xunit: includes=../lib/cbuffer.js,../lib/jsverify.standalone.js,../lib/jasmineHelpers2.js,../jquery.flot.historybuffer.js */
+/*globals NITimestamp, NIAnalogWaveform, HistoryBufferWaveform*/
 
 describe('A HistoryBufferWaveform', function () {
     'use strict';
 
-    var aw, aw1, aw2, aw3, aw4, empty_aw;
+    var aw, aw1, aw4, emptyAw;
     var utc = new Date(Date.UTC(1904, 0, 1, 0, 0, 0));
     var TimeZero = new NITimestamp(utc);
 
@@ -20,25 +20,13 @@ describe('A HistoryBufferWaveform', function () {
             Y: [1, 2, 3]
         });
 
-        aw2 = new NIAnalogWaveform({
-            t0: TimeZero + 8,
-            dt: 1,
-            Y: [4, 3, 2]
-        });
-
-        aw3 = new NIAnalogWaveform({
-            t0: TimeZero + 10,
-            dt: 1,
-            Y: [0, 1, 2]
-        });
-
         aw4 = new NIAnalogWaveform({
             t0: TimeZero + 1,
             dt: 1,
             Y: [1, 2, 3, 4, 5, 6, 7]
         });
 
-        empty_aw = new NIAnalogWaveform({
+        emptyAw = new NIAnalogWaveform({
             t0: TimeZero + 10,
             dt: 1,
             Y: []
@@ -120,7 +108,7 @@ describe('A HistoryBufferWaveform', function () {
     it('can deal with empty waveforms', function () {
         var hb = new HistoryBufferWaveform(10);
 
-        hb.appendArray([aw, empty_aw, aw1]);
+        hb.appendArray([aw, emptyAw, aw1]);
 
         expect(hb.query(0, 10, 1)).toEqual([4, 1, 5, 2, 6, 3, 1, 1, 2, 2, 3, 3]);
     });

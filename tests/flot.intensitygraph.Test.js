@@ -1,4 +1,4 @@
-/* brackets-xunit: includes=../lib/cbuffer.js,../jquery.flot.historybuffer.js*,../jquery.flot.js,../jquery.flot.charting.js */
+/*globals NationalInstruments, createTestMatrix, setPixelRatio, px, createPatternTestMatrix, createBorderTestMatrix*/
 
 describe('An Intensity graph', function() {
     'use strict';

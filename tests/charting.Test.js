@@ -1,4 +1,4 @@
-/* brackets-xunit: includes=../lib/cbuffer.js,../jquery.flot.historybuffer.js*,../jquery.flot.js,../jquery.flot.charting.js */
+/*globals NITimestamp, NIAnalogWaveform, HistoryBufferWaveform, HistoryBuffer*/
 
 describe('A chart', function () {
     'use strict';
@@ -125,7 +125,7 @@ describe('A chart', function () {
         hb.push(33);
         hb.push(34);
 
-        plot = $.plot(placeholder, [{data: [], color: 'red', lines: { lineWidth: 5}}], {
+        plot = $.plot(placeholder, [{data: [], color: 'red', lines: { lineWidth: 5 }}], {
             series: {
                 historyBuffer: hb
             }
@@ -142,8 +142,8 @@ describe('A chart', function () {
 
         plot = $.plot(placeholder,
             [
-                {data: [], color: 'red', lines: { lineWidth: 5}},
-                {data: [], color: 'blue', lines: { lineWidth: 3}}
+                {data: [], color: 'red', lines: { lineWidth: 5 }},
+                {data: [], color: 'blue', lines: { lineWidth: 3 }}
             ]
             , {
                 series: {
@@ -164,8 +164,8 @@ describe('A chart', function () {
 
         plot = $.plot(placeholder,
             [
-                {data: [], color: 'red', lines: { lineWidth: 5}},
-                {data: [], color: 'blue', lines: { lineWidth: 3}}
+                {data: [], color: 'red', lines: { lineWidth: 5 }},
+                {data: [], color: 'blue', lines: { lineWidth: 3 }}
             ]
             , {
                 series: {
@@ -365,14 +365,14 @@ describe('A chart', function () {
         });
 
         it('should consider barWidth 0.8 * dt for empty analogWaveform', function() {
-            var empty_aw = new NIAnalogWaveform({
+            var emptyAw = new NIAnalogWaveform({
                     t0: new NITimestamp() + 10,
                     dt: 1,
                     Y: []
                 }),
                 hb = new HistoryBufferWaveform(10);
 
-            hb.appendArray([empty_aw]);
+            hb.appendArray([emptyAw]);
 
             plot = $.plot(placeholder, [[], []], {
                 series: {
@@ -389,14 +389,14 @@ describe('A chart', function () {
         });
 
         it('should work for an analogWaveform with a single point', function() {
-            var empty_aw = new NIAnalogWaveform({
+            var emptyAw = new NIAnalogWaveform({
                     t0: new NITimestamp() + 10,
                     dt: 100,
                     Y: [1]
                 }),
                 hb = new HistoryBufferWaveform(10);
 
-            hb.appendArray([empty_aw]);
+            hb.appendArray([emptyAw]);
 
             plot = $.plot(placeholder, [[], []], {
                 series: {
@@ -413,13 +413,13 @@ describe('A chart', function () {
         });
 
         it('should consider barWidth 0.8 for not defined dt of analogWaveform', function() {
-            var empty_aw = new NIAnalogWaveform({
+            var emptyAw = new NIAnalogWaveform({
                     t0: new NITimestamp() + 10,
                     Y: [2]
                 }),
                 hb = new HistoryBufferWaveform(10);
 
-            hb.appendArray([empty_aw]);
+            hb.appendArray([emptyAw]);
 
             plot = $.plot(placeholder, [[], []], {
                 series: {
@@ -436,14 +436,14 @@ describe('A chart', function () {
         });
 
         it('should work with negative dt', function() {
-            var empty_aw = new NIAnalogWaveform({
+            var emptyAw = new NIAnalogWaveform({
                     t0: new NITimestamp() + 10,
                     dt: -1,
                     Y: [2, 3, 4, 5]
                 }),
                 hb = new HistoryBufferWaveform(10);
 
-            hb.appendArray([empty_aw]);
+            hb.appendArray([emptyAw]);
 
             plot = $.plot(placeholder, [[], []], {
                 series: {

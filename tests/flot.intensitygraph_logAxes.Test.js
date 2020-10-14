@@ -1,4 +1,4 @@
-/* brackets-xunit: includes=../lib/cbuffer.js,../jquery.flot.historybuffer.js*,../jquery.flot.js,../jquery.flot.charting.js */
+/*globals NationalInstruments, createPatternTestMatrix*/
 
 describe('An Intensity graph with log axes', function() {
     'use strict';
@@ -95,7 +95,7 @@ describe('An Intensity graph with log axes', function() {
                             { value: 2, color: 'blue' },
                             { value: 3, color: 'aqua' },
                             { value: 4, color: 'black' },
-                            { value: 5, color: 'yellow'}
+                            { value: 5, color: 'yellow' }
                         ]
                     }
                 }
@@ -128,9 +128,6 @@ describe('An Intensity graph with log axes', function() {
                 }
             });
 
-            var xaxis = plot.getXAxes()[0],
-                yaxis = plot.getYAxes()[0];
-
             // check the color of random sequence of pixels in the right of the canvas
             // there are so many points squeezed per pixel that the drawing area should be blue
             for (var i = 1; i < 5; i++) {
@@ -156,9 +153,6 @@ describe('An Intensity graph with log axes', function() {
                     }
                 }
             });
-
-            var xaxis = plot.getXAxes()[0],
-                yaxis = plot.getYAxes()[0];
 
             // check the color of random sequence of pixels at the top of the canvas
             // there are so many points squeezed per pixel that the drawing area should be blue
@@ -192,9 +186,6 @@ describe('An Intensity graph with log axes', function() {
                     }
                 }
             });
-
-            var xaxis = plot.getXAxes()[0],
-                yaxis = plot.getYAxes()[0];
 
             // check the color of random sequence of pixels in the upper right corner of the canvas
             // there are so many points squeezed per pixel that the drawing area should be blue

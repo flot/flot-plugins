@@ -1,3 +1,5 @@
+/*globals HistoryBuffer*/
+
 describe('A HistoryBuffer', function () {
     'use strict';
 

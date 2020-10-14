@@ -94,7 +94,7 @@ describe('Flot annotations', function () {
                 label: 'hello world',
                 arrowDirection: 'n',
                 showArrow: true,
-                contentFormatter: formatter,
+                contentFormatter: formatter
             }]
         });
         ctx = placeholder.find('.flot-overlay')[0].getContext('2d');
@@ -185,10 +185,10 @@ describe('Flot annotations', function () {
         plot.triggerRedrawOverlay();
         jasmine.clock().tick(20);
         let bounds = plot.getAnnotationBounds(0);
-        expectedX1 = expectedX1 - (bounds.width  * plot.width()) / 2;
+        expectedX1 = expectedX1 - (bounds.width * plot.width()) / 2;
         expectedY1 = expectedY1 - (bounds.height * plot.height());
         bounds = plot.getAnnotationBounds(1);
-        expectedX2 = expectedX2 - (bounds.width  * plot.width()) / 2;
+        expectedX2 = expectedX2 - (bounds.width * plot.width()) / 2;
         expectedY2 = expectedY2 - (bounds.height * plot.height());
         expect(spy1).toHaveBeenCalledTimes(2);
         expect(spy1).toHaveBeenCalledWith(expectedX1, expectedY1, jasmine.any(Number), jasmine.any(Number));
@@ -198,7 +198,7 @@ describe('Flot annotations', function () {
         plot = $.plot(placeholder, [ d1, d2, d3 ], {
             series: {
                 lines: { show: true },
-                points: { show: true, symbol: 'square' },
+                points: { show: true, symbol: 'square' }
             }
         });
         plot.addAnnotation({
@@ -348,7 +348,7 @@ describe('Flot annotations', function () {
         var x1 = pos1.left / plot.width();
         var y1 = pos1.top / plot.height();
         let bounds = plot.getAnnotationBounds(0);
-        expect(bounds.x).toBeCloseTo(x1 -bounds.width / 2, 4);
+        expect(bounds.x).toBeCloseTo(x1 - bounds.width / 2, 4);
         expect(bounds.y).toBeCloseTo(y1 - bounds.height, 4);
     });
     it('should draw the annotation in the correct place according to arrow direction', function () {

@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 function setPixelRatio(plot, pixelRatio) {
     plot.getSurface().clear();
     plot.getSurface().pixelRatio = pixelRatio;

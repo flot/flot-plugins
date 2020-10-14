@@ -5,6 +5,7 @@
  * @param {Number} [maxTime] max time to wait (ms); default is 30000
  * @returns {Promise} thenable async task
  */
+// eslint-disable-next-line no-unused-vars
 function waitUntilAsync(message, predicate, maxTime = 30000) {
     return new Promise((resolve, reject) => {
         let retries = 0;
@@ -12,7 +13,7 @@ function waitUntilAsync(message, predicate, maxTime = 30000) {
             if (predicate()) {
                 resolve();
             } else if (retries++ * 100 > maxTime) {
-                reject(`${message}: timeout`);
+                reject(new Error(`${message}: timeout`));
             } else {
                 setTimeout(checkFunc, 100);
             }

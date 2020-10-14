@@ -7,6 +7,16 @@ describe('cursor with thumbs', function () {
         options,
         styles;
 
+    let simulate;
+
+    beforeAll(() => {
+        simulate = window.simulate;
+    });
+
+    afterAll(() => {
+        simulate = null;
+    });
+
     describe('showThumb property', function () {
         beforeEach(function () {
             var fixture = setFixtures('<div id="demo-container" style="width: 800px;height: 600px">').find('#demo-container').get(0);

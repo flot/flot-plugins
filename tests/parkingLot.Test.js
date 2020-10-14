@@ -273,20 +273,20 @@ describe('Parking Lot', () => {
             var rect = element.getBoundingClientRect();
             return {
                 x: (rect.left + rect.right) / 2,
-                y: (rect.top + rect.bottom) / 2,
+                y: (rect.top + rect.bottom) / 2
             };
         }
 
         function validateThumbAlignToCursor(plot, thumb, thumbLocation, cursor) {
             switch (thumbLocation) {
-            case 't':
-            case 'b':
-                expect(getElementCenter(thumb).x - (cursor.x + plot.offset().left)).toBeLessThan(2);
-                break;
-            case 'l':
-            case 'r':
-                expect(getElementCenter(thumb).y - (cursor.y + plot.offset().top)).toBeLessThan(2);
-                break;
+                case 't':
+                case 'b':
+                    expect(getElementCenter(thumb).x - (cursor.x + plot.offset().left)).toBeLessThan(2);
+                    break;
+                case 'l':
+                case 'r':
+                    expect(getElementCenter(thumb).y - (cursor.y + plot.offset().top)).toBeLessThan(2);
+                    break;
             }
         }
 
@@ -295,9 +295,9 @@ describe('Parking Lot', () => {
                 left: plot.offset().left,
                 right: plot.offset().left + plot.width(),
                 top: plot.offset().top,
-                bottom: plot.offset().top + plot.height(),
+                bottom: plot.offset().top + plot.height()
             };
-        };
+        }
 
         [
             { thumbLocationWord: 'top', edge: 'right', thumbLocation: 't' },
@@ -307,7 +307,7 @@ describe('Parking Lot', () => {
             { thumbLocationWord: 'left', edge: 'top', thumbLocation: 'l' },
             { thumbLocationWord: 'left', edge: 'bottom', thumbLocation: 'l' },
             { thumbLocationWord: 'right', edge: 'top', thumbLocation: 'r' },
-            { thumbLocationWord: 'right', edge: 'bottom', thumbLocation: 'r' },
+            { thumbLocationWord: 'right', edge: 'bottom', thumbLocation: 'r' }
         ].forEach((parameter) => {
             it(`should keep cursor thumb aligned with cursor line when the cursor thumb on ${parameter.thumbLocationWord} is moved into the graph range from ${parameter.edge}`, () => {
                 plot = $.plot("#placeholder", [sampleData], {
@@ -316,9 +316,9 @@ describe('Parking Lot', () => {
                             showThumbs: parameter.thumbLocation,
                             position: {
                                 relativeX: parameter.edge === 'right' ? 1.05 : -0.05,
-                                relativeY: parameter.edge === 'bottom' ? 1.05 : -0.05,
-                            },
-                        },
+                                relativeY: parameter.edge === 'bottom' ? 1.05 : -0.05
+                            }
+                        }
                     ],
                     parkingLot: {
                     }
@@ -334,31 +334,31 @@ describe('Parking Lot', () => {
                     thumbInitCenter = getElementCenter(thumb);
 
                 switch (parameter.edge) {
-                case 'right':
-                    delta.x = graphRange.right - thumbInitCenter.x;
-                    criticalDelta.x = delta.x + 1;
-                    secondDelta.x = -5;
-                    break;
-                case 'left':
-                    delta.x = graphRange.left + 1/* left edge has 1px righter for thumb moving in */ - thumbInitCenter.x;
-                    criticalDelta.x = delta.x - 1;
-                    secondDelta.x = 5;
-                    break;
-                case 'bottom':
-                    delta.y = graphRange.bottom - thumbInitCenter.y;
-                    criticalDelta.y = delta.y + 1;
-                    secondDelta.y = -5;
-                    break;
-                case 'top':
-                    delta.y = graphRange.top - thumbInitCenter.y;
-                    criticalDelta.y = delta.y - 1;
-                    secondDelta.y = 5;
-                    break;
+                    case 'right':
+                        delta.x = graphRange.right - thumbInitCenter.x;
+                        criticalDelta.x = delta.x + 1;
+                        secondDelta.x = -5;
+                        break;
+                    case 'left':
+                        delta.x = graphRange.left + 1/* left edge has 1px righter for thumb moving in */ - thumbInitCenter.x;
+                        criticalDelta.x = delta.x - 1;
+                        secondDelta.x = 5;
+                        break;
+                    case 'bottom':
+                        delta.y = graphRange.bottom - thumbInitCenter.y;
+                        criticalDelta.y = delta.y + 1;
+                        secondDelta.y = -5;
+                        break;
+                    case 'top':
+                        delta.y = graphRange.top - thumbInitCenter.y;
+                        criticalDelta.y = delta.y - 1;
+                        secondDelta.y = 5;
+                        break;
                 }
 
                 function expectThumbInParkingLot() {
                     expect(getElementCenter(thumb).x).toBeCloseTo(thumbInitCenter.x, 0);
-                    expect(getElementCenter(thumb).y).toBeCloseTo(thumbInitCenter.y, 0);    
+                    expect(getElementCenter(thumb).y).toBeCloseTo(thumbInitCenter.y, 0);
                 }
 
                 simulate.mouseDown(thumb, 0, 0);
@@ -387,15 +387,15 @@ describe('Parking Lot', () => {
             { thumbLocationWord: 'left', edge: 'top', thumbLocation: 'l', expectedDocker: 'topLeftVerticalDocker' },
             { thumbLocationWord: 'left', edge: 'bottom', thumbLocation: 'l', expectedDocker: 'bottomLeftVerticalDocker' },
             { thumbLocationWord: 'right', edge: 'top', thumbLocation: 'r', expectedDocker: 'topRightVerticalDocker' },
-            { thumbLocationWord: 'right', edge: 'bottom', thumbLocation: 'r', expectedDocker: 'bottomRightVerticalDocker' },
+            { thumbLocationWord: 'right', edge: 'bottom', thumbLocation: 'r', expectedDocker: 'bottomRightVerticalDocker' }
         ].forEach((parameter) => {
             it(`should keep cursor thumb aligned with cursor line until the center of thumb on ${parameter.thumbLocationWord} is moved out of the graph range cross ${parameter.edge} edge`, () => {
                 plot = $.plot("#placeholder", [sampleData], {
                     cursors: [
                         {
                             showThumbs: parameter.thumbLocation,
-                            position: { relativeX: 0.5, relativeY: 0.5 },
-                        },
+                            position: { relativeX: 0.5, relativeY: 0.5 }
+                        }
                     ],
                     parkingLot: {
                     }
@@ -412,31 +412,31 @@ describe('Parking Lot', () => {
 
                 // Since Firefox's element position is a little different, 1px buffer is used for the critical condition
                 switch (parameter.edge) {
-                case 'right':
-                    criticalDelta.x = graphRange.right - thumbInitCenter.x - 1;
-                    secondDelta.x = 2;
-                    break;
-                case 'left':
-                    criticalDelta.x = graphRange.left - thumbInitCenter.x + 1;
-                    secondDelta.x = -2;
-                    break;
-                case 'bottom':
-                    criticalDelta.y = graphRange.bottom - thumbInitCenter.y - 1;
-                    secondDelta.y = 2;
-                    break;
-                case 'top':
-                    criticalDelta.y = graphRange.top - thumbInitCenter.y + 1;
-                    secondDelta.y = -2;
-                    break;
+                    case 'right':
+                        criticalDelta.x = graphRange.right - thumbInitCenter.x - 1;
+                        secondDelta.x = 2;
+                        break;
+                    case 'left':
+                        criticalDelta.x = graphRange.left - thumbInitCenter.x + 1;
+                        secondDelta.x = -2;
+                        break;
+                    case 'bottom':
+                        criticalDelta.y = graphRange.bottom - thumbInitCenter.y - 1;
+                        secondDelta.y = 2;
+                        break;
+                    case 'top':
+                        criticalDelta.y = graphRange.top - thumbInitCenter.y + 1;
+                        secondDelta.y = -2;
+                        break;
                 }
 
                 simulate.mouseDown(thumb, 0, 0);
-                
+
                 simulate.mouseMove(thumb, criticalDelta.x, criticalDelta.y);
                 jasmine.clock().tick(20);
                 expect(parkingLot[`${parameter.expectedDocker}`].size).toBe(0);
                 validateThumbAlignToCursor(plot, thumb, parameter.thumbLocation, cursor);
-                
+
                 simulate.mouseMove(thumb, secondDelta.x, secondDelta.y);
                 jasmine.clock().tick(20);
                 expect(parkingLot[`${parameter.expectedDocker}`].size).toBe(1);

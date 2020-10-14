@@ -1,3 +1,5 @@
+/*globals HistoryBuffer, NITimestamp, NIAnalogWaveform*/
+
 describe('A HistoryBuffer works with numeric data', function () {
     'use strict';
     var onChangekey = 'key';
