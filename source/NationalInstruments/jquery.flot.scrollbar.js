@@ -19,8 +19,6 @@ THE SOFTWARE.
 /* Flot plugin for adding scrollbars to the graph
 */
 
-/*global jQuery*/
-
 (function ($) {
     'use strict';
 

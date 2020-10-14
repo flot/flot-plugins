@@ -19,8 +19,6 @@ THE SOFTWARE.
 /* Flot plugin for adding the parking lot for the graph
 */
 
-/*global jQuery*/
-
 (function ($) {
     'use strict';
     class ObservableSet extends Set {

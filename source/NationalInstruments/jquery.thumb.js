@@ -19,8 +19,6 @@ THE SOFTWARE.
 /* Flot plugin used by flot-cursors-plugin and flot-axishandle-plugin
 */
 
-/*global jQuery*/
-
 (function ($) {
     'use strict';
 

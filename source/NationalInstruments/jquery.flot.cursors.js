@@ -19,8 +19,6 @@ THE SOFTWARE.
 /* Flot plugin for adding cursors to the plot.
 */
 
-/*global jQuery*/
-
 (function ($) {
     'use strict';
 
