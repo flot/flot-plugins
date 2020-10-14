@@ -2,7 +2,7 @@
 
 $(function () {
     'use strict';
-    var plot;
+
     var buffer = new HistoryBuffer(100 * 1024, 4);
     var globalIndex = 0;
     var chartStep = 0.0001;
@@ -19,7 +19,10 @@ $(function () {
             tan = Math.min(tan, 3);
             tan = Math.max(tan, -3);
             globalIndex++;
-            arr[0] = sin, arr[1] = cos, arr[2] = sin1, arr[3] = tan;
+            arr[0] = sin;
+            arr[1] = cos;
+            arr[2] = sin1;
+            arr[3] = tan;
 
             buffer.push(arr);
         }
