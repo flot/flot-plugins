@@ -459,7 +459,7 @@ THE SOFTWARE.
                         }
                     }
                     break;
-                case 'y':
+                case 'y': {
                     const signals = plot.getData().filter(series => series.digitalWaveform.signal.visible);
                     const buses = plot.getOptions().buses.filter(bus => bus.visible);
                     const boundaries = signals.map(series => series.digitalWaveform.signal.bottom)
@@ -480,6 +480,7 @@ THE SOFTWARE.
                         }
                     }
                     break;
+                }
             }
         }
 
@@ -576,11 +577,12 @@ THE SOFTWARE.
                     this.renderer.drawStep(ctx, x1, x2, y1, lastY, color);
                     lastY = y1;
                     break;
-                case 'step_center':
+                case 'step_center': {
                     let center = (y1 + y2) / 2
                     this.renderer.drawStep(ctx, x1, x2, center, lastY, color);
                     lastY = center;
                     break;
+                }
                 case 'rect_filled':
                     this.renderer.drawRect(ctx, x1, x2, y1, y2, color, true, !equalsLast, !equalsNext);
                     lastY = null;
@@ -594,7 +596,7 @@ THE SOFTWARE.
             plot.getOptions().buses.forEach(bus => {
                 if (bus.visible && bus.samples.length > 1) {
                     this._drawBus(plot, ctx, bus);
-                };
+                }
             });
         }
 
@@ -645,7 +647,7 @@ THE SOFTWARE.
                             break;
                     }
                 }
-            };
+            }
             ctx.restore();
         }
 

@@ -127,7 +127,7 @@ THE SOFTWARE.
                     // caching all the colors of the gradient, min and max in one place
                     options.series.intensitygraph.palette = initColorPalette(options);
                 }
-            };
+            }
 
             function initColorPalette(opt) {
                 var i, x,
@@ -176,7 +176,7 @@ THE SOFTWARE.
                 palette.push(colorHigh.a * 255 | 0);
 
                 return palette;
-            };
+            }
 
             function findNearbyItems (plot, canvasX, canvasY, series, seriesIndex, radius, computeDistance, items) {
                 const seriesData = series[seriesIndex].data;
@@ -454,9 +454,9 @@ THE SOFTWARE.
                     return (!serie.xaxis.options.mode || serie.xaxis.options.mode === 'linear') &&
                   (!serie.yaxis.options.mode || serie.yaxis.options.mode === 'linear');
                 }
-            };
+            }
         };
-    };
+    }
 
     IntensityGraph.ColorScaleType = 'colorScale';
     IntensityGraph.prototype.drawLegend = drawLegend;

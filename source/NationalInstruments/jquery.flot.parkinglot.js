@@ -912,7 +912,7 @@ THE SOFTWARE.
 
             const matrix = `matrix(${thumbPositionMatrix.a} ${thumbPositionMatrix.b} ${thumbPositionMatrix.c} ${thumbPositionMatrix.d} ${x} ${y})`;
             thumb.setAttribute('transform', matrix);
-        };
+        }
 
         static _getThumb(node) {
             let current = node;

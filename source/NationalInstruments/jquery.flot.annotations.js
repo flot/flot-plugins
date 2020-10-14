@@ -450,7 +450,7 @@ THE SOFTWARE.
 
             ctx.restore();
         }
-    };
+    }
 
     function init(plot) {
         let annotations;

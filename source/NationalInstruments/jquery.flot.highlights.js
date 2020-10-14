@@ -199,7 +199,7 @@ THE SOFTWARE.
                     return 'transparent';
                 }, series.xaxis, series.yaxis, octx, series.bars.horizontal, series.bars.lineWidth);
         }
-    };
+    }
 
     function init(plot) {
         let highlights;

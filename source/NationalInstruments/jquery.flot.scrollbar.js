@@ -277,16 +277,18 @@ THE SOFTWARE.
             if (!this._scrolling) {
                 let amount;
                 switch (this.direction) {
-                    case Direction.Horizontal:
+                    case Direction.Horizontal: {
                         const x = event.pageX - this._container.offset().left;
                         const currentX = this._scrollbar.offset().left - this._container.offset().left + this._scrollbar.width() / 2;
                         amount = x - currentX;
                         break;
-                    case Direction.Vertical:
+                    }
+                    case Direction.Vertical: {
                         const y = event.pageY - this._container.offset().top;
                         const currentY = this._scrollbar.offset().top - this._container.offset().top + this._scrollbar.height() / 2;
                         amount = currentY - y;
                         break;
+                    }
                 }
 
                 this._move(amount);
@@ -457,7 +459,7 @@ THE SOFTWARE.
                     });
                     this._scrollbar.css('width', '100%');
                     break;
-                case Direction.Vertical:
+                case Direction.Vertical: {
                     const getBorderWidth = () => {
                         const bw = this._plot.getOptions().grid.borderWidth;
                         return typeof bw === 'object' ? this.direction === Direction.Horizontal ? bw.bottom || 0 : bw.left || 0 : bw;
@@ -475,6 +477,7 @@ THE SOFTWARE.
                     });
                     this._scrollbar.css('height', '100%');
                     break;
+                }
             }
 
             this._positionScrollbar();
@@ -507,7 +510,7 @@ THE SOFTWARE.
         get moveButtonDisabledColor() {
             return this.scrollbarHoverColor;
         }
-    };
+    }
 
     function init(plot) {
         let scrollbars;

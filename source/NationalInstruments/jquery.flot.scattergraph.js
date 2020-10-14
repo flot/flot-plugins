@@ -121,7 +121,7 @@ THE SOFTWARE.
                         {x: false, y: true, number: true, computeRange: true}
                     ];
                 }
-            };
+            }
 
             /**
             **processOptions(plot, options)**
@@ -166,7 +166,7 @@ THE SOFTWARE.
 
                     opt = options;
                 }
-            };
+            }
 
             function createColorMap (colors) {
                 var i;
@@ -176,7 +176,7 @@ THE SOFTWARE.
                 }
 
                 return colorMap;
-            };
+            }
 
             function lookupColor (colorValue) {
                 var colorOut;
@@ -203,7 +203,7 @@ THE SOFTWARE.
                 }
 
                 return shapeMap;
-            };
+            }
 
             function lookupShape (shapeValue) {
                 var shapeOut;
@@ -230,7 +230,7 @@ THE SOFTWARE.
                 }
 
                 return sizeMap;
-            };
+            }
 
             function lookupSize (sizeValue) {
                 var sizeOut;
@@ -529,7 +529,7 @@ THE SOFTWARE.
                 }
 
                 ctx.restore();
-            };
+            }
 
             function findNearbyItems (plot, canvasX, canvasY, series, seriesIndex, radius, computeDistance, items) {
                 var ps = series[seriesIndex].datapoints.pointsize;
@@ -569,9 +569,9 @@ THE SOFTWARE.
                         }
                     }
                 }
-            };
+            }
         };
-    };
+    }
 
     var scattergraph = new ScatterGraph();
 

@@ -43,7 +43,7 @@ $(function () {
                 }
             }
         });
-    };
+    }
     $("#placeholder").bind("plotclick", function (event, pos, item) {
         if (item) {
             if (!selectLines) {

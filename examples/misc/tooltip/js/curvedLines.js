@@ -302,7 +302,7 @@ ____________________________________________________
             }
 
             return ret;
-        };
+        }
 
         //no real idea whats going on here code mainly from https://code.google.com/p/flot/issues/detail?id=226
         //if fit option is selected additional datapoints get inserted before the curve calculations in nergal.dev s code.
