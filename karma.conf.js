@@ -22,10 +22,11 @@ module.exports = function (config) {
 
     var files = [
         {
-            pattern: 'styles/images/*.*',
+            pattern: 'styles/images/*.png',
             watched: false,
             served: true,
-            included: true
+            included: false,
+            nocache: false
         },
         'lib/cbuffer.js',
         'node_modules/ni-data-types/dist/es5-minified/ni-data-types.min.js',
