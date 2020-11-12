@@ -64,7 +64,7 @@ describe('A digital waveform', function() {
 
     it('should not crash when drawing bus with empty signal', function () {
         options.buses = [{}];
-        $.plot(placeholder, [[]], options);
+        expect(() => $.plot(placeholder, [[]], options)).not.toThrow();
     });
 
     it('should add x values for flat data', function() {
