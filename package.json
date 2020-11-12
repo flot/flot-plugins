@@ -43,7 +43,6 @@
     "karma-coverage": "^2.0.3",
     "karma-coveralls": "^2.1.0",
     "karma-edge-launcher": "^0.4.2",
-    "karma-eslint": "^2.2.0",
     "karma-firefox-launcher": "^2.1.0",
     "karma-jasmine": "^4.0.1",
     "karma-jasmine-html-reporter": "^1.5.4",
