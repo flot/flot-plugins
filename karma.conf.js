@@ -100,19 +100,7 @@ module.exports = function (config) {
 
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-        preprocessors: {
-            'source/**/*.js': ['eslint']
-        },
-
-        eslint: {
-            stopOnError: !!config.stopOnEsLintError,
-            showWarnings: true,
-            engine: {
-                configFile: '.eslintrc.json',
-                emitError: true,
-                emitWarning: true
-            }
-        },
+        preprocessors: {},
 
         // test results reporter to use
         // possible values: 'dots', 'progress'
