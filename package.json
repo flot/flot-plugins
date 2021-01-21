@@ -10,7 +10,7 @@
   },
   "scripts": {
     "eslint": "eslint .",
-    "test": "karma start karma.conf.js --single-run --stopOnEsLintError",
+    "test": "karma start karma.conf.js --single-run",
     "karma": "karma start",
     "build": "gulp build"
   },
