@@ -30,7 +30,7 @@
     "@babel/preset-env": "^7.4.5",
     "@metahub/karma-jasmine-jquery": "^4.0.1",
     "eslint": "^7.11.0",
-    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-standard": "^5.0.0",
     "files-exist": "^1.1.0",
     "gulp": "^4.0.0",
