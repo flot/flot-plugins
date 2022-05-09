@@ -29,7 +29,7 @@
     "@babel/core": "^7.4.5",
     "@babel/preset-env": "^7.4.5",
     "@metahub/karma-jasmine-jquery": "^4.0.1",
-    "eslint": "^7.11.0",
+    "eslint": "^8.15.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^5.0.0",
     "files-exist": "^1.1.0",
